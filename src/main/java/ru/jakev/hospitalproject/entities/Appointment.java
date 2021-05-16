@@ -1,5 +1,4 @@
-package ru.jakev.hospitalproject.Entities;
-
+package ru.jakev.hospitalproject.entities;
 
 import com.vladmihalcea.hibernate.type.interval.PostgreSQLIntervalType;
 import lombok.Data;
@@ -8,9 +7,8 @@ import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.DayOfWeek;
 import java.time.Duration;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -19,7 +17,7 @@ import java.time.LocalTime;
         typeClass = PostgreSQLIntervalType.class,
         defaultForType = Duration.class
 )
-public class Schedule {
+public class Appointment {
 
     @Id
     @GeneratedValue
@@ -30,20 +28,17 @@ public class Schedule {
     @NotNull
     private Doctor doctor;
 
-    @Column(name = "day_of_week")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "patient_id")
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private DayOfWeek dayOfWeek;
+    private Patient patient;
+
 
     @NotNull
-    @Column(name = "day_start", columnDefinition = "TIME")
-    private LocalTime dayStart;
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime date;
 
     @NotNull
-    @Column(name = "day_end", columnDefinition = "TIME")
-    private LocalTime dayEnd;
-
-    @NotNull
-    @Column(name = "appointment_duration", columnDefinition = "INTERVAL")
+    @Column(columnDefinition = "INTERVAL")
     private Duration duration;
 }

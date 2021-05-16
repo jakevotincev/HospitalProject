@@ -1,4 +1,4 @@
-package ru.jakev.hospitalproject.Entities;
+package ru.jakev.hospitalproject.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

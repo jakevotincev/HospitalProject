@@ -1,4 +1,5 @@
-package ru.jakev.hospitalproject.Entities;
+package ru.jakev.hospitalproject.entities;
+
 
 import com.vladmihalcea.hibernate.type.interval.PostgreSQLIntervalType;
 import lombok.Data;
@@ -7,18 +8,18 @@ import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.DayOfWeek;
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Data
 @NoArgsConstructor
-//todo: period to sql interval
 @TypeDef(
         typeClass = PostgreSQLIntervalType.class,
         defaultForType = Duration.class
 )
-public class Appointment {
+public class Schedule {
 
     @Id
     @GeneratedValue
@@ -29,17 +30,20 @@ public class Appointment {
     @NotNull
     private Doctor doctor;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "patient_id")
+    @Column(name = "day_of_week")
     @NotNull
-    private Patient patient;
-
-
-    @NotNull
-    @Column(columnDefinition = "TIMESTAMP")
-    private LocalDateTime date;
+    @Enumerated(EnumType.STRING)
+    private DayOfWeek dayOfWeek;
 
     @NotNull
-    @Column(columnDefinition = "INTERVAL")
+    @Column(name = "day_start", columnDefinition = "TIME")
+    private LocalTime dayStart;
+
+    @NotNull
+    @Column(name = "day_end", columnDefinition = "TIME")
+    private LocalTime dayEnd;
+
+    @NotNull
+    @Column(name = "appointment_duration", columnDefinition = "INTERVAL")
     private Duration duration;
 }

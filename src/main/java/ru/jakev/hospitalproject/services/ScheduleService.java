@@ -7,6 +7,7 @@ import ru.jakev.hospitalproject.repositories.ScheduleRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
@@ -22,13 +23,18 @@ public class ScheduleService {
         this.scheduleRepository = scheduleRepository;
     }
 
-    List<Schedule> getSchedulesByDoctorId(Integer id) {
+    public List<Schedule> getSchedulesByDoctorId(Integer id) {
         return scheduleRepository.findAllByDoctorId(id);
     }
 
-    Schedule getScheduleByDoctorIdAndDayOfWeek(Integer id, DayOfWeek day) throws EntityNotFoundException{
+    public Schedule getScheduleByDoctorIdAndDayOfWeek(Integer id, DayOfWeek day) throws EntityNotFoundException{
         return scheduleRepository.findByDoctorIdAndDayOfWeek(id, day)
                 .orElseThrow(() -> new EntityNotFoundException("Entity doctor_id: " + id + ", day: "
                         + day.getDisplayName(TextStyle.FULL, Locale.ENGLISH) + " not found"));
+    }
+
+    public Duration getDurationByDoctorId(Integer id){
+        return scheduleRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(
+                "Entity doctor_id: " + id + " not found")).getDuration();
     }
 }

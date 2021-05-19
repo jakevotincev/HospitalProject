@@ -7,12 +7,12 @@ import ru.jakev.hospitalproject.repositories.ScheduleRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.DayOfWeek;
-import java.time.Duration;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
 
 //todo: write custom entity not found exception???
+//todo: maybe write save method
 @Service
 public class ScheduleService {
 
@@ -33,8 +33,4 @@ public class ScheduleService {
                         + day.getDisplayName(TextStyle.FULL, Locale.ENGLISH) + " not found"));
     }
 
-    public Duration getDurationByDoctorId(Integer id){
-        return scheduleRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(
-                "Entity doctor_id: " + id + " not found")).getDuration();
-    }
 }

@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
 
-//todo: use custom query
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
     Stream<Appointment> findAllByDoctorId(Integer id);
     Stream<Appointment> findAllByPatientId(Integer id);

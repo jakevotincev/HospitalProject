@@ -13,6 +13,7 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class AppointmentService {
@@ -27,15 +28,15 @@ public class AppointmentService {
     }
 
     public List<Appointment> getAppointmentsByDoctorId(Integer id){
-       return appointmentRepository.findAllByDoctorId(id);
+       return appointmentRepository.findAllByDoctorId(id).collect(Collectors.toList());
     }
 
     public List<Appointment> getAppointmentsByPatientId(Integer id){
-        return appointmentRepository.findAllByPatientId(id);
+        return appointmentRepository.findAllByPatientId(id).collect(Collectors.toList());
     }
 
     public List<Appointment> getAppointmentsByDoctorIdAndDateBetween(Integer id, LocalDateTime from, LocalDateTime to){
-        return appointmentRepository.findAllByDoctorIdAndDateBetween(id, from, to);
+        return appointmentRepository.findAllByDoctorIdAndDateBetween(id, from, to).collect(Collectors.toList());
     }
 
     public Map<LocalTime, Boolean> getScheduleByDoctorIdAndDate(Integer id, LocalDate date){
@@ -43,7 +44,7 @@ public class AppointmentService {
         Map<LocalTime, Boolean> result = new HashMap<>();
         LocalDateTime dayStart = date.atTime(schedule.getDayStart());
         LocalDateTime dayEnd = date.atTime(schedule.getDayEnd());
-        List<Appointment> appointments = appointmentRepository.findAllByDoctorIdAndDateBetween(id, dayStart, dayEnd);
+        List<Appointment> appointments = appointmentRepository.findAllByDoctorIdAndDateBetween(id, dayStart, dayEnd).collect(Collectors.toList());
         for (; dayStart.isBefore(dayEnd); dayStart = dayStart.plusHours(1)){
             boolean isTimeBusy = isAppointmentListContainsDate(appointments, dayStart);
             result.put(dayStart.toLocalTime(), isTimeBusy);

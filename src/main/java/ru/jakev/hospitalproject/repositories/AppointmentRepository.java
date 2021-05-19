@@ -1,15 +1,15 @@
 package ru.jakev.hospitalproject.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 import ru.jakev.hospitalproject.entities.Appointment;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.stream.Stream;
 
-@Repository
+
+//todo: use custom query
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
-    List<Appointment> findAllByDoctorId(Integer id);
-    List<Appointment> findAllByPatientId(Integer id);
-    List<Appointment> findAllByDoctorIdAndDateBetween(Integer id, LocalDateTime from, LocalDateTime to);
+    Stream<Appointment> findAllByDoctorId(Integer id);
+    Stream<Appointment> findAllByPatientId(Integer id);
+    Stream<Appointment> findAllByDoctorIdAndDateBetween(Integer id, LocalDateTime from, LocalDateTime to);
 }

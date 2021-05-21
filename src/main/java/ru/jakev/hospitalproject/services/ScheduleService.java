@@ -29,8 +29,8 @@ public class ScheduleService {
 
     public Schedule getScheduleByDoctorIdAndDayOfWeek(Integer id, DayOfWeek day) throws EntityNotFoundException{
         return scheduleRepository.findByDoctorIdAndDayOfWeek(id, day)
-                .orElseThrow(() -> new EntityNotFoundException("Entity doctor_id: " + id + ", day: "
-                        + day.getDisplayName(TextStyle.FULL, Locale.ENGLISH) + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Entity schedule {doctor_id: " + id + ", day: "
+                        + day.getDisplayName(TextStyle.FULL, Locale.ENGLISH) + "} not found"));
     }
 
 }

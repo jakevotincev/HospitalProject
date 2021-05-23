@@ -97,6 +97,16 @@
                                 <artifactId>mapstruct-processor</artifactId>
                                 <version>1.4.2.Final</version>
                             </path>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>1.18.20</version>
+                            </path>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok-mapstruct-binding</artifactId>
+                                <version>0.2.0</version>
+                            </path>
                         </annotationProcessorPaths>
                         <!-- due to problem in maven-compiler-plugin, for verbose mode add showWarnings -->
                         <showWarnings>true</showWarnings>
@@ -121,7 +131,7 @@
                             <exclude>
                                 <groupId>org.projectlombok</groupId>
                                 <artifactId>lombok</artifactId>
-                                <version>2.4.5</version>
+                                <version>2.5.0</version>
                             </exclude>
                         </excludes>
                     </configuration>

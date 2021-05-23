@@ -1,5 +1,6 @@
 package ru.jakev.hospitalproject.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ScheduleDTO {
 
     private Integer id;
@@ -18,12 +20,4 @@ public class ScheduleDTO {
     private LocalTime dayEnd;
     private Duration duration;
 
-    public ScheduleDTO(Integer id, DoctorDTO doctor, DayOfWeek dayOfWeek, LocalTime dayStart, LocalTime dayEnd, Duration duration) {
-        this.id = id;
-        this.doctor = doctor;
-        this.dayOfWeek = dayOfWeek;
-        this.dayStart = dayStart;
-        this.dayEnd = dayEnd;
-        this.duration = duration;
-    }
 }

@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Doctor {
 
     @Id
@@ -32,12 +33,4 @@ public class Doctor {
 
     private Integer cabinet;
 
-    public Doctor(Integer id, String surname, String name, String middleName, DoctorSpeciality speciality, Integer cabinet) {
-        this.id = id;
-        this.surname = surname;
-        this.name = name;
-        this.middleName = middleName;
-        this.speciality = speciality;
-        this.cabinet = cabinet;
-    }
 }

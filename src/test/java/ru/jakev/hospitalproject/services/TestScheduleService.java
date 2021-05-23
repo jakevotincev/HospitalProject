@@ -61,7 +61,7 @@ public class TestScheduleService {
                 default:
                     schedules = new ArrayList<>();
             }
-            return schedules;
+            return schedules.stream();
         });
 
         List<ScheduleDTO> foundSchedules = scheduleService.getSchedulesByDoctorId(1);

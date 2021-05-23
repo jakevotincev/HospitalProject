@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @TypeDef(
         typeClass = PostgreSQLIntervalType.class,
         defaultForType = Duration.class
@@ -43,11 +44,4 @@ public class Appointment {
     @Column(columnDefinition = "INTERVAL")
     private Duration duration;
 
-    public Appointment(Integer id, Doctor doctor, Patient patient, LocalDateTime date, Duration duration) {
-        this.id = id;
-        this.doctor = doctor;
-        this.patient = patient;
-        this.date = date;
-        this.duration = duration;
-    }
 }

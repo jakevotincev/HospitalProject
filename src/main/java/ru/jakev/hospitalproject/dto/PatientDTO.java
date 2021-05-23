@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class PatientDTO {
 
     private Integer id;
@@ -14,11 +15,4 @@ public class PatientDTO {
     private String middleName;
     private Integer age;
 
-    public PatientDTO(Integer id, String surname, String name, String middleName, Integer age) {
-        this.id = id;
-        this.surname = surname;
-        this.name = name;
-        this.middleName = middleName;
-        this.age = age;
-    }
 }

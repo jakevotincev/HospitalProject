@@ -16,7 +16,6 @@ import java.time.LocalTime;
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @TypeDef(
         typeClass = PostgreSQLIntervalType.class,
         defaultForType = Duration.class
@@ -48,4 +47,13 @@ public class Schedule {
     @NotNull
     @Column(name = "appointment_duration", columnDefinition = "INTERVAL")
     private Duration duration;
+
+    public Schedule(Integer id, Doctor doctor, DayOfWeek dayOfWeek, LocalTime dayStart, LocalTime dayEnd, Duration duration) {
+        this.id = id;
+        this.doctor = doctor;
+        this.dayOfWeek = dayOfWeek;
+        this.dayStart = dayStart;
+        this.dayEnd = dayEnd;
+        this.duration = duration;
+    }
 }

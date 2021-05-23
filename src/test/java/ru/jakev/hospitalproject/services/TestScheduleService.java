@@ -5,12 +5,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ru.jakev.hospitalproject.dto.ScheduleDTO;
 import ru.jakev.hospitalproject.entities.Doctor;
 import ru.jakev.hospitalproject.entities.DoctorSpeciality;
 import ru.jakev.hospitalproject.entities.Schedule;
+import ru.jakev.hospitalproject.mappers.ScheduleMapper;
 import ru.jakev.hospitalproject.repositories.ScheduleRepository;
 
 import javax.persistence.EntityNotFoundException;
@@ -26,10 +29,12 @@ public class TestScheduleService {
     @Mock
     ScheduleRepository scheduleRepository;
     List<Schedule> scheduleList = new ArrayList<>();
+    ScheduleMapper scheduleMapper;
 
     @BeforeEach
     void init() {
-        scheduleService = new ScheduleService(scheduleRepository);
+        scheduleMapper = Mappers.getMapper(ScheduleMapper.class);
+        scheduleService = new ScheduleService(scheduleRepository, scheduleMapper);
         Doctor doctor = new Doctor(1, "surname", "name", "middle_name",
                 DoctorSpeciality.DENTIST, 10);
         Doctor doctor2 = new Doctor(2, "surname", "name", "middle_name",
@@ -59,7 +64,7 @@ public class TestScheduleService {
             return schedules;
         });
 
-        List<Schedule> foundSchedules = scheduleService.getSchedulesByDoctorId(1);
+        List<ScheduleDTO> foundSchedules = scheduleService.getSchedulesByDoctorId(1);
         assertEquals(2, foundSchedules.size());
 
         foundSchedules = scheduleService.getSchedulesByDoctorId(2);
@@ -87,14 +92,14 @@ public class TestScheduleService {
                     return schedule;
                 });
 
-        Schedule schedule = scheduleService.getScheduleByDoctorIdAndDayOfWeek(1, DayOfWeek.MONDAY);
-        assertEquals(scheduleList.get(0), schedule);
+        ScheduleDTO schedule = scheduleService.getScheduleByDoctorIdAndDayOfWeek(1, DayOfWeek.MONDAY);
+        assertEquals(scheduleMapper.scheduleToScheduleDto(scheduleList.get(0)), schedule);
 
         schedule = scheduleService.getScheduleByDoctorIdAndDayOfWeek(1, DayOfWeek.TUESDAY);
-        assertEquals(scheduleList.get(1), schedule);
+        assertEquals(scheduleMapper.scheduleToScheduleDto(scheduleList.get(1)), schedule);
 
         schedule = scheduleService.getScheduleByDoctorIdAndDayOfWeek(2, DayOfWeek.MONDAY);
-        assertEquals(scheduleList.get(2), schedule);
+        assertEquals(scheduleMapper.scheduleToScheduleDto(scheduleList.get(2)), schedule);
 
         assertThrows(EntityNotFoundException.class, () -> scheduleService.getScheduleByDoctorIdAndDayOfWeek(1, DayOfWeek.SATURDAY));
     }

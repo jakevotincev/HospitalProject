@@ -1,38 +1,23 @@
-package ru.jakev.hospitalproject.entities;
+package ru.jakev.hospitalproject.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.jakev.hospitalproject.entities.DoctorSpeciality;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
-@Entity
 @Data
 @NoArgsConstructor
-public class Doctor {
+//todo: all args constructor doesnt work
+public class DoctorDTO {
 
-    @Id
-    @GeneratedValue
     private Integer id;
-
-    @NotNull
     private String surname;
-
-    @NotNull
     private String name;
-
-    @NotNull
-    @Column(name = "middle_name")
     private String middleName;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
     private DoctorSpeciality speciality;
-
     private Integer cabinet;
 
-    public Doctor(Integer id, String surname, String name, String middleName, DoctorSpeciality speciality, Integer cabinet) {
+    public DoctorDTO(Integer id, String surname, String name, String middleName, DoctorSpeciality speciality, Integer cabinet) {
         this.id = id;
         this.surname = surname;
         this.name = name;

@@ -7,9 +7,10 @@ import ru.jakev.hospitalproject.entities.Schedule;
 import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     @Query("select s from Schedule s where s.doctor.id=?1")
-    List<Schedule> findAllByDoctorId(Integer id);
+    Stream<Schedule> findAllByDoctorId(Integer id);
     Optional<Schedule> findByDoctorIdAndDayOfWeek(Integer id, DayOfWeek day);
 }

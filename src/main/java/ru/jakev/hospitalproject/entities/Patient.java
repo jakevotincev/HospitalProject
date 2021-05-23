@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Patient {
     @Id
     @GeneratedValue
@@ -32,4 +31,11 @@ public class Patient {
     @NotNull
     private Integer age;
 
+    public Patient(Integer id, String surname, String name, String middleName, Integer age) {
+        this.id = id;
+        this.surname = surname;
+        this.name = name;
+        this.middleName = middleName;
+        this.age = age;
+    }
 }

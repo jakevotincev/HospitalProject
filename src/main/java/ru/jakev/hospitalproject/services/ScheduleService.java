@@ -22,7 +22,6 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final ScheduleMapper scheduleMapper;
 
-    @Autowired
     public ScheduleService(ScheduleRepository scheduleRepository, ScheduleMapper scheduleMapper) {
         this.scheduleRepository = scheduleRepository;
         this.scheduleMapper = scheduleMapper;

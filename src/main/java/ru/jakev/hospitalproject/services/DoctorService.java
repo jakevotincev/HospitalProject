@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+//todo: if getAllDoctors list is empty do I need to throw exception
 public class DoctorService {
 
     private final DoctorRepository doctorRepository;
     private final PeopleMapper peopleMapper;
 
-    @Autowired
     public DoctorService(DoctorRepository doctorRepository, PeopleMapper peopleMapper) {
         this.doctorRepository = doctorRepository;
         this.peopleMapper = peopleMapper;

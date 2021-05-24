@@ -8,7 +8,6 @@ import ru.jakev.hospitalproject.entities.DoctorSpeciality;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//todo: all args constructor doesnt work
 public class DoctorDTO {
 
     private Integer id;

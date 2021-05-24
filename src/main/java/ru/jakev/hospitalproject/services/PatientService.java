@@ -13,7 +13,6 @@ public class PatientService {
     private final PatientRepository patientRepository;
     private final PeopleMapper mapper;
 
-    @Autowired
     public PatientService(PatientRepository patientRepository, PeopleMapper mapper) {
         this.patientRepository = patientRepository;
         this.mapper = mapper;

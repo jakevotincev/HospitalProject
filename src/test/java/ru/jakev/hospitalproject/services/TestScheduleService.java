@@ -76,7 +76,7 @@ public class TestScheduleService {
 
     @Test
     void testGetScheduleByDoctorIdAndDayOfWeek() {
-        Mockito.when(scheduleRepository.findByDoctorIdAndDayOfWeek(Mockito.anyInt(), Mockito.any()))
+        Mockito.when(scheduleRepository.findByDoctorIdAndDayOfWeek(Mockito.anyInt(), Mockito.any(DayOfWeek.class)))
                 .thenAnswer(invocationOnMock -> {
                     Optional<Schedule> schedule;
                     if (invocationOnMock.getArgument(0).equals(1)

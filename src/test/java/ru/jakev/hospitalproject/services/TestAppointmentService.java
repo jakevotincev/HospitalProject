@@ -1,7 +1,5 @@
 package ru.jakev.hospitalproject.services;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,13 +12,17 @@ import ru.jakev.hospitalproject.dto.AppointmentDTO;
 import ru.jakev.hospitalproject.dto.DoctorDTO;
 import ru.jakev.hospitalproject.dto.PatientDTO;
 import ru.jakev.hospitalproject.dto.ScheduleDTO;
-import ru.jakev.hospitalproject.entities.*;
+import ru.jakev.hospitalproject.entities.Appointment;
+import ru.jakev.hospitalproject.entities.Doctor;
+import ru.jakev.hospitalproject.entities.DoctorSpeciality;
+import ru.jakev.hospitalproject.entities.Patient;
 import ru.jakev.hospitalproject.mappers.AppointmentMapper;
 import ru.jakev.hospitalproject.repositories.AppointmentRepository;
 
 import java.time.*;
 import java.util.*;
-import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TestAppointmentService {
@@ -173,7 +175,6 @@ public class TestAppointmentService {
                 assertTrue(entry.getValue());
             else assertFalse(entry.getValue());
         }
-
         Mockito.when(scheduleService.getScheduleByDoctorIdAndDayOfWeek(Mockito.anyInt(), Mockito.any(DayOfWeek.class)))
                 .thenReturn(new ScheduleDTO(1, doctorDTO, DayOfWeek.MONDAY,
                         LocalTime.of(12, 0), LocalTime.of(18, 0), Duration.ofHours(1)));

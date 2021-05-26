@@ -1,5 +1,7 @@
 package ru.jakev.hospitalproject.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.jakev.hospitalproject.dto.DoctorDTO;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 //todo: if getAllDoctors list is empty do I need to throw exception
 public class DoctorService {
 
+    private final Logger LOGGER = LoggerFactory.getLogger(DoctorService.class);
     private final DoctorRepository doctorRepository;
     private final PeopleMapper peopleMapper;
 
@@ -23,11 +26,15 @@ public class DoctorService {
     }
 
     public List<DoctorDTO> getAllDoctors() {
-        return doctorRepository.findAll().stream().map(peopleMapper::doctorToDoctorDto).collect(Collectors.toList());
+        List<Doctor> doctorList = doctorRepository.findAll();
+        LOGGER.info("found " + doctorList.size() + " doctors");
+        return doctorList.stream().map(peopleMapper::doctorToDoctorDto).collect(Collectors.toList());
     }
 
     public DoctorDTO saveDoctor(DoctorDTO doctorDTO) {
         Doctor doctor = peopleMapper.doctorDtoToDoctor(doctorDTO);
-        return peopleMapper.doctorToDoctorDto(doctorRepository.save(doctor));
+        doctor = doctorRepository.save(doctor);
+        LOGGER.info(doctor + " saved");
+        return peopleMapper.doctorToDoctorDto(doctor);
     }
 }

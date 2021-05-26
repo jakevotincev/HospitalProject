@@ -14,7 +14,7 @@ import java.time.LocalTime;
 public class ScheduleDTO {
 
     private Integer id;
-    private DoctorDTO doctor;
+    private Integer doctorId;
     private DayOfWeek dayOfWeek;
     private LocalTime dayStart;
     private LocalTime dayEnd;

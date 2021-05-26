@@ -9,6 +9,7 @@ import ru.jakev.hospitalproject.entities.Doctor;
 import ru.jakev.hospitalproject.mappers.PeopleMapper;
 import ru.jakev.hospitalproject.repositories.DoctorRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +36,14 @@ public class DoctorService {
         Doctor doctor = peopleMapper.doctorDtoToDoctor(doctorDTO);
         doctor = doctorRepository.save(doctor);
         LOGGER.info(doctor + " saved");
+        return peopleMapper.doctorToDoctorDto(doctor);
+    }
+
+    //todo: add test
+    public DoctorDTO getDoctorById(Integer id){
+        Doctor doctor = doctorRepository.findById(id).orElseThrow(()->
+                new EntityNotFoundException("Not found entity Doctor(id = " + id + ")"));
+        LOGGER.info("found " + doctor);
         return peopleMapper.doctorToDoctorDto(doctor);
     }
 }

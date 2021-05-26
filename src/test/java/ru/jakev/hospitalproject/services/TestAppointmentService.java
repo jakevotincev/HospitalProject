@@ -152,7 +152,7 @@ public class TestAppointmentService {
         Mockito.when(appointmentRepository.save(Mockito.any(Appointment.class)))
                 .then(AdditionalAnswers.returnsFirstArg());
         Mockito.when(scheduleService.getScheduleByDoctorIdAndDayOfWeek(Mockito.anyInt(), Mockito.any(DayOfWeek.class))).thenReturn(
-                new ScheduleDTO(1, doctorDTO, DayOfWeek.MONDAY,
+                new ScheduleDTO(1, 1, DayOfWeek.MONDAY,
                         LocalTime.of(9, 0), LocalTime.of(18, 0), Duration.ofHours(2)));
         AppointmentDTO newAppointmentDTO = appointmentService.saveAppointment(appointmentDTO);
         appointmentDTO.setDuration(Duration.ofHours(2));
@@ -161,11 +161,9 @@ public class TestAppointmentService {
 
     @Test
     void testGetScheduleByDoctorIdAndDate() {
-        DoctorDTO doctorDTO = new DoctorDTO(1, "surname", "name", "middle_name",
-                DoctorSpeciality.DENTIST, 10);
         mockGetAppointmentsByDoctorIdAndDateBetween();
         Mockito.when(scheduleService.getScheduleByDoctorIdAndDayOfWeek(Mockito.anyInt(), Mockito.any(DayOfWeek.class)))
-                .thenReturn(new ScheduleDTO(1, doctorDTO, DayOfWeek.MONDAY,
+                .thenReturn(new ScheduleDTO(1, 1, DayOfWeek.MONDAY,
                         LocalTime.of(9, 0), LocalTime.of(18, 0), Duration.ofHours(2)));
         Map<LocalTime, Boolean> schedule = appointmentService.getScheduleByDoctorIdAndDate(1,
                 LocalDate.of(2021, 5, 17));
@@ -176,7 +174,7 @@ public class TestAppointmentService {
             else assertFalse(entry.getValue());
         }
         Mockito.when(scheduleService.getScheduleByDoctorIdAndDayOfWeek(Mockito.anyInt(), Mockito.any(DayOfWeek.class)))
-                .thenReturn(new ScheduleDTO(1, doctorDTO, DayOfWeek.MONDAY,
+                .thenReturn(new ScheduleDTO(1, 1, DayOfWeek.MONDAY,
                         LocalTime.of(12, 0), LocalTime.of(18, 0), Duration.ofHours(1)));
         schedule = appointmentService.getScheduleByDoctorIdAndDate(1,
                 LocalDate.of(2021, 5, 17));

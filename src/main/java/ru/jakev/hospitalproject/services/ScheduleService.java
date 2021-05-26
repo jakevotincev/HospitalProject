@@ -3,8 +3,11 @@ package ru.jakev.hospitalproject.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.jakev.hospitalproject.dto.DoctorDTO;
 import ru.jakev.hospitalproject.dto.ScheduleDTO;
 import ru.jakev.hospitalproject.entities.Schedule;
+import ru.jakev.hospitalproject.mappers.PeopleMapper;
 import ru.jakev.hospitalproject.mappers.ScheduleMapper;
 import ru.jakev.hospitalproject.repositories.ScheduleRepository;
 
@@ -23,16 +26,23 @@ public class ScheduleService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(ScheduleService.class);
     private final ScheduleRepository scheduleRepository;
+    private final DoctorService doctorService;
     private final ScheduleMapper scheduleMapper;
+    private final PeopleMapper peopleMapper;
 
-    public ScheduleService(ScheduleRepository scheduleRepository, ScheduleMapper scheduleMapper) {
+    public ScheduleService(ScheduleRepository scheduleRepository, DoctorService doctorService, ScheduleMapper scheduleMapper, PeopleMapper peopleMapper) {
         this.scheduleRepository = scheduleRepository;
+        this.doctorService = doctorService;
         this.scheduleMapper = scheduleMapper;
+        this.peopleMapper = peopleMapper;
     }
 
+    @Transactional
     public List<ScheduleDTO> getSchedulesByDoctorId(Integer id) {
-        List<ScheduleDTO> scheduleDTOList = scheduleRepository.findAllByDoctorId(id)
-                .map(scheduleMapper::scheduleToScheduleDto).collect(Collectors.toList());
+        List<ScheduleDTO> scheduleDTOList;
+        try (Stream<Schedule> scheduleStream = scheduleRepository.findAllByDoctorId(id)) {
+            scheduleDTOList = scheduleStream.map(scheduleMapper::scheduleToScheduleDto).collect(Collectors.toList());
+        }
         LOGGER.info("found " + scheduleDTOList.size() + " schedules, Doctor.id = " + id);
         return scheduleDTOList;
     }
@@ -45,4 +55,18 @@ public class ScheduleService {
         return scheduleMapper.scheduleToScheduleDto(schedule);
     }
 
+    //todo: add specific exception
+    //todo: change scheduleToScheduleDto method (set doctorId)
+    public ScheduleDTO saveSchedule(ScheduleDTO scheduleDTO) throws Exception {
+        Schedule schedule = scheduleMapper.scheduleDtoToSchedule(scheduleDTO);
+        if (scheduleDTO.getDoctorId() == null) throw new Exception();
+        else {
+            DoctorDTO doctorDTO = doctorService.getDoctorById(scheduleDTO.getDoctorId());
+            schedule.setDoctor(peopleMapper.doctorDtoToDoctor(doctorDTO));
+            schedule = scheduleRepository.save(schedule);
+            LOGGER.info(schedule + " saved");
+        }
+
+        return scheduleMapper.scheduleToScheduleDto(schedule);
+    }
 }

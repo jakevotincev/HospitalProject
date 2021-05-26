@@ -2,17 +2,22 @@ package ru.jakev.hospitalproject.services;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
+import org.mockito.AdditionalAnswers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.jakev.hospitalproject.dto.ScheduleDTO;
 import ru.jakev.hospitalproject.entities.Doctor;
 import ru.jakev.hospitalproject.entities.DoctorSpeciality;
 import ru.jakev.hospitalproject.entities.Schedule;
+import ru.jakev.hospitalproject.mappers.PeopleMapper;
 import ru.jakev.hospitalproject.mappers.ScheduleMapper;
 import ru.jakev.hospitalproject.repositories.ScheduleRepository;
 
@@ -28,13 +33,19 @@ public class TestScheduleService {
     ScheduleService scheduleService;
     @Mock
     ScheduleRepository scheduleRepository;
+    @Mock
+    DoctorService doctorService;
     List<Schedule> scheduleList = new ArrayList<>();
     ScheduleMapper scheduleMapper;
+    PeopleMapper peopleMapper;
+    Logger logger = LoggerFactory.getLogger(TestScheduleService.class);
+
 
     @BeforeEach
     void init() {
         scheduleMapper = Mappers.getMapper(ScheduleMapper.class);
-        scheduleService = new ScheduleService(scheduleRepository, scheduleMapper);
+        peopleMapper = Mappers.getMapper(PeopleMapper.class);
+        scheduleService = new ScheduleService(scheduleRepository, doctorService, scheduleMapper, peopleMapper);
         Doctor doctor = new Doctor(1, "surname", "name", "middle_name",
                 DoctorSpeciality.DENTIST, 10);
         Doctor doctor2 = new Doctor(2, "surname", "name", "middle_name",
@@ -102,6 +113,18 @@ public class TestScheduleService {
         assertEquals(scheduleMapper.scheduleToScheduleDto(scheduleList.get(2)), schedule);
 
         assertThrows(EntityNotFoundException.class, () -> scheduleService.getScheduleByDoctorIdAndDayOfWeek(1, DayOfWeek.SATURDAY));
+    }
+
+    @SneakyThrows
+    @Test
+    void testSaveSchedule(){
+        ScheduleDTO scheduleDTO = scheduleMapper.scheduleToScheduleDto(scheduleList.get(0));
+        scheduleDTO.setDoctorId(1);
+        Mockito.when(doctorService.getDoctorById(Mockito.anyInt()))
+                .thenReturn(peopleMapper.doctorToDoctorDto(scheduleList.get(0).getDoctor()));
+        Mockito.when(scheduleRepository.save(Mockito.any(Schedule.class))).then(AdditionalAnswers.returnsFirstArg());
+        ScheduleDTO newSchedule = scheduleService.saveSchedule(scheduleDTO);
+        assertEquals(scheduleDTO, newSchedule);
     }
 
 }

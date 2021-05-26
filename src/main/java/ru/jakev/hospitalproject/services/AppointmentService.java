@@ -39,6 +39,7 @@ public class AppointmentService {
                 .collect(Collectors.toList());
     }
 
+    //todo: включительно или нет, если нет то проблема
     public List<AppointmentDTO> getAppointmentsByDoctorIdAndDateBetween(Integer id, LocalDateTime from,
                                                                         LocalDateTime to) {
         return appointmentRepository.findAllByDoctorIdAndDateBetween(id, from, to)
@@ -52,13 +53,14 @@ public class AppointmentService {
         LocalDateTime dayEnd = date.atTime(schedule.getDayEnd());
         List<AppointmentDTO> appointments = appointmentRepository.findAllByDoctorIdAndDateBetween(id, dayStart, dayEnd)
                 .map(appointmentMapper::appointmentToAppointmentDto).collect(Collectors.toList());
-        for (; dayStart.isBefore(dayEnd); dayStart = dayStart.plusHours(1)) {
+        for (; dayStart.isBefore(dayEnd); dayStart = dayStart.plusHours(schedule.getDuration().toHours())) {
             boolean isTimeBusy = isAppointmentListContainsDate(appointments, dayStart);
             result.put(dayStart.toLocalTime(), isTimeBusy);
         }
         return result;
     }
 
+    //todo: add duration check?
     public AppointmentDTO saveAppointment(AppointmentDTO appointment) throws EntityNotFoundException {
         Integer doctorId = appointment.getDoctor().getId();
         DayOfWeek day = appointment.getDate().getDayOfWeek();

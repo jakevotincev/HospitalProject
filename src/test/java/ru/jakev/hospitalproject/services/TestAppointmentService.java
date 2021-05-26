@@ -18,14 +18,9 @@ import ru.jakev.hospitalproject.entities.*;
 import ru.jakev.hospitalproject.mappers.AppointmentMapper;
 import ru.jakev.hospitalproject.repositories.AppointmentRepository;
 
-import java.time.DayOfWeek;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.time.*;
+import java.util.*;
+import java.util.logging.Logger;
 
 @ExtendWith(MockitoExtension.class)
 public class TestAppointmentService {
@@ -119,8 +114,8 @@ public class TestAppointmentService {
         mockGetAppointmentsByDoctorIdAndDateBetween();
 
         List<AppointmentDTO> appointments = appointmentService.getAppointmentsByDoctorIdAndDateBetween(1,
-                LocalDateTime.of(2021, 5, 16, 8, 0),
-                LocalDateTime.of(2021, 5, 18, 8, 0));
+                LocalDateTime.of(2021, 5, 17, 9, 0),
+                LocalDateTime.of(2021, 5, 17, 18, 0));
         assertEquals(2, appointments.size());
 
         appointments = appointmentService.getAppointmentsByDoctorIdAndDateBetween(1,
@@ -162,6 +157,37 @@ public class TestAppointmentService {
         assertEquals(appointmentDTO, newAppointmentDTO);
     }
 
+    @Test
+    void testGetScheduleByDoctorIdAndDate() {
+        DoctorDTO doctorDTO = new DoctorDTO(1, "surname", "name", "middle_name",
+                DoctorSpeciality.DENTIST, 10);
+        mockGetAppointmentsByDoctorIdAndDateBetween();
+        Mockito.when(scheduleService.getScheduleByDoctorIdAndDayOfWeek(Mockito.anyInt(), Mockito.any(DayOfWeek.class)))
+                .thenReturn(new ScheduleDTO(1, doctorDTO, DayOfWeek.MONDAY,
+                        LocalTime.of(9, 0), LocalTime.of(18, 0), Duration.ofHours(2)));
+        Map<LocalTime, Boolean> schedule = appointmentService.getScheduleByDoctorIdAndDate(1,
+                LocalDate.of(2021, 5, 17));
+
+        for (Map.Entry<LocalTime, Boolean> entry : schedule.entrySet()) {
+            if (entry.getKey().equals(LocalTime.of(9, 0)) || entry.getKey().equals(LocalTime.of(15, 0)))
+                assertTrue(entry.getValue());
+            else assertFalse(entry.getValue());
+        }
+
+        Mockito.when(scheduleService.getScheduleByDoctorIdAndDayOfWeek(Mockito.anyInt(), Mockito.any(DayOfWeek.class)))
+                .thenReturn(new ScheduleDTO(1, doctorDTO, DayOfWeek.MONDAY,
+                        LocalTime.of(12, 0), LocalTime.of(18, 0), Duration.ofHours(1)));
+        schedule = appointmentService.getScheduleByDoctorIdAndDate(1,
+                LocalDate.of(2021, 5, 17));
+
+        for (Map.Entry<LocalTime, Boolean> entry : schedule.entrySet()) {
+            if (entry.getKey().equals(LocalTime.of(15, 0)))
+                assertTrue(entry.getValue());
+            else assertFalse(entry.getValue());
+        }
+
+    }
+
     private void mockGetAppointmentsByDoctorIdAndDateBetween() {
         Mockito.when(appointmentRepository.findAllByDoctorIdAndDateBetween(Mockito.anyInt(),
                 Mockito.any(LocalDateTime.class),
@@ -172,8 +198,8 @@ public class TestAppointmentService {
             LocalDateTime to = invocationOnMock.getArgument(2);
 
             if (id == 1) {
-                if (from.isBefore(LocalDateTime.of(2021, 5, 17, 9, 0)) &&
-                        to.isAfter(LocalDateTime.of(2021, 5, 17, 15, 0))) {
+                if (from.isBefore(LocalDateTime.of(2021, 5, 17, 9, 0, 1)) &&
+                        to.isAfter(LocalDateTime.of(2021, 5, 17, 15, 0, 1))) {
                     appointments = new ArrayList<>(Arrays.asList(appointmentList.get(0), appointmentList.get(1)));
                 } else if (from.isAfter(LocalDateTime.of(2021, 5, 17, 9, 0)) &&
                         from.isBefore(LocalDateTime.of(2021, 5, 17, 15, 0)) &&

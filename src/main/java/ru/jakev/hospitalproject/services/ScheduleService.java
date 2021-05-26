@@ -1,9 +1,7 @@
 package ru.jakev.hospitalproject.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.jakev.hospitalproject.dto.ScheduleDTO;
-import ru.jakev.hospitalproject.entities.Schedule;
 import ru.jakev.hospitalproject.mappers.ScheduleMapper;
 import ru.jakev.hospitalproject.repositories.ScheduleRepository;
 

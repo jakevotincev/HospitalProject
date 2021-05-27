@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.jakev.hospitalproject.dto.ScheduleDTO;
 import ru.jakev.hospitalproject.services.ScheduleService;
 
+import javax.persistence.EntityNotFoundException;
+import java.time.DayOfWeek;
 import java.util.List;
 
 @RestController
@@ -19,7 +21,6 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
     }
 
-    //it doesn't work
     @PostMapping("schedules")
     private ResponseEntity<?> create(@RequestBody ScheduleDTO schedule) {
         ScheduleDTO savedSchedule;
@@ -32,8 +33,19 @@ public class ScheduleController {
     }
 
     @GetMapping("doctors/{id}/schedules")
-    public ResponseEntity<?> getSchedulesByDoctorId(@PathVariable("id") Integer id) {
+    public ResponseEntity<?> getByDoctorId(@PathVariable("id") Integer id) {
         List<ScheduleDTO> scheduleList = scheduleService.getSchedulesByDoctorId(id);
         return new ResponseEntity<>(scheduleList, HttpStatus.OK);
+    }
+
+    @GetMapping("doctors/{id}/schedules/{day}")
+    public ResponseEntity<?> getByDoctorIdAndDayOfWeek(@PathVariable("id") Integer id, @PathVariable("day") DayOfWeek day) {
+        ScheduleDTO schedule;
+        try {
+            schedule = scheduleService.getScheduleByDoctorIdAndDayOfWeek(id, day);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>("Not found schedule Doctor.id: " + id + " day: " + day, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(schedule, HttpStatus.OK);
     }
 }

@@ -27,7 +27,7 @@ public class Schedule {
     @GeneratedValue
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "doctor_id")
     @NotNull
     private Doctor doctor;

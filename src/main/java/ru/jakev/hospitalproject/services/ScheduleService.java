@@ -56,7 +56,6 @@ public class ScheduleService {
     }
 
     //todo: add specific exception
-    //todo: change scheduleToScheduleDto method (set doctorId)
     public ScheduleDTO saveSchedule(ScheduleDTO scheduleDTO) throws Exception {
         Schedule schedule = scheduleMapper.scheduleDtoToSchedule(scheduleDTO);
         if (scheduleDTO.getDoctorId() == null) throw new Exception();

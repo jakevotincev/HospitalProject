@@ -14,7 +14,6 @@ import ru.jakev.hospitalproject.entities.Patient;
 import ru.jakev.hospitalproject.mappers.PeopleMapper;
 import ru.jakev.hospitalproject.repositories.PatientRepository;
 
-//todo: add testSave with null
 @ExtendWith(MockitoExtension.class)
 public class TestPatientService {
 

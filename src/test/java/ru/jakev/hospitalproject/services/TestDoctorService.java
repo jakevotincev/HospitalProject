@@ -18,7 +18,6 @@ import ru.jakev.hospitalproject.repositories.DoctorRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-//todo:add testSave with null
 @ExtendWith(MockitoExtension.class)
 public class TestDoctorService {
 

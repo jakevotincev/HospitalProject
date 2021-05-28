@@ -3,6 +3,7 @@ package ru.jakev.hospitalproject.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.jakev.hospitalproject.dto.AppointmentDTO;
 import ru.jakev.hospitalproject.dto.ScheduleDTO;
 import ru.jakev.hospitalproject.entities.Appointment;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class AppointmentService {
@@ -33,31 +35,39 @@ public class AppointmentService {
         this.appointmentMapper = appointmentMapper;
     }
 
+    @Transactional
     public List<AppointmentDTO> getAppointmentsByDoctorId(Integer id) {
-        List<AppointmentDTO> appointmentDTOList = appointmentRepository.findAllByDoctorId(id)
-                .map(appointmentMapper::appointmentToAppointmentDto).collect(Collectors.toList());
+        List<AppointmentDTO> appointmentDTOList;
+        try (Stream<Appointment> appointmentStream = appointmentRepository.findAllByDoctorId(id)) {
+            appointmentDTOList = appointmentStream.map(appointmentMapper::appointmentToAppointmentDto).collect(Collectors.toList());
+        }
         LOGGER.info("found " + appointmentDTOList.size() + " appointments, " + "Doctor.id = " + id);
         return appointmentDTOList;
     }
 
+    @Transactional
     public List<AppointmentDTO> getAppointmentsByPatientId(Integer id) {
-        List<AppointmentDTO> appointmentDTOList = appointmentRepository.findAllByPatientId(id)
-                .map(appointmentMapper::appointmentToAppointmentDto).collect(Collectors.toList());
+        List<AppointmentDTO> appointmentDTOList;
+        try (Stream<Appointment> appointmentStream = appointmentRepository.findAllByPatientId(id)) {
+            appointmentDTOList = appointmentStream.map(appointmentMapper::appointmentToAppointmentDto).collect(Collectors.toList());
+        }
         LOGGER.info("found " + appointmentDTOList.size() + " appointments, " + "Patient.id = " + id);
         return appointmentDTOList;
     }
 
     //todo: включительно или нет, если нет то проблема
+    @Transactional
     public List<AppointmentDTO> getAppointmentsByDoctorIdAndDateBetween(Integer id, LocalDateTime from, LocalDateTime to) {
-        List<AppointmentDTO> appointmentDTOList = appointmentRepository.findAllByDoctorIdAndDateBetween(id, from, to)
-                .map(appointmentMapper::appointmentToAppointmentDto).collect(Collectors.toList());
+        List<AppointmentDTO> appointmentDTOList;
+        try (Stream<Appointment> appointmentStream = appointmentRepository.findAllByDoctorIdAndDateBetween(id, from, to)){
+            appointmentDTOList = appointmentStream.map(appointmentMapper::appointmentToAppointmentDto).collect(Collectors.toList());
+        }
         LOGGER.info("found " + appointmentDTOList.size() + " appointments, " + "Patient.id = " + id +
                 " between " + from.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + " and " +
                 to.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         return appointmentDTOList;
     }
 
-    //todo: ask about throws
     public Map<LocalTime, Boolean> getScheduleByDoctorIdAndDate(Integer id, LocalDate date) throws EntityNotFoundException {
         ScheduleDTO schedule = scheduleService.getScheduleByDoctorIdAndDayOfWeek(id, date.getDayOfWeek());
         Map<LocalTime, Boolean> result = new HashMap<>();
@@ -74,6 +84,7 @@ public class AppointmentService {
     }
 
     //todo: add duration check?
+    //todo: убрать баг если сохраняешь запись с неверными данными врача кроме id то метод вернет неверные данные врача
     public AppointmentDTO saveAppointment(AppointmentDTO appointmentDTO) throws EntityNotFoundException {
         Integer doctorId = appointmentDTO.getDoctor().getId();
         DayOfWeek day = appointmentDTO.getDate().getDayOfWeek();

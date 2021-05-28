@@ -19,18 +19,19 @@ import java.time.LocalDateTime;
         typeClass = PostgreSQLIntervalType.class,
         defaultForType = Duration.class
 )
+//todo: добавить комментарий
 public class Appointment {
 
     @Id
     @GeneratedValue
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "doctor_id")
     @NotNull
     private Doctor doctor;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "patient_id")
     @NotNull
     private Patient patient;

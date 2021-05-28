@@ -1,5 +1,6 @@
 package ru.jakev.hospitalproject.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class AppointmentDTO {
     private Integer id;
     private DoctorDTO doctor;
     private PatientDTO patient;
+    @JsonFormat(pattern = "dd_MM_yyyy HH:mm:ss")
     private LocalDateTime date;
     private Duration duration;
 

@@ -29,7 +29,7 @@ public class ScheduleController {
         } catch (Exception e) {
             return new ResponseEntity<>("Invalid doctor id: " + schedule.getDoctorId(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(savedSchedule, HttpStatus.OK);
+        return new ResponseEntity<>(savedSchedule, HttpStatus.CREATED);
     }
 
     @GetMapping("doctors/{id}/schedules")

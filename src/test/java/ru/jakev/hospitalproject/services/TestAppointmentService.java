@@ -18,6 +18,7 @@ import ru.jakev.hospitalproject.entities.DoctorSpeciality;
 import ru.jakev.hospitalproject.entities.Patient;
 import ru.jakev.hospitalproject.mappers.AppointmentMapper;
 import ru.jakev.hospitalproject.repositories.AppointmentRepository;
+import ru.jakev.hospitalproject.services.impl.AppointmentServiceImpl;
 
 import java.time.*;
 import java.util.*;
@@ -40,7 +41,7 @@ public class TestAppointmentService {
     @BeforeEach
     void init() {
         appointmentMapper = Mappers.getMapper(AppointmentMapper.class);
-        appointmentService = new AppointmentService(appointmentRepository, scheduleService, appointmentMapper);
+        appointmentService = new AppointmentServiceImpl(appointmentRepository, scheduleService, appointmentMapper);
         appointmentList = new ArrayList<>();
         Doctor doctor1 = new Doctor(1, "surname", "name", "middle_name",
                 DoctorSpeciality.DENTIST, 10);

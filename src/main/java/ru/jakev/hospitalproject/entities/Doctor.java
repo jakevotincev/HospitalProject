@@ -33,4 +33,15 @@ public class Doctor {
 
     private Integer cabinet;
 
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "id=" + id +
+                ", surname='" + surname + '\'' +
+                ", name='" + name + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", speciality=" + speciality.getName() +
+                ", cabinet=" + cabinet +
+                '}';
+    }
 }

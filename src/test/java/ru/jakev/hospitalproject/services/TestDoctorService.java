@@ -14,6 +14,7 @@ import ru.jakev.hospitalproject.entities.Doctor;
 import ru.jakev.hospitalproject.entities.DoctorSpeciality;
 import ru.jakev.hospitalproject.mappers.PeopleMapper;
 import ru.jakev.hospitalproject.repositories.DoctorRepository;
+import ru.jakev.hospitalproject.services.impl.DoctorServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class TestDoctorService {
     @BeforeEach
     void init(){
         PeopleMapper peopleMapper = Mappers.getMapper(PeopleMapper.class);
-        doctorService = new DoctorService(doctorRepository, peopleMapper);
+        doctorService = new DoctorServiceImpl(doctorRepository, peopleMapper);
     }
 
     @Test

@@ -20,6 +20,7 @@ import ru.jakev.hospitalproject.entities.Schedule;
 import ru.jakev.hospitalproject.mappers.PeopleMapper;
 import ru.jakev.hospitalproject.mappers.ScheduleMapper;
 import ru.jakev.hospitalproject.repositories.ScheduleRepository;
+import ru.jakev.hospitalproject.services.impl.ScheduleServiceImpl;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.DayOfWeek;
@@ -38,14 +39,14 @@ public class TestScheduleService {
     List<Schedule> scheduleList = new ArrayList<>();
     ScheduleMapper scheduleMapper;
     PeopleMapper peopleMapper;
-    Logger logger = LoggerFactory.getLogger(TestScheduleService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(TestScheduleService.class);
 
 
     @BeforeEach
     void init() {
         scheduleMapper = Mappers.getMapper(ScheduleMapper.class);
         peopleMapper = Mappers.getMapper(PeopleMapper.class);
-        scheduleService = new ScheduleService(scheduleRepository, doctorService, scheduleMapper, peopleMapper);
+        scheduleService = new ScheduleServiceImpl(scheduleRepository, doctorService, scheduleMapper, peopleMapper);
         Doctor doctor = new Doctor(1, "surname", "name", "middle_name",
                 DoctorSpeciality.DENTIST, 10);
         Doctor doctor2 = new Doctor(2, "surname", "name", "middle_name",

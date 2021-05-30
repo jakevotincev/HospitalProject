@@ -1,5 +1,6 @@
 package ru.jakev.hospitalproject.dto;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,4 +18,15 @@ public class DoctorDTO {
     private DoctorSpeciality speciality;
     private Integer cabinet;
 
+    @Override
+    public String toString() {
+        return "DoctorDTO{" +
+                "id=" + id +
+                ", surname='" + surname + '\'' +
+                ", name='" + name + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", speciality=" + speciality.getName() +
+                ", cabinet=" + cabinet +
+                '}';
+    }
 }

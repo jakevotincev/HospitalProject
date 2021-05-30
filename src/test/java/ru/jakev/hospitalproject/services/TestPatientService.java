@@ -13,6 +13,7 @@ import ru.jakev.hospitalproject.dto.PatientDTO;
 import ru.jakev.hospitalproject.entities.Patient;
 import ru.jakev.hospitalproject.mappers.PeopleMapper;
 import ru.jakev.hospitalproject.repositories.PatientRepository;
+import ru.jakev.hospitalproject.services.impl.PatientServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class TestPatientService {
@@ -23,7 +24,7 @@ public class TestPatientService {
     @BeforeEach
     void init(){
         PeopleMapper mapper = Mappers.getMapper(PeopleMapper.class);
-        patientService = new PatientService(patientRepository, mapper);
+        patientService = new PatientServiceImpl(patientRepository, mapper);
     }
 
     @Test

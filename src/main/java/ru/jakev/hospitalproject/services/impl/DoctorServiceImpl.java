@@ -49,4 +49,11 @@ public class DoctorServiceImpl implements DoctorService {
         LOGGER.info("found " + doctor);
         return peopleMapper.doctorToDoctorDto(doctor);
     }
+
+    @Override
+    public List<DoctorDTO> getAllByHospitalId(Integer id) {
+        List<Doctor> doctors = doctorRepository.findAllByHospitalId(id);
+        LOGGER.info("found " + doctors.size() + " doctors, hospital.id=" + id);
+        return doctors.stream().map(peopleMapper::doctorToDoctorDto).collect(Collectors.toList());
+    }
 }

@@ -13,6 +13,5 @@ public interface ScheduleService {
 
     ScheduleDTO getScheduleByDoctorIdAndDayOfWeek(Integer id, DayOfWeek day) throws EntityNotFoundException;
 
-
     ScheduleDTO saveSchedule(ScheduleDTO scheduleDTO) throws Exception;
 }

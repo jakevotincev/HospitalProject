@@ -50,11 +50,11 @@ public class TestAppointmentService {
         Patient patient1 = new Patient(1, "surname", "name", "middle_name", 20);
         Patient patient2 = new Patient(2, "surname", "name", "middle_name", 20);
         appointmentList.add(new Appointment(1, doctor1, patient1, LocalDateTime.of(2021, 5,
-                17, 9, 0), Duration.ofHours(1), null));
+                17, 9, 0), Duration.ofHours(1), null, null));
         appointmentList.add(new Appointment(1, doctor1, patient2, LocalDateTime.of(2021, 5,
-                17, 15, 0), Duration.ofHours(1), null));
+                17, 15, 0), Duration.ofHours(1), null, null));
         appointmentList.add(new Appointment(1, doctor2, patient2, LocalDateTime.of(2021, 5,
-                17, 10, 0), Duration.ofHours(1), null));
+                17, 10, 0), Duration.ofHours(1), null, null));
     }
 
     @Test
@@ -149,7 +149,7 @@ public class TestAppointmentService {
                 DoctorSpeciality.DENTIST, null);
         PatientDTO patientDTO = new PatientDTO(1, "surname", "name", "middle_name", 20);
         AppointmentDTO appointmentDTO = new AppointmentDTO(1, doctorDTO, patientDTO,
-                LocalDateTime.of(2021, 5, 24, 9, 0), null);
+                LocalDateTime.of(2021, 5, 24, 9, 0), null, null);
         Mockito.when(appointmentRepository.save(Mockito.any(Appointment.class)))
                 .then(AdditionalAnswers.returnsFirstArg());
         Mockito.when(scheduleService.getScheduleByDoctorIdAndDayOfWeek(Mockito.anyInt(), Mockito.any(DayOfWeek.class))).thenReturn(
@@ -176,7 +176,7 @@ public class TestAppointmentService {
         }
         Mockito.when(scheduleService.getScheduleByDoctorIdAndDayOfWeek(Mockito.anyInt(), Mockito.any(DayOfWeek.class)))
                 .thenReturn(new ScheduleDTO(1, 1, DayOfWeek.MONDAY,
-                        LocalTime.of(12, 0), LocalTime.of(18, 0), Duration.ofHours(1),null));
+                        LocalTime.of(12, 0), LocalTime.of(18, 0), Duration.ofHours(1), null));
         schedule = appointmentService.getScheduleByDoctorIdAndDate(1,
                 LocalDate.of(2021, 5, 17));
 

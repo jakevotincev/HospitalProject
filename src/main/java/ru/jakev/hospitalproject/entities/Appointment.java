@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
         typeClass = PostgreSQLIntervalType.class,
         defaultForType = Duration.class
 )
-//todo: добавить комментарий
 public class Appointment {
 
     @Id
@@ -49,5 +48,7 @@ public class Appointment {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "hospital_id")
     private Hospital hospital;
+
+    private String comment;
 
 }

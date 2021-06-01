@@ -52,13 +52,14 @@ public class TestScheduleService {
         Doctor doctor2 = new Doctor(2, "surname", "name", "middle_name",
                 DoctorSpeciality.DENTIST, null);
         scheduleList.add(new Schedule(1, doctor, DayOfWeek.MONDAY, LocalTime.of(9, 0),
-                LocalTime.of(18, 0), Duration.ofHours(1),null));
+                LocalTime.of(18, 0), Duration.ofHours(1), null));
         scheduleList.add(new Schedule(2, doctor, DayOfWeek.TUESDAY, LocalTime.of(9, 0),
-                LocalTime.of(18, 0), Duration.ofHours(1),null));
+                LocalTime.of(18, 0), Duration.ofHours(1), null));
         scheduleList.add(new Schedule(3, doctor2, DayOfWeek.MONDAY, LocalTime.of(9, 0),
-                LocalTime.of(18, 0), Duration.ofHours(1),null));
+                LocalTime.of(18, 0), Duration.ofHours(1), null));
     }
 
+    @SneakyThrows
     @Test
     void testGetSchedulesByDoctorId() {
         Mockito.when(scheduleRepository.findAllByDoctorId(Mockito.anyInt())).thenAnswer(invocationOnMock -> {
@@ -118,7 +119,7 @@ public class TestScheduleService {
 
     @SneakyThrows
     @Test
-    void testSaveSchedule(){
+    void testSaveSchedule() {
         ScheduleDTO scheduleDTO = scheduleMapper.scheduleToScheduleDto(scheduleList.get(0));
         scheduleDTO.setDoctorId(1);
         Mockito.when(doctorService.getDoctorById(Mockito.anyInt()))

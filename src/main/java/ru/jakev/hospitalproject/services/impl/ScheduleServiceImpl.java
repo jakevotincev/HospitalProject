@@ -38,9 +38,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         this.scheduleMapper = scheduleMapper;
         this.peopleMapper = peopleMapper;
     }
+
     @Override
     @Transactional
-    public List<ScheduleDTO> getSchedulesByDoctorId(Integer id) {
+    public List<ScheduleDTO> getSchedulesByDoctorId(Integer id){
         List<ScheduleDTO> scheduleDTOList;
         try (Stream<Schedule> scheduleStream = scheduleRepository.findAllByDoctorId(id)) {
             scheduleDTOList = scheduleStream.map(scheduleMapper::scheduleToScheduleDto).collect(Collectors.toList());
@@ -59,6 +60,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     //todo: add specific exception
+    //todo: add exception if schedules and extra schedules for one day bigger than 1
     @Override
     public ScheduleDTO saveSchedule(ScheduleDTO scheduleDTO) throws Exception {
         Schedule schedule = scheduleMapper.scheduleDtoToSchedule(scheduleDTO);

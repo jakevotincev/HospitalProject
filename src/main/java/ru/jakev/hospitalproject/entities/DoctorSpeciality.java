@@ -2,7 +2,6 @@ package ru.jakev.hospitalproject.entities;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-//todo: ask about it
 public enum DoctorSpeciality {
     DENTIST("Дантист"), SURGEON("Хирург"), PEDIATRICIAN("Педиатр"),
     OPHTHALMOLOGIST("Офтальмолог"), UROLOGIST("Уролог"), GYNECOLOGIST("Гинеколог");

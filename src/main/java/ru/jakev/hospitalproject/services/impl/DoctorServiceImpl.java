@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class DoctorServiceImpl implements DoctorService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(DoctorService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(DoctorServiceImpl.class);
     private final DoctorRepository doctorRepository;
     private final PeopleMapper peopleMapper;
 

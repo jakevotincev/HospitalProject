@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(ScheduleService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(ScheduleServiceImpl.class);
     private final ScheduleRepository scheduleRepository;
     private final DoctorService doctorService;
     private final ScheduleMapper scheduleMapper;

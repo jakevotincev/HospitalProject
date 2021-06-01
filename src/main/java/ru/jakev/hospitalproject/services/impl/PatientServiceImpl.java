@@ -14,7 +14,7 @@ public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
     private final PeopleMapper mapper;
-    private final static Logger LOGGER = LoggerFactory.getLogger(PatientService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(PatientServiceImpl.class);
 
     public PatientServiceImpl(PatientRepository patientRepository, PeopleMapper mapper) {
         this.patientRepository = patientRepository;

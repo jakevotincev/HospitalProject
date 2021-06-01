@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(AppointmentService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(AppointmentServiceImpl.class);
     private final AppointmentRepository appointmentRepository;
     private final ScheduleService scheduleService;
     private final AppointmentMapper appointmentMapper;

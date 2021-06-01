@@ -19,8 +19,9 @@ public class AppointmentDTO {
     @JsonFormat(pattern = "dd_MM_yyyy HH:mm:ss")
     private LocalDateTime date;
     private Duration duration;
+    private HospitalDTO hospitalDTO;
 
-    public AppointmentDTO(Integer id, DoctorDTO doctor, PatientDTO patient, LocalDateTime date) {
+    public AppointmentDTO(Integer id, DoctorDTO doctor, PatientDTO patient, LocalDateTime date, HospitalDTO hospitalDTO) {
         this.id = id;
         this.doctor = doctor;
         this.patient = patient;

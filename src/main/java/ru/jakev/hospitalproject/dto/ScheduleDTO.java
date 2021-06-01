@@ -19,5 +19,6 @@ public class ScheduleDTO {
     private LocalTime dayStart;
     private LocalTime dayEnd;
     private Duration duration;
+    private Integer hospitalId;
 
 }

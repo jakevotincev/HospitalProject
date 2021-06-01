@@ -49,4 +49,9 @@ public class Schedule {
     @Column(name = "appointment_duration", columnDefinition = "INTERVAL")
     private Duration duration;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
+
 }

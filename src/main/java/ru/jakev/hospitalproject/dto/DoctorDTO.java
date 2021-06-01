@@ -1,10 +1,11 @@
 package ru.jakev.hospitalproject.dto;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.jakev.hospitalproject.entities.DoctorSpeciality;
+
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -16,7 +17,7 @@ public class DoctorDTO {
     private String name;
     private String middleName;
     private DoctorSpeciality speciality;
-    private Integer cabinet;
+    private Set<HospitalDTO> hospitals;
 
     @Override
     public String toString() {
@@ -26,7 +27,7 @@ public class DoctorDTO {
                 ", name='" + name + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", speciality=" + speciality.getName() +
-                ", cabinet=" + cabinet +
+                ", hospitals=" + hospitals +
                 '}';
     }
 }

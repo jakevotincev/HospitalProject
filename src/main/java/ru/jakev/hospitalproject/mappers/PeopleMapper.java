@@ -6,7 +6,7 @@ import ru.jakev.hospitalproject.dto.PatientDTO;
 import ru.jakev.hospitalproject.entities.Doctor;
 import ru.jakev.hospitalproject.entities.Patient;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {HospitalMapper.class})
 public interface PeopleMapper {
 
     PatientDTO patientToPatientDto(Patient patient);

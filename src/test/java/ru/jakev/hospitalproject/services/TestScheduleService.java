@@ -48,15 +48,15 @@ public class TestScheduleService {
         peopleMapper = Mappers.getMapper(PeopleMapper.class);
         scheduleService = new ScheduleServiceImpl(scheduleRepository, doctorService, scheduleMapper, peopleMapper);
         Doctor doctor = new Doctor(1, "surname", "name", "middle_name",
-                DoctorSpeciality.DENTIST, 10);
+                DoctorSpeciality.DENTIST, null);
         Doctor doctor2 = new Doctor(2, "surname", "name", "middle_name",
-                DoctorSpeciality.DENTIST, 10);
+                DoctorSpeciality.DENTIST, null);
         scheduleList.add(new Schedule(1, doctor, DayOfWeek.MONDAY, LocalTime.of(9, 0),
-                LocalTime.of(18, 0), Duration.ofHours(1)));
+                LocalTime.of(18, 0), Duration.ofHours(1),null));
         scheduleList.add(new Schedule(2, doctor, DayOfWeek.TUESDAY, LocalTime.of(9, 0),
-                LocalTime.of(18, 0), Duration.ofHours(1)));
+                LocalTime.of(18, 0), Duration.ofHours(1),null));
         scheduleList.add(new Schedule(3, doctor2, DayOfWeek.MONDAY, LocalTime.of(9, 0),
-                LocalTime.of(18, 0), Duration.ofHours(1)));
+                LocalTime.of(18, 0), Duration.ofHours(1),null));
     }
 
     @Test

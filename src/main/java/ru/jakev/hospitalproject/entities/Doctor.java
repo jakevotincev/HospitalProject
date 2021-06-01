@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Entity
 @Data
@@ -31,7 +32,9 @@ public class Doctor {
     @Enumerated(EnumType.STRING)
     private DoctorSpeciality speciality;
 
-    private Integer cabinet;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Hospital> hospitals;
+
 
     @Override
     public String toString() {
@@ -41,7 +44,6 @@ public class Doctor {
                 ", name='" + name + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", speciality=" + speciality.getName() +
-                ", cabinet=" + cabinet +
                 '}';
     }
 }

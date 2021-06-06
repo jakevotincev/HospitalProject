@@ -1,6 +1,6 @@
 package ru.jakev.hospitalproject.services;
 
-import ru.jakev.hospitalproject.dto.ScheduleDTO;
+import ru.jakev.hospitalproject.dto.PermanentScheduleDTO;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.DayOfWeek;
@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface ScheduleService {
 
-    List<ScheduleDTO> getSchedulesByDoctorId(Integer id);
+    List<PermanentScheduleDTO> getSchedulesByDoctorId(Integer id);
 
-    ScheduleDTO getScheduleByDoctorIdAndDayOfWeek(Integer id, DayOfWeek day) throws EntityNotFoundException;
+    PermanentScheduleDTO getScheduleByDoctorIdAndDayOfWeek(Integer id, DayOfWeek day) throws EntityNotFoundException;
 
-    ScheduleDTO saveSchedule(ScheduleDTO scheduleDTO) throws Exception;
+    PermanentScheduleDTO saveSchedule(PermanentScheduleDTO permanentScheduleDTO) throws Exception;
 }

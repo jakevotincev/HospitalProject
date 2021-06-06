@@ -5,11 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jakev.hospitalproject.dto.DoctorDTO;
-import ru.jakev.hospitalproject.dto.ScheduleDTO;
-import ru.jakev.hospitalproject.entities.Schedule;
+import ru.jakev.hospitalproject.dto.PermanentScheduleDTO;
+import ru.jakev.hospitalproject.entities.PermanentSchedule;
 import ru.jakev.hospitalproject.mappers.PeopleMapper;
 import ru.jakev.hospitalproject.mappers.ScheduleMapper;
-import ru.jakev.hospitalproject.repositories.ScheduleRepository;
+import ru.jakev.hospitalproject.repositories.PermanentScheduleRepository;
 import ru.jakev.hospitalproject.services.DoctorService;
 import ru.jakev.hospitalproject.services.ScheduleService;
 
@@ -27,13 +27,13 @@ import java.util.stream.Stream;
 public class ScheduleServiceImpl implements ScheduleService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ScheduleServiceImpl.class);
-    private final ScheduleRepository scheduleRepository;
+    private final PermanentScheduleRepository permanentScheduleRepository;
     private final DoctorService doctorService;
     private final ScheduleMapper scheduleMapper;
     private final PeopleMapper peopleMapper;
 
-    public ScheduleServiceImpl(ScheduleRepository scheduleRepository, DoctorService doctorService, ScheduleMapper scheduleMapper, PeopleMapper peopleMapper) {
-        this.scheduleRepository = scheduleRepository;
+    public ScheduleServiceImpl(PermanentScheduleRepository permanentScheduleRepository, DoctorService doctorService, ScheduleMapper scheduleMapper, PeopleMapper peopleMapper) {
+        this.permanentScheduleRepository = permanentScheduleRepository;
         this.doctorService = doctorService;
         this.scheduleMapper = scheduleMapper;
         this.peopleMapper = peopleMapper;
@@ -41,18 +41,18 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
-    public List<ScheduleDTO> getSchedulesByDoctorId(Integer id){
-        List<ScheduleDTO> scheduleDTOList;
-        try (Stream<Schedule> scheduleStream = scheduleRepository.findAllByDoctorId(id)) {
-            scheduleDTOList = scheduleStream.map(scheduleMapper::scheduleToScheduleDto).collect(Collectors.toList());
+    public List<PermanentScheduleDTO> getSchedulesByDoctorId(Integer id){
+        List<PermanentScheduleDTO> permanentScheduleDTOList;
+        try (Stream<PermanentSchedule> scheduleStream = permanentScheduleRepository.findAllByDoctorId(id)) {
+            permanentScheduleDTOList = scheduleStream.map(scheduleMapper::scheduleToScheduleDto).collect(Collectors.toList());
         }
-        LOGGER.info("found " + scheduleDTOList.size() + " schedules, Doctor.id = " + id);
-        return scheduleDTOList;
+        LOGGER.info("found " + permanentScheduleDTOList.size() + " schedules, Doctor.id = " + id);
+        return permanentScheduleDTOList;
     }
 
     @Override
-    public ScheduleDTO getScheduleByDoctorIdAndDayOfWeek(Integer id, DayOfWeek day) throws EntityNotFoundException {
-        Schedule schedule = scheduleRepository.findByDoctorIdAndDayOfWeek(id, day).orElseThrow(() ->
+    public PermanentScheduleDTO getScheduleByDoctorIdAndDayOfWeek(Integer id, DayOfWeek day) throws EntityNotFoundException {
+        PermanentSchedule schedule = permanentScheduleRepository.findByDoctorIdAndDayOfWeek(id, day).orElseThrow(() ->
                 new EntityNotFoundException("Entity schedule {doctor_id: " + id + ", day: "
                         + day.getDisplayName(TextStyle.FULL, Locale.ENGLISH) + "} not found"));
         LOGGER.info("found " + schedule);
@@ -62,13 +62,13 @@ public class ScheduleServiceImpl implements ScheduleService {
     //todo: add specific exception
     //todo: add exception if schedules and extra schedules for one day bigger than 1
     @Override
-    public ScheduleDTO saveSchedule(ScheduleDTO scheduleDTO) throws Exception {
-        Schedule schedule = scheduleMapper.scheduleDtoToSchedule(scheduleDTO);
-        if (scheduleDTO.getDoctorId() == null) throw new Exception();
+    public PermanentScheduleDTO saveSchedule(PermanentScheduleDTO permanentScheduleDTO) throws Exception {
+        PermanentSchedule schedule = scheduleMapper.scheduleDtoToSchedule(permanentScheduleDTO);
+        if (permanentScheduleDTO.getDoctorId() == null) throw new Exception();
         else {
-            DoctorDTO doctorDTO = doctorService.getDoctorById(scheduleDTO.getDoctorId());
+            DoctorDTO doctorDTO = doctorService.getDoctorById(permanentScheduleDTO.getDoctorId());
             schedule.setDoctor(peopleMapper.doctorDtoToDoctor(doctorDTO));
-            schedule = scheduleRepository.save(schedule);
+            schedule = permanentScheduleRepository.save(schedule);
             LOGGER.info(schedule + " saved");
         }
 

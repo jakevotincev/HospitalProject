@@ -11,7 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.jakev.hospitalproject.dto.AppointmentDTO;
 import ru.jakev.hospitalproject.dto.DoctorDTO;
 import ru.jakev.hospitalproject.dto.PatientDTO;
-import ru.jakev.hospitalproject.dto.ScheduleDTO;
+import ru.jakev.hospitalproject.dto.PermanentScheduleDTO;
 import ru.jakev.hospitalproject.entities.Appointment;
 import ru.jakev.hospitalproject.entities.Doctor;
 import ru.jakev.hospitalproject.entities.DoctorSpeciality;
@@ -153,7 +153,7 @@ public class TestAppointmentService {
         Mockito.when(appointmentRepository.save(Mockito.any(Appointment.class)))
                 .then(AdditionalAnswers.returnsFirstArg());
         Mockito.when(scheduleService.getScheduleByDoctorIdAndDayOfWeek(Mockito.anyInt(), Mockito.any(DayOfWeek.class))).thenReturn(
-                new ScheduleDTO(1, 1, DayOfWeek.MONDAY,
+                new PermanentScheduleDTO(1, 1, DayOfWeek.MONDAY,
                         LocalTime.of(9, 0), LocalTime.of(18, 0), Duration.ofHours(2), null));
         AppointmentDTO newAppointmentDTO = appointmentService.saveAppointment(appointmentDTO);
         appointmentDTO.setDuration(Duration.ofHours(2));
@@ -164,7 +164,7 @@ public class TestAppointmentService {
     void testGetScheduleByDoctorIdAndDate() {
         mockGetAppointmentsByDoctorIdAndDateBetween();
         Mockito.when(scheduleService.getScheduleByDoctorIdAndDayOfWeek(Mockito.anyInt(), Mockito.any(DayOfWeek.class)))
-                .thenReturn(new ScheduleDTO(1, 1, DayOfWeek.MONDAY,
+                .thenReturn(new PermanentScheduleDTO(1, 1, DayOfWeek.MONDAY,
                         LocalTime.of(9, 0), LocalTime.of(18, 0), Duration.ofHours(2), null));
         Map<LocalTime, Boolean> schedule = appointmentService.getScheduleByDoctorIdAndDate(1,
                 LocalDate.of(2021, 5, 17));
@@ -175,7 +175,7 @@ public class TestAppointmentService {
             else assertFalse(entry.getValue());
         }
         Mockito.when(scheduleService.getScheduleByDoctorIdAndDayOfWeek(Mockito.anyInt(), Mockito.any(DayOfWeek.class)))
-                .thenReturn(new ScheduleDTO(1, 1, DayOfWeek.MONDAY,
+                .thenReturn(new PermanentScheduleDTO(1, 1, DayOfWeek.MONDAY,
                         LocalTime.of(12, 0), LocalTime.of(18, 0), Duration.ofHours(1), null));
         schedule = appointmentService.getScheduleByDoctorIdAndDate(1,
                 LocalDate.of(2021, 5, 17));

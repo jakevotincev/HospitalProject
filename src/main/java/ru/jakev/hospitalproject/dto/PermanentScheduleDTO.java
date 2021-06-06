@@ -11,7 +11,7 @@ import java.time.LocalTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScheduleDTO {
+public class PermanentScheduleDTO {
 
     private Integer id;
     private Integer doctorId;

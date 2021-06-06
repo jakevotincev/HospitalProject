@@ -9,7 +9,6 @@ import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
 
@@ -17,11 +16,13 @@ import java.time.LocalTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type")
 @TypeDef(
         typeClass = PostgreSQLIntervalType.class,
         defaultForType = Duration.class
 )
-public class Schedule {
+public abstract class Schedule {
 
     @Id
     @GeneratedValue
@@ -31,11 +32,6 @@ public class Schedule {
     @JoinColumn(name = "doctor_id")
     @NotNull
     private Doctor doctor;
-
-    @Column(name = "day_of_week")
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private DayOfWeek dayOfWeek;
 
     @NotNull
     @Column(name = "day_start", columnDefinition = "TIME")

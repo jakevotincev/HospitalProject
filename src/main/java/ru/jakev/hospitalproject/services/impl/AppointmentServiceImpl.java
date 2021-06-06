@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jakev.hospitalproject.dto.AppointmentDTO;
-import ru.jakev.hospitalproject.dto.ScheduleDTO;
+import ru.jakev.hospitalproject.dto.PermanentScheduleDTO;
 import ru.jakev.hospitalproject.entities.Appointment;
 import ru.jakev.hospitalproject.mappers.AppointmentMapper;
 import ru.jakev.hospitalproject.repositories.AppointmentRepository;
@@ -75,7 +75,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Map<LocalTime, Boolean> getScheduleByDoctorIdAndDate(Integer id, LocalDate date) throws EntityNotFoundException {
-        ScheduleDTO schedule = scheduleService.getScheduleByDoctorIdAndDayOfWeek(id, date.getDayOfWeek());
+        PermanentScheduleDTO schedule = scheduleService.getScheduleByDoctorIdAndDayOfWeek(id, date.getDayOfWeek());
         Map<LocalTime, Boolean> result = new HashMap<>();
         LocalDateTime dayStart = date.atTime(schedule.getDayStart());
         LocalDateTime dayEnd = date.atTime(schedule.getDayEnd());

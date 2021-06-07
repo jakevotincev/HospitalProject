@@ -1,5 +1,6 @@
 package ru.jakev.hospitalproject.services;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.jakev.hospitalproject.dto.AppointmentDTO;
 
 import javax.persistence.EntityNotFoundException;
@@ -12,13 +13,17 @@ import java.util.Map;
 
 public interface AppointmentService {
 
-    List<AppointmentDTO> getAppointmentsByDoctorId(Integer id);
+    @Transactional
+    List<AppointmentDTO> getAppointmentsByDoctorIdAndHospitalId(Integer doctorId, Integer hospitalId);
 
-    List<AppointmentDTO> getAppointmentsByPatientId(Integer id);
+    @Transactional
+    List<AppointmentDTO> getAppointmentsByPatientId(Integer patientId);
 
-    List<AppointmentDTO> getAppointmentsByDoctorIdAndDateBetween(Integer id, LocalDateTime from, LocalDateTime to);
+    //todo: включительно или нет, если нет то проблема
+    @Transactional
+    List<AppointmentDTO> getAppointmentsByDoctorIdAndHospitalIdAndDateBetween(Integer doctorId, Integer hospitalId, LocalDateTime from, LocalDateTime to);
 
-    Map<LocalTime, Boolean> getScheduleByDoctorIdAndDate(Integer id, LocalDate date) throws EntityNotFoundException;
+    Map<LocalTime, Boolean> getScheduleByDoctorIdAndDateAndHospitalId(Integer id, LocalDate date, Integer hospitalId) throws EntityNotFoundException;
 
     AppointmentDTO saveAppointment(AppointmentDTO appointmentDTO) throws EntityNotFoundException;
 

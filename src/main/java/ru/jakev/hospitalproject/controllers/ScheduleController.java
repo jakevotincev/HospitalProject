@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.jakev.hospitalproject.dto.PermanentScheduleDTO;
 import ru.jakev.hospitalproject.services.ScheduleService;
 
-import javax.persistence.EntityNotFoundException;
-import java.time.DayOfWeek;
 import java.util.List;
 
 @RestController
@@ -25,27 +23,27 @@ public class ScheduleController {
     private ResponseEntity<?> create(@RequestBody PermanentScheduleDTO schedule) {
         PermanentScheduleDTO savedSchedule;
         try {
-            savedSchedule = scheduleService.saveSchedule(schedule);
+            savedSchedule = scheduleService.savePermanentSchedule(schedule);
         } catch (Exception e) {
             return new ResponseEntity<>("Invalid doctor id: " + schedule.getDoctorId(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(savedSchedule, HttpStatus.CREATED);
     }
 
-    @GetMapping("doctors/{id}/schedules")
-    public ResponseEntity<?> getByDoctorId(@PathVariable("id") Integer id) {
-        List<PermanentScheduleDTO> scheduleList = scheduleService.getSchedulesByDoctorId(id);
+    @GetMapping("/hospitals/{h_id}/doctors/{d_id}/schedules")
+    public ResponseEntity<?> getByHospitalIdAndDoctorId(@PathVariable("h_id") Integer hospitalId, @PathVariable("d_id") Integer doctorId) {
+        List<PermanentScheduleDTO> scheduleList = scheduleService.getSchedulesByDoctorIdAndHospitalId(doctorId, hospitalId);
         return new ResponseEntity<>(scheduleList, HttpStatus.OK);
     }
 
-    @GetMapping("doctors/{id}/schedules/{day}")
-    public ResponseEntity<?> getByDoctorIdAndDayOfWeek(@PathVariable("id") Integer id, @PathVariable("day") DayOfWeek day) {
-        PermanentScheduleDTO schedule;
-        try {
-            schedule = scheduleService.getScheduleByDoctorIdAndDayOfWeek(id, day);
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>("Not found schedule Doctor.id: " + id + " day: " + day, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(schedule, HttpStatus.OK);
-    }
+//    @GetMapping("/hospitals/{h_id}/doctors/{d_id}/schedules/{day}")
+//    public ResponseEntity<?> getByDoctorIdAndDayOfWeek(@PathVariable("id") Integer id, @PathVariable("day") DayOfWeek day) {
+//        PermanentScheduleDTO schedule;
+//        try {
+//            schedule = scheduleService.getScheduleByDoctorIdAndDayOfWeek(id, day);
+//        } catch (EntityNotFoundException e) {
+//            return new ResponseEntity<>("Not found schedule Doctor.id: " + id + " day: " + day, HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<>(schedule, HttpStatus.OK);
+//    }
 }

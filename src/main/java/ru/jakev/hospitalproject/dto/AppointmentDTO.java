@@ -28,5 +28,6 @@ public class AppointmentDTO {
         this.patient = patient;
         this.date = date;
         this.comment = comment;
+        this.hospitalDTO = hospitalDTO;
     }
 }

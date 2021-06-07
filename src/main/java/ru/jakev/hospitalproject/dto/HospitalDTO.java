@@ -11,6 +11,4 @@ public class HospitalDTO {
     private Integer Id;
     private String name;
     private String address;
-
-
 }

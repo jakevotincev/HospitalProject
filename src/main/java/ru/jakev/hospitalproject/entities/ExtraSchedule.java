@@ -17,6 +17,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @DiscriminatorValue(value = "extra")
 public class ExtraSchedule extends Schedule{
-    @Column(columnDefinition = "TIMESTAMP")
+    @Column(columnDefinition = "DATE")
     LocalDate date;
 }

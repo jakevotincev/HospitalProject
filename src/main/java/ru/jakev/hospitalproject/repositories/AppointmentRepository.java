@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
-    Stream<Appointment> findAllByDoctorId(Integer id);
-    Stream<Appointment> findAllByPatientId(Integer id);
-    Stream<Appointment> findAllByDoctorIdAndDateBetween(Integer id, LocalDateTime from, LocalDateTime to);
+    Stream<Appointment> findAllByDoctorIdAndHospitalId(Integer doctorId, Integer hospitalId);
+    Stream<Appointment> findAllByPatientId(Integer patientId);
+    Stream<Appointment> findAllByDoctorIdAndHospitalIdAndDateBetween(Integer doctorId, Integer hospitalId, LocalDateTime from, LocalDateTime to);
 }

@@ -33,15 +33,15 @@ public class AppointmentController {
         return new ResponseEntity<>(appointmentDTO, HttpStatus.CREATED);
     }
 
-    @GetMapping("doctors/{id}/appointments")
-    public ResponseEntity<?> getByDoctorId(@PathVariable("id") Integer id){
-        List<AppointmentDTO> appointmentDTOList = appointmentService.getAppointmentsByDoctorId(id);
+    @GetMapping("hospitals/{h_id}/doctors/{d_id}/appointments")
+    public ResponseEntity<?> getByDoctorId(@PathVariable("h_id") Integer h_id, @PathVariable("d_id") Integer d_id) {
+        List<AppointmentDTO> appointmentDTOList = appointmentService.getAppointmentsByDoctorIdAndHospitalId(d_id, h_id);
         return new ResponseEntity<>(appointmentDTOList, HttpStatus.OK);
     }
 
-    @GetMapping("patients/{id}/appointments")
-    public ResponseEntity<?> getByPatientId(@PathVariable("id") Integer id){
-        List<AppointmentDTO> appointmentDTOList = appointmentService.getAppointmentsByPatientId(id);
+    @GetMapping("patients/{p_id}/appointments")
+    public ResponseEntity<?> getByPatientId(@PathVariable("p_id") Integer p_id) {
+        List<AppointmentDTO> appointmentDTOList = appointmentService.getAppointmentsByPatientId(p_id);
         return new ResponseEntity<>(appointmentDTOList, HttpStatus.OK);
     }
 

@@ -1,9 +1,9 @@
 package ru.jakev.hospitalproject.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -17,6 +17,7 @@ import java.time.LocalTime;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @DiscriminatorValue(value = "permanent")
+@ToString
 public class PermanentSchedule extends Schedule {
     @Column(name = "day_of_week")
     @Enumerated(EnumType.STRING)

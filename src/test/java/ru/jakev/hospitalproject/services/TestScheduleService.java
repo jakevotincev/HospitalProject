@@ -1,7 +1,5 @@
 package ru.jakev.hospitalproject.services;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,12 +12,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.jakev.hospitalproject.dto.PermanentScheduleDTO;
-import ru.jakev.hospitalproject.entities.Doctor;
-import ru.jakev.hospitalproject.entities.DoctorSpeciality;
-import ru.jakev.hospitalproject.entities.PermanentSchedule;
-import ru.jakev.hospitalproject.entities.Schedule;
+import ru.jakev.hospitalproject.entities.*;
 import ru.jakev.hospitalproject.mappers.PeopleMapper;
 import ru.jakev.hospitalproject.mappers.ScheduleMapper;
+import ru.jakev.hospitalproject.repositories.ExtraScheduleRepository;
 import ru.jakev.hospitalproject.repositories.PermanentScheduleRepository;
 import ru.jakev.hospitalproject.services.impl.ScheduleServiceImpl;
 
@@ -29,12 +25,17 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @ExtendWith(MockitoExtension.class)
 public class TestScheduleService {
 
     ScheduleService scheduleService;
     @Mock
     PermanentScheduleRepository permanentScheduleRepository;
+    @Mock
+    ExtraScheduleRepository extraScheduleRepository;
     @Mock
     DoctorService doctorService;
     List<Schedule> scheduleList = new ArrayList<>();
@@ -47,23 +48,26 @@ public class TestScheduleService {
     void init() {
         scheduleMapper = Mappers.getMapper(ScheduleMapper.class);
         peopleMapper = Mappers.getMapper(PeopleMapper.class);
-        scheduleService = new ScheduleServiceImpl(permanentScheduleRepository, doctorService, scheduleMapper, peopleMapper);
+        scheduleService = new ScheduleServiceImpl(permanentScheduleRepository, extraScheduleRepository, doctorService, scheduleMapper, peopleMapper);
         Doctor doctor = new Doctor(1, "surname", "name", "middle_name",
                 DoctorSpeciality.DENTIST, null);
         Doctor doctor2 = new Doctor(2, "surname", "name", "middle_name",
                 DoctorSpeciality.DENTIST, null);
+        Hospital hospital = new Hospital(1, "hospital", "street", Set.of(doctor, doctor2));
+        doctor.setHospitals(Collections.singleton(hospital));
+        doctor2.setHospitals(Collections.singleton(hospital));
         scheduleList.add(new PermanentSchedule(1, doctor, LocalTime.of(9, 0),
-                LocalTime.of(18, 0), Duration.ofHours(1), null, DayOfWeek.MONDAY));
+                LocalTime.of(18, 0), Duration.ofHours(1), hospital, DayOfWeek.MONDAY));
         scheduleList.add(new PermanentSchedule(2, doctor, LocalTime.of(9, 0),
-                LocalTime.of(18, 0), Duration.ofHours(1), null, DayOfWeek.TUESDAY));
+                LocalTime.of(18, 0), Duration.ofHours(1), hospital, DayOfWeek.TUESDAY));
         scheduleList.add(new PermanentSchedule(3, doctor2, LocalTime.of(9, 0),
-                LocalTime.of(18, 0), Duration.ofHours(1), null, DayOfWeek.MONDAY));
+                LocalTime.of(18, 0), Duration.ofHours(1), hospital, DayOfWeek.MONDAY));
     }
 
     @SneakyThrows
     @Test
     void testGetSchedulesByDoctorId() {
-        Mockito.when(permanentScheduleRepository.findAllByDoctorId(Mockito.anyInt())).thenAnswer(invocationOnMock -> {
+        Mockito.when(permanentScheduleRepository.findAllByDoctorIdAAndHospitalId(Mockito.anyInt(), Mockito.anyInt())).thenAnswer(invocationOnMock -> {
             List<Schedule> schedules;
             switch ((Integer) invocationOnMock.getArgument(0)) {
                 case 1:
@@ -78,55 +82,55 @@ public class TestScheduleService {
             return schedules.stream();
         });
 
-        List<PermanentScheduleDTO> foundSchedules = scheduleService.getSchedulesByDoctorId(1);
+        List<PermanentScheduleDTO> foundSchedules = scheduleService.getSchedulesByDoctorIdAndHospitalId(1, 1);
         assertEquals(2, foundSchedules.size());
 
-        foundSchedules = scheduleService.getSchedulesByDoctorId(2);
+        foundSchedules = scheduleService.getSchedulesByDoctorIdAndHospitalId(2, 1);
         assertEquals(1, foundSchedules.size());
 
-        foundSchedules = scheduleService.getSchedulesByDoctorId(3);
+        foundSchedules = scheduleService.getSchedulesByDoctorIdAndHospitalId(3, 1);
         assertEquals(0, foundSchedules.size());
     }
 
     @Test
     void testGetScheduleByDoctorIdAndDayOfWeek() {
-        Mockito.when(permanentScheduleRepository.findByDoctorIdAndDayOfWeek(Mockito.anyInt(), Mockito.any(DayOfWeek.class)))
-                .thenAnswer(invocationOnMock -> {
-                    Optional<Schedule> schedule;
-                    if (invocationOnMock.getArgument(0).equals(1)
-                            && invocationOnMock.getArgument(1).equals(DayOfWeek.MONDAY))
-                        schedule = Optional.of(scheduleList.get(0));
-                    else if (invocationOnMock.getArgument(0).equals(1)
-                            && invocationOnMock.getArgument(1).equals(DayOfWeek.TUESDAY))
-                        schedule = Optional.of(scheduleList.get(1));
-                    else if (invocationOnMock.getArgument(0).equals(2)
-                            && invocationOnMock.getArgument(1).equals(DayOfWeek.MONDAY))
-                        schedule = Optional.of(scheduleList.get(2));
-                    else schedule = Optional.empty();
-                    return schedule;
-                });
+        Mockito.when(permanentScheduleRepository.findByDoctorIdAndDayOfWeekAndHospitalId(Mockito.anyInt(),
+                Mockito.any(DayOfWeek.class), Mockito.anyInt())).thenAnswer(invocationOnMock -> {
+            Optional<Schedule> schedule;
+            if (invocationOnMock.getArgument(0).equals(1)
+                    && invocationOnMock.getArgument(1).equals(DayOfWeek.MONDAY))
+                schedule = Optional.of(scheduleList.get(0));
+            else if (invocationOnMock.getArgument(0).equals(1)
+                    && invocationOnMock.getArgument(1).equals(DayOfWeek.TUESDAY))
+                schedule = Optional.of(scheduleList.get(1));
+            else if (invocationOnMock.getArgument(0).equals(2)
+                    && invocationOnMock.getArgument(1).equals(DayOfWeek.MONDAY))
+                schedule = Optional.of(scheduleList.get(2));
+            else schedule = Optional.empty();
+            return schedule;
+        });
 
-        PermanentScheduleDTO schedule = scheduleService.getScheduleByDoctorIdAndDayOfWeek(1, DayOfWeek.MONDAY);
-        assertEquals(scheduleMapper.scheduleToScheduleDto((PermanentSchedule) scheduleList.get(0)), schedule);
+        PermanentScheduleDTO schedule = scheduleService.getScheduleByDoctorIdAndDayOfWeekAndHospitalId(1, DayOfWeek.MONDAY, 1);
+        assertEquals(scheduleMapper.permanentScheduleToPermanentScheduleDto((PermanentSchedule) scheduleList.get(0)), schedule);
 
-        schedule = scheduleService.getScheduleByDoctorIdAndDayOfWeek(1, DayOfWeek.TUESDAY);
-        assertEquals(scheduleMapper.scheduleToScheduleDto((PermanentSchedule) scheduleList.get(1)), schedule);
+        schedule = scheduleService.getScheduleByDoctorIdAndDayOfWeekAndHospitalId(1, DayOfWeek.TUESDAY, 1);
+        assertEquals(scheduleMapper.permanentScheduleToPermanentScheduleDto((PermanentSchedule) scheduleList.get(1)), schedule);
 
-        schedule = scheduleService.getScheduleByDoctorIdAndDayOfWeek(2, DayOfWeek.MONDAY);
-        assertEquals(scheduleMapper.scheduleToScheduleDto((PermanentSchedule) scheduleList.get(2)), schedule);
+        schedule = scheduleService.getScheduleByDoctorIdAndDayOfWeekAndHospitalId(2, DayOfWeek.MONDAY, 1);
+        assertEquals(scheduleMapper.permanentScheduleToPermanentScheduleDto((PermanentSchedule) scheduleList.get(2)), schedule);
 
-        assertThrows(EntityNotFoundException.class, () -> scheduleService.getScheduleByDoctorIdAndDayOfWeek(1, DayOfWeek.SATURDAY));
+        assertThrows(EntityNotFoundException.class, () -> scheduleService.getScheduleByDoctorIdAndDayOfWeekAndHospitalId(
+                1, DayOfWeek.SATURDAY, 1));
     }
 
     @SneakyThrows
     @Test
     void testSaveSchedule() {
-        PermanentScheduleDTO permanentScheduleDTO = scheduleMapper.scheduleToScheduleDto((PermanentSchedule) scheduleList.get(0));
-        permanentScheduleDTO.setDoctorId(1);
+        PermanentScheduleDTO permanentScheduleDTO = scheduleMapper.permanentScheduleToPermanentScheduleDto((PermanentSchedule) scheduleList.get(0));
         Mockito.when(doctorService.getDoctorById(Mockito.anyInt()))
                 .thenReturn(peopleMapper.doctorToDoctorDto(scheduleList.get(0).getDoctor()));
         Mockito.when(permanentScheduleRepository.save(Mockito.any(PermanentSchedule.class))).then(AdditionalAnswers.returnsFirstArg());
-        PermanentScheduleDTO newSchedule = scheduleService.saveSchedule(permanentScheduleDTO);
+        PermanentScheduleDTO newSchedule = scheduleService.savePermanentSchedule(permanentScheduleDTO);
         assertEquals(permanentScheduleDTO, newSchedule);
     }
 

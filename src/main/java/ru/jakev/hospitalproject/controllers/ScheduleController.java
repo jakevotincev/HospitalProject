@@ -30,7 +30,7 @@ public class ScheduleController {
         return new ResponseEntity<>(savedSchedule, HttpStatus.CREATED);
     }
 
-    @GetMapping("/hospitals/{h_id}/doctors/{d_id}/schedules")
+    @GetMapping("hospitals/{h_id}/doctors/{d_id}/schedules")
     public ResponseEntity<?> getByHospitalIdAndDoctorId(@PathVariable("h_id") Integer hospitalId, @PathVariable("d_id") Integer doctorId) {
         List<PermanentScheduleDTO> scheduleList = scheduleService.getSchedulesByDoctorIdAndHospitalId(doctorId, hospitalId);
         return new ResponseEntity<>(scheduleList, HttpStatus.OK);

@@ -1,8 +1,6 @@
 package ru.jakev.hospitalproject.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,6 +10,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = "hospitals")
+@ToString(exclude = "hospitals")
 public class Doctor {
 
     @Id
@@ -32,18 +32,7 @@ public class Doctor {
     @Enumerated(EnumType.STRING)
     private DoctorSpeciality speciality;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private Set<Hospital> hospitals;
 
-
-    @Override
-    public String toString() {
-        return "Doctor{" +
-                "id=" + id +
-                ", surname='" + surname + '\'' +
-                ", name='" + name + '\'' +
-                ", middleName='" + middleName + '\'' +
-                ", speciality=" + speciality.getName() +
-                '}';
-    }
 }

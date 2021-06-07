@@ -1,8 +1,6 @@
 package ru.jakev.hospitalproject.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,6 +13,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude="doctors")
+@ToString(exclude = "doctors")
 public class Hospital {
 
     @Id

@@ -8,13 +8,13 @@ insert into postgres.public.hospital
 values (4, 'улица4', 'поликлиника №4');
 
 insert into postgres.public.doctor
-values (1, 'Тарасов', 'Олег', 'Хирург', 'Вениаминович');
+values (1, 'Тарасов', 'Олег', 'SURGEON', 'Вениаминович');
 insert into postgres.public.doctor
-values (2, 'Пупкин', 'Василий', 'Гинеколог', 'Александрович');
+values (2, 'Пупкин', 'Василий', 'GYNECOLOGIST', 'Александрович');
 insert into postgres.public.doctor
-values (3, 'Пупкина', 'Акакия', 'Уролог', 'Акакьевна');
+values (3, 'Пупкина', 'Акакия', 'UROLOGIST', 'Акакьевна');
 insert into postgres.public.doctor
-values (4, 'Васильев', 'Николай', 'Педиатр', 'Евгениевич');
+values (4, 'Васильев', 'Николай', 'PEDIATRICIAN', 'Евгениевич');
 
 insert into postgres.public.doctor_hospitals
 values (1, 2);
@@ -36,26 +36,26 @@ values (3, 20, 'Воробьев', 'Дмитрий', 'Олегович');
 
 insert into postgres.public.schedule (id, day_end, day_of_week, day_start, appointment_duration, doctor_id, hospital_id,
                                       type)
-values (1, '18:00', 'Monday', '9:00', '1 hour', 3, 1, 'permanent');
+values (1, '18:00', 'MONDAY', '9:00', '1 hour', 3, 1, 'permanent');
 insert into postgres.public.schedule (id, day_end, day_of_week, day_start, appointment_duration, doctor_id, hospital_id,
                                       type)
-values (2, '15:00', 'Tuesday', '8:00', '1 hour', 3, 1, 'permanent');
+values (2, '15:00', 'TUESDAY', '8:00', '1 hour', 3, 1, 'permanent');
 insert into postgres.public.schedule (id, day_end, day_of_week, day_start, appointment_duration, doctor_id, hospital_id,
                                       type)
-values (3, '15:00', 'Wednesday', '10:00', '1 hour', 3, 1, 'permanent');
+values (3, '15:00', 'WEDNESDAY', '10:00', '1 hour', 3, 1, 'permanent');
 insert into postgres.public.schedule (id, day_end, day_of_week, day_start, appointment_duration, doctor_id, hospital_id,
                                       type)
-values (4, '13:00', 'Thursday', '8:00', '1 hour', 3, 1, 'permanent');
+values (4, '13:00', 'THURSDAY', '8:00', '1 hour', 3, 1, 'permanent');
 insert into postgres.public.schedule (id, day_end, date, day_start, appointment_duration, doctor_id, hospital_id,
                                       type)
 values (5, '13:00', '2021-6-15', '10:00', '1 hour', 3, 1, 'extra');
 
 insert into postgres.public.schedule (id, day_end, day_of_week, day_start, appointment_duration, doctor_id, hospital_id,
                                       type)
-values (6, '12:00', 'Monday', '8:00', '2 hour', 1, 2, 'permanent');
+values (6, '12:00', 'MONDAY', '8:00', '2 hour', 1, 2, 'permanent');
 insert into postgres.public.schedule (id, day_end, day_of_week, day_start, appointment_duration, doctor_id, hospital_id,
                                       type)
-values (7, '17:00', 'Monday', '14:00', '1 hour', 1, 4, 'permanent');
+values (7, '17:00', 'MONDAY', '14:00', '1 hour', 1, 4, 'permanent');
 
 
 

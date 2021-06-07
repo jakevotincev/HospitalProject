@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jakev.hospitalproject.dto.DoctorDTO;
 import ru.jakev.hospitalproject.dto.ExtraScheduleDTO;
+import ru.jakev.hospitalproject.dto.HospitalDTO;
 import ru.jakev.hospitalproject.dto.PermanentScheduleDTO;
 import ru.jakev.hospitalproject.entities.ExtraSchedule;
 import ru.jakev.hospitalproject.entities.PermanentSchedule;
@@ -14,6 +15,7 @@ import ru.jakev.hospitalproject.mappers.ScheduleMapper;
 import ru.jakev.hospitalproject.repositories.ExtraScheduleRepository;
 import ru.jakev.hospitalproject.repositories.PermanentScheduleRepository;
 import ru.jakev.hospitalproject.services.DoctorService;
+import ru.jakev.hospitalproject.services.HospitalService;
 import ru.jakev.hospitalproject.services.ScheduleService;
 
 import javax.persistence.EntityNotFoundException;
@@ -37,14 +39,16 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final DoctorService doctorService;
     private final ScheduleMapper scheduleMapper;
     private final PeopleMapper peopleMapper;
+    private final HospitalService hospitalService;
 
     public ScheduleServiceImpl(PermanentScheduleRepository permanentScheduleRepository, ExtraScheduleRepository extraScheduleRepository,
-                               DoctorService doctorService, ScheduleMapper scheduleMapper, PeopleMapper peopleMapper) {
+                               DoctorService doctorService, ScheduleMapper scheduleMapper, PeopleMapper peopleMapper, HospitalService hospitalService) {
         this.permanentScheduleRepository = permanentScheduleRepository;
         this.extraScheduleRepository = extraScheduleRepository;
         this.doctorService = doctorService;
         this.scheduleMapper = scheduleMapper;
         this.peopleMapper = peopleMapper;
+        this.hospitalService = hospitalService;
     }
 
     @Override
@@ -85,8 +89,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     //todo: add exception if schedules and extra schedules for one day bigger than 1
     @Override
     public PermanentScheduleDTO savePermanentSchedule(PermanentScheduleDTO permanentScheduleDTO) throws Exception {
-        if (permanentScheduleDTO.getDoctorId() == null) throw new Exception();
+        if (permanentScheduleDTO.getDoctorId() == null || permanentScheduleDTO.getHospitalId() == null)
+            throw new Exception();
         DoctorDTO doctorDTO = doctorService.getDoctorById(permanentScheduleDTO.getDoctorId());
+        HospitalDTO hospitalDTO = hospitalService.getHospitalById(permanentScheduleDTO.getHospitalId());
+        if (!doctorDTO.getHospitals().contains(hospitalDTO)) throw new Exception();
         PermanentSchedule schedule = scheduleMapper.permanentScheduleDtoToPermanentSchedule(permanentScheduleDTO);
         schedule.setDoctor(peopleMapper.doctorDtoToDoctor(doctorDTO));
         schedule = permanentScheduleRepository.save(schedule);

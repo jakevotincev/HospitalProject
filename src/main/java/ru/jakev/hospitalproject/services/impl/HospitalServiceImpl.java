@@ -9,7 +9,9 @@ import ru.jakev.hospitalproject.mappers.HospitalMapper;
 import ru.jakev.hospitalproject.repositories.HospitalRepository;
 import ru.jakev.hospitalproject.services.HospitalService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,5 +39,12 @@ public class HospitalServiceImpl implements HospitalService {
         List<Hospital> hospitals = hospitalRepository.findAll();
         LOGGER.info("found " + hospitals.size() + " hospitals");
         return hospitals.stream().map(hospitalMapper::hospitalToHospitalDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public HospitalDTO getHospitalById(Integer id) throws EntityNotFoundException {
+        Hospital hospital = hospitalRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("hospital with id = " + id + "not found"));
+        return hospitalMapper.hospitalToHospitalDTO(hospital);
     }
 }

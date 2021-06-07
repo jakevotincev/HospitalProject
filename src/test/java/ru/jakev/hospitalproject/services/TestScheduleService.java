@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.jakev.hospitalproject.dto.PermanentScheduleDTO;
 import ru.jakev.hospitalproject.entities.*;
+import ru.jakev.hospitalproject.mappers.HospitalMapper;
 import ru.jakev.hospitalproject.mappers.PeopleMapper;
 import ru.jakev.hospitalproject.mappers.ScheduleMapper;
 import ru.jakev.hospitalproject.repositories.ExtraScheduleRepository;
@@ -38,9 +39,12 @@ public class TestScheduleService {
     ExtraScheduleRepository extraScheduleRepository;
     @Mock
     DoctorService doctorService;
+    @Mock
+    HospitalService hospitalService;
     List<Schedule> scheduleList = new ArrayList<>();
     ScheduleMapper scheduleMapper;
     PeopleMapper peopleMapper;
+    HospitalMapper hospitalMapper;
     private final static Logger LOGGER = LoggerFactory.getLogger(TestScheduleService.class);
 
 
@@ -48,7 +52,8 @@ public class TestScheduleService {
     void init() {
         scheduleMapper = Mappers.getMapper(ScheduleMapper.class);
         peopleMapper = Mappers.getMapper(PeopleMapper.class);
-        scheduleService = new ScheduleServiceImpl(permanentScheduleRepository, extraScheduleRepository, doctorService, scheduleMapper, peopleMapper);
+        hospitalMapper = Mappers.getMapper(HospitalMapper.class);
+        scheduleService = new ScheduleServiceImpl(permanentScheduleRepository, extraScheduleRepository, doctorService, scheduleMapper, peopleMapper, hospitalService);
         Doctor doctor = new Doctor(1, "surname", "name", "middle_name",
                 DoctorSpeciality.DENTIST, null);
         Doctor doctor2 = new Doctor(2, "surname", "name", "middle_name",
@@ -129,6 +134,8 @@ public class TestScheduleService {
         PermanentScheduleDTO permanentScheduleDTO = scheduleMapper.permanentScheduleToPermanentScheduleDto((PermanentSchedule) scheduleList.get(0));
         Mockito.when(doctorService.getDoctorById(Mockito.anyInt()))
                 .thenReturn(peopleMapper.doctorToDoctorDto(scheduleList.get(0).getDoctor()));
+        Mockito.when(hospitalService.getHospitalById(Mockito.anyInt()))
+                .thenReturn(hospitalMapper.hospitalToHospitalDTO(scheduleList.get(0).getHospital()));
         Mockito.when(permanentScheduleRepository.save(Mockito.any(PermanentSchedule.class))).then(AdditionalAnswers.returnsFirstArg());
         PermanentScheduleDTO newSchedule = scheduleService.savePermanentSchedule(permanentScheduleDTO);
         assertEquals(permanentScheduleDTO, newSchedule);

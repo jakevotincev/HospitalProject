@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface HospitalService {
-    HospitalDTO saveDoctor(HospitalDTO hospitalDTO);
+    HospitalDTO saveHospital(HospitalDTO hospitalDTO);
     List<HospitalDTO> getAllHospitals();
     HospitalDTO getHospitalById(Integer id) throws EntityNotFoundException;
 }

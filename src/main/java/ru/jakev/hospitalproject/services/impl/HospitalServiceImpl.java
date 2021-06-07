@@ -27,7 +27,7 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
-    public HospitalDTO saveDoctor(HospitalDTO hospitalDTO) {
+    public HospitalDTO saveHospital(HospitalDTO hospitalDTO) {
         Hospital hospital = hospitalMapper.hospitalDTOToHospital(hospitalDTO);
         hospital = hospitalRepository.save(hospital);
         LOGGER.info(hospital + " saved");

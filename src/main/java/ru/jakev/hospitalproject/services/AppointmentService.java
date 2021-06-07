@@ -19,11 +19,11 @@ public interface AppointmentService {
     @Transactional
     List<AppointmentDTO> getAppointmentsByPatientId(Integer patientId);
 
-    //todo: включительно или нет, если нет то проблема
     @Transactional
     List<AppointmentDTO> getAppointmentsByDoctorIdAndHospitalIdAndDateBetween(Integer doctorId, Integer hospitalId, LocalDateTime from, LocalDateTime to);
 
-    Map<LocalTime, Boolean> getScheduleByDoctorIdAndDateAndHospitalId(Integer id, LocalDate date, Integer hospitalId) throws EntityNotFoundException;
+    @Transactional
+    Map<LocalTime, Boolean> getScheduleByDoctorIdAndDateAndHospitalId(Integer doctorId, LocalDate date, Integer hospitalId) throws EntityNotFoundException;
 
     AppointmentDTO saveAppointment(AppointmentDTO appointmentDTO) throws EntityNotFoundException;
 

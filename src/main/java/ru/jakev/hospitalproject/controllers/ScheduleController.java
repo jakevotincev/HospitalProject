@@ -20,7 +20,7 @@ public class ScheduleController {
     }
 
     @PostMapping("schedules")
-    private ResponseEntity<?> create(@RequestBody PermanentScheduleDTO schedule) {
+    public ResponseEntity<?> save(@RequestBody PermanentScheduleDTO schedule) {
         PermanentScheduleDTO savedSchedule;
         try {
             savedSchedule = scheduleService.savePermanentSchedule(schedule);

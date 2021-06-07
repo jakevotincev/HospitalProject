@@ -1,5 +1,6 @@
 package ru.jakev.hospitalproject.controllers;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -7,7 +8,11 @@ import ru.jakev.hospitalproject.dto.AppointmentDTO;
 import ru.jakev.hospitalproject.services.AppointmentService;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping
@@ -22,7 +27,7 @@ public class AppointmentController {
     }
 
     @PostMapping("appointments")
-    public ResponseEntity<?> create(@RequestBody AppointmentDTO appointment) {
+    public ResponseEntity<?> save(@RequestBody AppointmentDTO appointment) {
         AppointmentDTO appointmentDTO;
         try {
             appointmentDTO = appointmentService.saveAppointment(appointment);
@@ -45,4 +50,28 @@ public class AppointmentController {
         return new ResponseEntity<>(appointmentDTOList, HttpStatus.OK);
     }
 
+
+    @GetMapping("hospitals/{h_id}/doctors/{d_id}/appointments/{date}")
+    public ResponseEntity<?> getScheduleForDay(@PathVariable("h_id") Integer h_id, @PathVariable("d_id") Integer d_id,
+                                               @PathVariable("date") @DateTimeFormat(pattern = "dd_MM_yyyy") LocalDate date) {
+        Map<LocalTime, Boolean> schedule;
+        try {
+            schedule = appointmentService.getScheduleByDoctorIdAndDateAndHospitalId(d_id, date, h_id);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(schedule, HttpStatus.OK);
+    }
+
+    @GetMapping("hospitals/{h_id}/doctors/{d_id}/appointments/{from}/{to}")
+    public ResponseEntity<?> getAppointmentsBetween(@PathVariable("from")
+                                                    @DateTimeFormat(pattern = "dd_MM_yyyy HH:mm:ss") LocalDateTime from,
+                                                    @PathVariable("to") @DateTimeFormat(pattern = "dd_MM_yyyy HH:mm:ss")
+                                                            LocalDateTime to, @PathVariable("h_id") Integer h_id,
+                                                    @PathVariable("d_id") Integer d_id) {
+        List<AppointmentDTO> appointmentDTOList = appointmentService.getAppointmentsByDoctorIdAndHospitalIdAndDateBetween(
+                d_id, h_id, from, to);
+        return new ResponseEntity<>(appointmentDTOList, HttpStatus.OK);
+    }
 }

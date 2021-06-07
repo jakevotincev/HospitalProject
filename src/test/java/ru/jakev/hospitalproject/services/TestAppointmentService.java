@@ -108,7 +108,6 @@ public class TestAppointmentService {
         assertTrue(appointments.isEmpty());
     }
 
-    //todo: что вернет метод репозитория при from>to
     @Test
     void testGetAppointmentsByDoctorIdAndDateBetween() {
         mockGetAppointmentsByDoctorIdAndDateBetween();

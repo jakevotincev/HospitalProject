@@ -19,7 +19,7 @@ public class PatientController {
 
     //todo: how to catch exception if field equals null
     @PostMapping
-    private ResponseEntity<?> create(@RequestBody PatientDTO patient) {
+    public ResponseEntity<?> save(@RequestBody PatientDTO patient) {
         PatientDTO savedPatient = patientService.savePatient(patient);
         return new ResponseEntity<>(savedPatient, HttpStatus.CREATED);
     }

@@ -20,13 +20,13 @@ public class DoctorController {
     }
 
     @PostMapping
-    private ResponseEntity<?> create(@RequestBody DoctorDTO doctor) {
+    public ResponseEntity<?> save(@RequestBody DoctorDTO doctor) {
         DoctorDTO savedDoctor = doctorService.saveDoctor(doctor);
         return new ResponseEntity<>(savedDoctor, HttpStatus.CREATED);
     }
 
     @GetMapping
-    private ResponseEntity<?> getAll() {
+    public ResponseEntity<?> getAll() {
         List<DoctorDTO> doctors = doctorService.getAllDoctors();
         return new ResponseEntity<>(doctors, HttpStatus.OK);
     }

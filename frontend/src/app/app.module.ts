@@ -13,13 +13,15 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {HttpClientModule} from "@angular/common/http";
+import {HospitalSearchBarComponent} from './patient/hospital-search-bar/hospital-search-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     PatientComponent,
-    DoctorComponent
+    DoctorComponent,
+    HospitalSearchBarComponent
   ],
   imports: [
     BrowserModule,

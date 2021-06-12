@@ -1,23 +1,6 @@
 <div class="hospital-form">
-  <form>
-    <mat-form-field class="mat-form-field">
-      <mat-label>Выберите поликлинику</mat-label>
-      <input type="text"
-             name="hospital"
-             placeholder="Введите текст для поиска"
-             matInput
-             [formControl]="selectedHospital"
-             [matAutocomplete]="auto">
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" autoActiveFirstOption>
-        <mat-option *ngFor="let hospital of filteredOptions|async" [value]=hospital>
-          {{hospital.name}}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-  </form>
-  <div *ngIf="selectedHospital">
-    {{selectedHospital.value?.name}}
-  </div>
+  <app-hospital-search-bar (hospitalEvent)="selectHospital($event)"></app-hospital-search-bar>
 
+  {{hospital?.name}}
 
 </div>

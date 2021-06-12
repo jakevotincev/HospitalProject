@@ -1,0 +1,19 @@
+<form>
+  <mat-form-field class="mat-form-field">
+    <mat-label>Выберите поликлинику</mat-label>
+    <input type="text"
+           name="hospital"
+           placeholder="Введите текст для поиска"
+           matInput
+           [formControl]="selectedHospital"
+           [matAutocomplete]="auto"
+           (ngModelChange)="selectHospital(selectedHospital.value)">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" autoActiveFirstOption>
+      <mat-option *ngFor="let hospital of filteredOptions|async" [value]=hospital>
+        {{hospital.name}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+
+

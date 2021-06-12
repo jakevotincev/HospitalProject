@@ -9,7 +9,7 @@ import java.util.List;
 public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
     @Query(value = "select " +
             "from doctor" +
-            "         inner join doctor_hospitals dh on doctor.id = dh.doctors_id" +
+            "         inner join doctor_hospitals dh on doctor.id = dh.doctors_id " +
             "where dh.hospitals_id = ?1", nativeQuery = true)
     List<Doctor> findAllByHospitalId(Integer id);
 }

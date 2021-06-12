@@ -5,7 +5,7 @@ import {Observable} from "rxjs";
 import {map, startWith} from "rxjs/operators";
 import {HospitalService} from "../services/hospital.service";
 
-//todo: add service
+
 @Component({
   selector: 'app-patient',
   templateUrl: './patient.component.html',

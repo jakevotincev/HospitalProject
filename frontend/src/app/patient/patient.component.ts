@@ -3,6 +3,7 @@ import {Hospital} from "../interfaces/hospital";
 import {FormControl} from "@angular/forms";
 import {Observable} from "rxjs";
 import {map, startWith} from "rxjs/operators";
+import {HospitalService} from "../services/hospital.service";
 
 //todo: add service
 @Component({
@@ -15,33 +16,11 @@ export class PatientComponent implements OnInit {
   selectedHospital = new FormControl();
   filteredOptions?: Observable<Hospital[]>;
 
-  hospitals: Hospital[] = [
-    {
-      "name": "поликлиника №1",
-      "address": "улица1",
-      "id": 1
-    },
-    {
-      "name": "поликлиника №2",
-      "address": "улица2",
-      "id": 2
-    },
-    {
-      "name": "поликлиника №3",
-      "address": "улица3",
-      "id": 3
-    },
-    {
-      "name": "поликлиника №4",
-      "address": "улица4",
-      "id": 4
-    },
-    {
-      "name": "хуйня",
-      "address": "улица4",
-      "id": 4
-    }
-  ];
+  hospitals: Hospital[] = [];
+
+
+  constructor(private hospitalService: HospitalService) {
+  }
 
   private _filter(value: string): Hospital[] {
     const filterValue = value.toLowerCase();
@@ -49,11 +28,16 @@ export class PatientComponent implements OnInit {
     return this.hospitals.filter(hospital => this.displayFn(hospital).toLowerCase().includes(filterValue));
   }
 
+  private getHospitals(): void {
+    this.hospitalService.getHospitals().subscribe(hospitals => this.hospitals = hospitals);
+  }
+
   displayFn(hospital: Hospital): string {
     return hospital && hospital.name ? hospital.name : '';
   }
 
   ngOnInit(): void {
+    this.getHospitals()
     this.filteredOptions = this.selectedHospital.valueChanges
       .pipe(
         startWith(''),

@@ -17,6 +17,13 @@ public enum DoctorSpeciality {
         return name;
     }
 
-
+    public static DoctorSpeciality valueOfName(String name) {
+        for (DoctorSpeciality s : values()) {
+            if (s.name.equals(name)) {
+                return s;
+            }
+        }
+        return null;
+    }
 
 }

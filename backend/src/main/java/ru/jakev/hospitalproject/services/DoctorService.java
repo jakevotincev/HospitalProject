@@ -1,11 +1,10 @@
 package ru.jakev.hospitalproject.services;
 
 import ru.jakev.hospitalproject.dto.DoctorDTO;
+import ru.jakev.hospitalproject.entities.DoctorSpeciality;
 
 import java.util.List;
 
-//todo: add find by name
-//todo: add get all by speciality?
 public interface DoctorService {
 
     List<DoctorDTO> getAllDoctors();
@@ -15,4 +14,8 @@ public interface DoctorService {
     DoctorDTO getDoctorById(Integer id);
 
     List<DoctorDTO> getAllByHospitalId(Integer id);
+
+    List<DoctorSpeciality> getSpecialitiesByHospitalId(Integer hospitalId);
+
+    List<DoctorDTO> getAllBySpecialityAndHospitalId(String speciality, Integer hospitalId);
 }

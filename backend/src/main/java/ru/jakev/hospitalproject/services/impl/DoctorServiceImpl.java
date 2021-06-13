@@ -5,12 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.jakev.hospitalproject.dto.DoctorDTO;
 import ru.jakev.hospitalproject.entities.Doctor;
+import ru.jakev.hospitalproject.entities.DoctorSpeciality;
 import ru.jakev.hospitalproject.mappers.PeopleMapper;
 import ru.jakev.hospitalproject.repositories.DoctorRepository;
 import ru.jakev.hospitalproject.services.DoctorService;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 //todo: if getAllDoctors list is empty do I need to throw exception
@@ -41,19 +43,33 @@ public class DoctorServiceImpl implements DoctorService {
         return peopleMapper.doctorToDoctorDto(doctor);
     }
 
-    //todo: add test
     @Override
     public DoctorDTO getDoctorById(Integer id) {
-        Doctor doctor = doctorRepository.findById(id).orElseThrow(()->
+        Doctor doctor = doctorRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Not found entity Doctor(id = " + id + ")"));
         LOGGER.info("found " + doctor);
         return peopleMapper.doctorToDoctorDto(doctor);
     }
 
     @Override
-    public List<DoctorDTO> getAllByHospitalId(Integer id) {
-        List<Doctor> doctors = doctorRepository.findAllByHospitalId(id);
-        LOGGER.info("found " + doctors.size() + " doctors, hospital.id=" + id);
+    public List<DoctorDTO> getAllByHospitalId(Integer hospitalId) {
+        List<Doctor> doctors = doctorRepository.findAllByHospitalId(hospitalId);
+        LOGGER.info("found " + doctors.size() + " doctors, hospital.hospitalId=" + hospitalId);
+        return doctors.stream().map(peopleMapper::doctorToDoctorDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DoctorSpeciality> getSpecialitiesByHospitalId(Integer hospitalId) {
+        List<DoctorSpeciality> specialities = doctorRepository.findAllSpecialitiesByHospitalId(hospitalId);
+        LOGGER.info("found " + specialities.size() + " specialities, hospital.id=" + hospitalId);
+        return specialities;
+    }
+
+    @Override
+    public List<DoctorDTO> getAllBySpecialityAndHospitalId(String speciality, Integer hospitalId) {
+        List<Doctor> doctors = doctorRepository.findAllBySpecialityAndHospitalId(Objects.requireNonNull(DoctorSpeciality
+                .valueOfName(speciality)).toString(), hospitalId);
+        LOGGER.info("found " + doctors.size() + " doctors, speciality=" + speciality + " hospital.id = " + hospitalId);
         return doctors.stream().map(peopleMapper::doctorToDoctorDto).collect(Collectors.toList());
     }
 }

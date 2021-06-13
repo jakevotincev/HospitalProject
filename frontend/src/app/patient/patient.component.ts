@@ -14,6 +14,7 @@ export class PatientComponent {
 
   selectHospital(hospital: Hospital): void{
     this.hospital = hospital;
+    this.speciality = '';
   }
 
   selectSpeciality(speciality: string): void{

@@ -16,6 +16,10 @@ import {HttpClientModule} from "@angular/common/http";
 import {HospitalSearchBarComponent} from './patient/hospital-search-bar/hospital-search-bar.component';
 import { SelectSpecialityComponent } from './patient/select-speciality/select-speciality.component';
 import {MatSelectModule} from "@angular/material/select";
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { DoctorsTableComponent } from './patient/doctors-table/doctors-table.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +28,8 @@ import {MatSelectModule} from "@angular/material/select";
     PatientComponent,
     DoctorComponent,
     HospitalSearchBarComponent,
-    SelectSpecialityComponent
+    SelectSpecialityComponent,
+    DoctorsTableComponent
   ],
     imports: [
         BrowserModule,
@@ -38,7 +43,10 @@ import {MatSelectModule} from "@angular/material/select";
         MatInputModule,
         FormsModule,
         HttpClientModule,
-        MatSelectModule
+        MatSelectModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule
     ],
   bootstrap: [AppComponent]
 })

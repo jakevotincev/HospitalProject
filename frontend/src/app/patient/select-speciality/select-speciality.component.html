@@ -1,0 +1,9 @@
+<mat-form-field appearance="fill">
+  <mat-label>Выберите специальность</mat-label>
+  <mat-select [(value)]="selectedSpeciality" (valueChange)="selectSpeciality(selectedSpeciality)">
+    <mat-option *ngFor="let speciality of specialities" [value]="speciality">
+      {{speciality}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+

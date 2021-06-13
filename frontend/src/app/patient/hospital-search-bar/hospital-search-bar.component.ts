@@ -32,8 +32,9 @@ export class HospitalSearchBarComponent implements OnInit {
     this.hospitalService.getHospitals().subscribe(hospitals => this.hospitals = hospitals);
   }
 
-  selectHospital(hospital: Hospital): void {
-    this.hospitalEvent.emit(hospital);
+  selectHospital(hospital: any): void {
+    if (typeof hospital === 'object')
+      this.hospitalEvent.emit(hospital);
   }
 
   displayFn(hospital: Hospital): string {

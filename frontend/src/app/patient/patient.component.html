@@ -1,6 +1,7 @@
 <div class="hospital-form">
+  <div *ngIf="speciality">{{speciality}}</div>
   <app-hospital-search-bar (hospitalEvent)="selectHospital($event)"></app-hospital-search-bar>
-
-  {{hospital?.name}}
+  <app-select-speciality *ngIf="hospital" [hospitalId]="hospital.id" (specialityEvent)="selectSpeciality($event)">
+  </app-select-speciality>
 
 </div>

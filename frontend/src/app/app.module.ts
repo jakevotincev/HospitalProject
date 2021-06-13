@@ -14,6 +14,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {HttpClientModule} from "@angular/common/http";
 import {HospitalSearchBarComponent} from './patient/hospital-search-bar/hospital-search-bar.component';
+import { SelectSpecialityComponent } from './patient/select-speciality/select-speciality.component';
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -21,21 +23,23 @@ import {HospitalSearchBarComponent} from './patient/hospital-search-bar/hospital
     HeaderComponent,
     PatientComponent,
     DoctorComponent,
-    HospitalSearchBarComponent
+    HospitalSearchBarComponent,
+    SelectSpecialityComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    MatSliderModule,
-    AppRoutingModule,
-    MatAutocompleteModule,
-    MatOptionModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    FormsModule,
-    HttpClientModule
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        MatSliderModule,
+        AppRoutingModule,
+        MatAutocompleteModule,
+        MatOptionModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        FormsModule,
+        HttpClientModule,
+        MatSelectModule
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

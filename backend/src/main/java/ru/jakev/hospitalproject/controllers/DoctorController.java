@@ -40,7 +40,7 @@ public class DoctorController {
     }
 
     @GetMapping("hospitals/{h_id}/doctors/{speciality}")
-    public ResponseEntity<?> getAllByHospitalAndSpeciality(@PathVariable("h_id") Integer hospitalId,
+    public ResponseEntity<?> getDoctorsByHospitalAndSpeciality(@PathVariable("h_id") Integer hospitalId,
                                                            @PathVariable("speciality") String speciality) {
         List<DoctorDTO> doctors = doctorService.getAllBySpecialityAndHospitalId(speciality, hospitalId);
         return new ResponseEntity<>(doctors, HttpStatus.OK);

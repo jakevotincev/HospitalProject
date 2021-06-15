@@ -1,0 +1,14 @@
+<table mat-table [dataSource]="schedules">
+  <ng-container [matColumnDef]="column" *ngFor="let column of columnsToDisplay">
+    <th mat-header-cell *matHeaderCellDef>{{column}}</th>
+    <td mat-cell *matCellDef>
+      <ul>
+        <li *ngFor="let s of getSchedulesByDay(column.toUpperCase());">{{s.dayStart}} - {{s.dayEnd}}</li>
+      </ul>
+      <div *ngIf="getSchedulesByDay(column.toUpperCase()).length===0">Расписание не найдено</div>
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+  <tr mat-row *matRowDef="let schedule; let first = first; columns: columnsToDisplay" class="hidden-row" [class.row]="first"></tr>
+</table>
+

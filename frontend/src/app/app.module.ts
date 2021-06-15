@@ -20,6 +20,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { DoctorsTableComponent } from './patient/doctors-table/doctors-table.component';
+import {MatButtonModule} from "@angular/material/button";
+import { ScheduleComponent } from './patient/schedule/schedule.component';
 
 @NgModule({
   declarations: [
@@ -29,25 +31,27 @@ import { DoctorsTableComponent } from './patient/doctors-table/doctors-table.com
     DoctorComponent,
     HospitalSearchBarComponent,
     SelectSpecialityComponent,
-    DoctorsTableComponent
+    DoctorsTableComponent,
+    ScheduleComponent
   ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        MatSliderModule,
-        AppRoutingModule,
-        MatAutocompleteModule,
-        MatOptionModule,
-        MatFormFieldModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        FormsModule,
-        HttpClientModule,
-        MatSelectModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatSortModule
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    MatSliderModule,
+    AppRoutingModule,
+    MatAutocompleteModule,
+    MatOptionModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    FormsModule,
+    HttpClientModule,
+    MatSelectModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatButtonModule
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

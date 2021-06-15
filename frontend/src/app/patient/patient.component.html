@@ -3,5 +3,6 @@
   <app-select-speciality *ngIf="hospital" [hospitalId]="hospital.id" (specialityEvent)="selectSpeciality($event)">
   </app-select-speciality>
   <app-doctors-table *ngIf="speciality&&hospital" [hospitalId]="hospital.id"
-                     [speciality]="speciality"></app-doctors-table>
+                     [speciality]="speciality">
+  </app-doctors-table>
 </div>

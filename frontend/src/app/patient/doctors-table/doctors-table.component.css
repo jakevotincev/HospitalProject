@@ -1,0 +1,24 @@
+table{
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+}
+
+button{
+  margin: 10px;
+}
+
+tr.schedule-row {
+  height: 0;
+}
+
+
+.schedule-div {
+  overflow: hidden;
+  display: flex;
+}
+
+.schedule {
+  padding: 16px;
+}
+

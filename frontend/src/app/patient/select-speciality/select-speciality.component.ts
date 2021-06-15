@@ -20,6 +20,7 @@ export class SelectSpecialityComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges){
     this.hospitalId = changes['hospitalId'].currentValue;
+    this.selectedSpeciality = '';
     this.getSpecialities();
   }
 

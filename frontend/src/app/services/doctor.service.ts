@@ -8,7 +8,7 @@ import {Doctor} from "../interfaces/doctor";
 })
 export class DoctorService {
 
-  private url: string = 'http://localhost:8080/hospitals/'
+  private url: string = 'http://localhost:8080/hospitals/';
 
   constructor(private http: HttpClient) {
   }

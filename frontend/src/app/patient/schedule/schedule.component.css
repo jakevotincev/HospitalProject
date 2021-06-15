@@ -1,0 +1,7 @@
+.hidden-row{
+  display: none;
+}
+
+.row{
+  display: revert;
+}

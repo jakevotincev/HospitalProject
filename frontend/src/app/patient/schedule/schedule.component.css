@@ -5,3 +5,26 @@
 .row{
   display: revert;
 }
+.schedule{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table{
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+}
+
+li{
+  list-style-type: none;
+}
+
+th.mat-header-cell{
+  text-align: center;
+}
+
+ul{
+  padding-inline-start: 5%;
+  padding-inline-end: 5%;
+}

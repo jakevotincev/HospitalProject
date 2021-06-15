@@ -15,10 +15,14 @@ tr.schedule-row {
 
 .schedule-div {
   overflow: hidden;
-  display: flex;
 }
 
 .schedule {
   padding: 16px;
+}
+
+mat-row{
+  margin-left: auto;
+  margin-right: auto;
 }
 

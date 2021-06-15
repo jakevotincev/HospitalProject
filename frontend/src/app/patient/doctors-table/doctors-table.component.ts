@@ -41,7 +41,7 @@ export class DoctorsTableComponent implements OnInit {
   }
 
   getSchedules(doctorId:number): void{
-    this.scheduleService.getSchedules(this.hospitalId, doctorId).subscribe(schedules => this.schedules = schedules);
+    this.scheduleService.getSchedules(this.hospitalId, doctorId).subscribe(schedules => this.schedules = this.scheduleService.convertDaysOfWeek(schedules));
   }
 
   ngOnInit(): void {

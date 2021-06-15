@@ -20,7 +20,40 @@ export class ScheduleService {
     return this.http.get<Schedule[]>(this.getUrl(hospitalId, doctorId));
   }
 
-  getSchedulesByDay(day: string, schedules: Schedule[]): Schedule[]{
-    return schedules.filter(schedule => schedule.dayOfWeek===day);
+  convertDaysOfWeek(schedules: Schedule[]): Schedule[] {
+    return schedules.map(schedule => {
+      switch (schedule.dayOfWeek) {
+        case 'MONDAY': {
+          schedule.dayOfWeek = 'Пн';
+          return schedule;
+        }
+        case 'TUESDAY': {
+          schedule.dayOfWeek = 'Вт';
+          return schedule
+        }
+        case 'WEDNESDAY': {
+          schedule.dayOfWeek = 'Ср';
+          return schedule;
+        }
+        case 'THURSDAY': {
+          schedule.dayOfWeek = 'Чт';
+          return schedule;
+        }
+        case 'FRIDAY': {
+          schedule.dayOfWeek = 'Пт';
+          return schedule;
+        }
+        case 'SATURDAY': {
+          schedule.dayOfWeek = 'Сб';
+          return schedule;
+        }
+        default:
+          return schedule
+      }
+    })
+  }
+
+  getSchedulesByDay(day: string, schedules: Schedule[]): Schedule[] {
+    return schedules.filter(schedule => schedule.dayOfWeek === day);
   }
 }

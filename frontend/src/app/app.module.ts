@@ -8,7 +8,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {PatientComponent} from './patient/patient.component';
 import {DoctorComponent} from './doctor/doctor.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
-import {MatOptionModule} from "@angular/material/core";
+import {MatNativeDateModule, MatOptionModule} from "@angular/material/core";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
@@ -22,6 +22,9 @@ import { MatSortModule } from '@angular/material/sort';
 import { DoctorsTableComponent } from './patient/doctors-table/doctors-table.component';
 import {MatButtonModule} from "@angular/material/button";
 import { ScheduleComponent } from './patient/schedule/schedule.component';
+import { AppointmentComponent } from './patient/appointment/appointment.component';
+import {MatCardModule} from "@angular/material/card";
+import {MatDatepickerModule} from "@angular/material/datepicker";
 
 @NgModule({
   declarations: [
@@ -32,7 +35,8 @@ import { ScheduleComponent } from './patient/schedule/schedule.component';
     HospitalSearchBarComponent,
     SelectSpecialityComponent,
     DoctorsTableComponent,
-    ScheduleComponent
+    ScheduleComponent,
+    AppointmentComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +54,10 @@ import { ScheduleComponent } from './patient/schedule/schedule.component';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCardModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   bootstrap: [AppComponent]
 })

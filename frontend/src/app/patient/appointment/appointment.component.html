@@ -1,0 +1,6 @@
+<mat-card class="calendar">
+  <mat-calendar (selectedChange)="onSelect($event)" [selected]="selectedDate" [startAt]="dateStart" [minDate]="minDate"
+                [maxDate]="maxDate" [dateFilter]="dateFilter"></mat-calendar>
+</mat-card>
+{{selectedDate}}
+

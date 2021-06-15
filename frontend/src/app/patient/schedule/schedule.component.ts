@@ -1,17 +1,16 @@
-import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, SimpleChanges} from '@angular/core';
 import {ScheduleService} from "../../services/schedule.service";
 import {Schedule} from "../../interfaces/schedule";
 
-//todo: add load spinner
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.component.html',
   styleUrls: ['./schedule.component.css']
 })
-export class ScheduleComponent implements OnInit {
+export class ScheduleComponent {
 
   @Input() schedules: Schedule[] = [];
-  columnsToDisplay: string[] = ['Пн','Вт','Ср','Чт','Пт','Сб']
+  columnsToDisplay: string[] = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
 
   constructor(private scheduleService: ScheduleService) {
   }
@@ -22,9 +21,6 @@ export class ScheduleComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     this.schedules = changes['schedules'] ? changes['schedules'].currentValue : [];
-  }
-
-  ngOnInit(): void {
   }
 
 }

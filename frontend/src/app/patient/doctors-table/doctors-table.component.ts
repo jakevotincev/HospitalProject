@@ -22,25 +22,27 @@ export class DoctorsTableComponent implements OnInit {
   @Input() hospitalId: number = -1;
   @Input() speciality: string = '';
 
-  columnsToDisplay: string[] = ['name', 'scheduleButton'];
-  expandedElement: Doctor | null = null;
+  columnsToDisplay: string[] = ['name', 'scheduleButtons'];
+  expandedSchedule: Doctor | null = null;
+  expandedCalendar: Doctor | null = null;
 
   doctors: Doctor[] = [];
   schedules: Schedule[] = [];
 
-  constructor(private doctorService: DoctorService, private scheduleService: ScheduleService) { }
+  constructor(private doctorService: DoctorService, private scheduleService: ScheduleService) {
+  }
 
-  ngOnChanges(changes: SimpleChanges){
+  ngOnChanges(changes: SimpleChanges) {
     this.hospitalId = changes['hospitalId'] ? changes['hospitalId'].currentValue : this.hospitalId;
     this.speciality = changes['speciality'] ? changes['speciality'].currentValue : this.speciality;
     this.getDoctors();
   }
 
-  private getDoctors():void{
+  private getDoctors(): void {
     this.doctorService.getDoctors(this.hospitalId, this.speciality).subscribe(doctors => this.doctors = doctors);
   }
 
-  getSchedules(doctorId:number): void{
+  getSchedules(doctorId: number): void {
     this.scheduleService.getSchedules(this.hospitalId, doctorId).subscribe(schedules => this.schedules = this.scheduleService.convertDaysOfWeek(schedules));
   }
 

@@ -85,7 +85,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         List<AppointmentDTO> appointments = appointmentRepository.findAllByDoctorIdAndHospitalIdAndDateBetween(doctorId, hospitalId, dayStart, dayEnd)
                 .map(appointmentMapper::appointmentToAppointmentDto).collect(Collectors.toList());
         for (; dayStart.isBefore(dayEnd); dayStart = dayStart.plusHours(schedule.getDuration().toHours())) {
-            boolean isTimeBusy = isAppointmentListContainsDate(appointments, dayStart);
+            boolean isTimeBusy = !isAppointmentListContainsDate(appointments, dayStart);
             result.put(dayStart.toLocalTime(), isTimeBusy);
         }
         LOGGER.info("found schedule for Doctor.id = " + doctorId + " Date: " + date.format(DateTimeFormatter.ISO_LOCAL_DATE));

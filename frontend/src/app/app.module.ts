@@ -25,6 +25,8 @@ import { ScheduleComponent } from './patient/schedule/schedule.component';
 import { AppointmentComponent } from './patient/appointment/appointment.component';
 import {MatCardModule} from "@angular/material/card";
 import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatListModule} from "@angular/material/list";
+import {ScrollingModule} from "@angular/cdk/scrolling";
 
 @NgModule({
   declarations: [
@@ -38,27 +40,29 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
     ScheduleComponent,
     AppointmentComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    MatSliderModule,
-    AppRoutingModule,
-    MatAutocompleteModule,
-    MatOptionModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    FormsModule,
-    HttpClientModule,
-    MatSelectModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatButtonModule,
-    MatCardModule,
-    MatDatepickerModule,
-    MatNativeDateModule
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        MatSliderModule,
+        AppRoutingModule,
+        MatAutocompleteModule,
+        MatOptionModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        FormsModule,
+        HttpClientModule,
+        MatSelectModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatButtonModule,
+        MatCardModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatListModule,
+        ScrollingModule
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

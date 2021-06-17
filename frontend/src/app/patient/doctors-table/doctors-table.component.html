@@ -3,7 +3,7 @@
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let doctor"> {{doctor.middleName + ' ' + doctor.name + ' ' + doctor.surname}} </td>
   </ng-container>
-  <ng-container matColumnDef="scheduleButtons" >
+  <ng-container matColumnDef="scheduleButtons">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let doctor">
       <button mat-raised-button color="primary"
@@ -31,12 +31,12 @@
     <td mat-cell *matCellDef="let doctor" [attr.colspan]="columnsToDisplay.length">
       <div class="schedule-div" [@detailExpand]="doctor == expandedCalendar ? 'expanded' : 'collapsed'">
         <div class="calendar">
-          <app-appointment></app-appointment>
+          <app-appointment [hospitalId]="hospitalId" [doctorId]="doctor.id"
+                           *ngIf="expandedCalendar===doctor"></app-appointment>
         </div>
       </div>
     </td>
   </ng-container>
-
 
 
   <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>

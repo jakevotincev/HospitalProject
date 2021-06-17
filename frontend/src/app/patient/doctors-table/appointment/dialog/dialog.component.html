@@ -1,0 +1,23 @@
+<div mat-dialog-content class="dialog">
+  <h1 mat-dialog-title>Введите данные для записи</h1>
+  <mat-form-field>
+    <mat-label>Фамилия</mat-label>
+    <input matInput [(ngModel)]="data.middleName">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Имя</mat-label>
+    <input matInput [(ngModel)]="data.name">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Отчество</mat-label>
+    <input matInput [(ngModel)]="data.surname">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Возраст</mat-label>
+    <input matInput [(ngModel)]="data.age" [value]=''>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions class="buttons">
+  <button mat-button (click)="onNoClick()">Отмена</button>
+  <button mat-button [mat-dialog-close]="data">Записаться</button>
+</div>

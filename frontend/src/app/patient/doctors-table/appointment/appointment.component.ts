@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {AppointmentService} from "../../services/appointment.service";
+import {AppointmentService} from "../../../services/appointment.service";
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
 import {
   MAT_MOMENT_DATE_FORMATS,
@@ -9,6 +9,9 @@ import {
 import * as moment from 'moment';
 import 'moment/locale/ru';
 import {Moment} from "moment";
+import {MatDialog} from "@angular/material/dialog";
+import {DialogComponent} from "./dialog/dialog.component";
+import {Patient} from "../../../interfaces/patient";
 
 @Component({
   selector: 'app-appointment',
@@ -38,7 +41,26 @@ export class AppointmentComponent implements OnInit {
   schedule: object = {};
   selectedTime: string = '';
 
-  constructor(private appointmentService: AppointmentService) {
+  patient?: Patient;
+
+
+  constructor(private appointmentService: AppointmentService, private dialog: MatDialog) {
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '400px',
+      data: {
+        middleName:'',
+        name: '',
+        surname: '',
+        age: ''
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.patient = result;
+    });
   }
 
   ngOnInit(): void {
@@ -53,7 +75,7 @@ export class AppointmentComponent implements OnInit {
 
   }
 
-  onSelectTime(event: any): void{
+  onSelectTime(event: any): void {
     this.selectedTime = event.option.value.key;
   }
 

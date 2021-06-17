@@ -8,7 +8,7 @@
   <div class="timeList">
     <cdk-virtual-scroll-viewport itemSize="50" class="scroll-block" *ngIf="!isEmpty(schedule)">
     <mat-selection-list [multiple]="false"  (selectionChange)="onSelectTime($event)">
-      <mat-list-option *cdkVirtualFor="let item of schedule|keyvalue" [value]="item" class="timeItem">
+      <mat-list-option *cdkVirtualFor="let item of schedule|keyvalue" [value]="item" class="timeItem" (click)="openDialog()">
         {{item.key}}, свободно
       </mat-list-option>
     </mat-selection-list>

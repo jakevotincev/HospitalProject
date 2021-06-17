@@ -21,12 +21,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { DoctorsTableComponent } from './patient/doctors-table/doctors-table.component';
 import {MatButtonModule} from "@angular/material/button";
-import { ScheduleComponent } from './patient/schedule/schedule.component';
-import { AppointmentComponent } from './patient/appointment/appointment.component';
+import { ScheduleComponent } from './patient/doctors-table/schedule/schedule.component';
+import { AppointmentComponent } from './patient/doctors-table/appointment/appointment.component';
 import {MatCardModule} from "@angular/material/card";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatListModule} from "@angular/material/list";
 import {ScrollingModule} from "@angular/cdk/scrolling";
+import { DialogComponent } from './patient/doctors-table/appointment/dialog/dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -38,31 +40,33 @@ import {ScrollingModule} from "@angular/cdk/scrolling";
     SelectSpecialityComponent,
     DoctorsTableComponent,
     ScheduleComponent,
-    AppointmentComponent
+    AppointmentComponent,
+    DialogComponent
   ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        MatSliderModule,
-        AppRoutingModule,
-        MatAutocompleteModule,
-        MatOptionModule,
-        MatFormFieldModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        FormsModule,
-        HttpClientModule,
-        MatSelectModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatButtonModule,
-        MatCardModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatListModule,
-        ScrollingModule
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    MatSliderModule,
+    AppRoutingModule,
+    MatAutocompleteModule,
+    MatOptionModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    FormsModule,
+    HttpClientModule,
+    MatSelectModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatListModule,
+    ScrollingModule,
+    MatDialogModule
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

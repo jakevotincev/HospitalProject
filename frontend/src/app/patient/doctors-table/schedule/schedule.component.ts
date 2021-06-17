@@ -1,6 +1,6 @@
 import {Component, Input, SimpleChanges} from '@angular/core';
-import {ScheduleService} from "../../services/schedule.service";
-import {Schedule} from "../../interfaces/schedule";
+import {ScheduleService} from "../../../services/schedule.service";
+import {Schedule} from "../../../interfaces/schedule";
 
 @Component({
   selector: 'app-schedule',

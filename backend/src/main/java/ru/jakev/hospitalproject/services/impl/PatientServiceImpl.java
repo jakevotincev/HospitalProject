@@ -9,6 +9,8 @@ import ru.jakev.hospitalproject.mappers.PeopleMapper;
 import ru.jakev.hospitalproject.repositories.PatientRepository;
 import ru.jakev.hospitalproject.services.PatientService;
 
+import javax.persistence.EntityNotFoundException;
+
 @Service
 public class PatientServiceImpl implements PatientService {
 
@@ -26,6 +28,14 @@ public class PatientServiceImpl implements PatientService {
         Patient patient = mapper.patientDtoToPatient(patientDTO);
         patient = patientRepository.save(patient);
         LOGGER.info(patient + " saved");
+        return mapper.patientToPatientDto(patient);
+    }
+
+    @Override
+    public PatientDTO getPatientByInitials(String name, String surname, String middleName) throws EntityNotFoundException{
+        Patient patient = patientRepository.findByNameAndSurnameAndMiddleName(name, surname, middleName).orElseThrow(()
+                -> new EntityNotFoundException("Not found entity Patient(name = " + name + ", surname = " + surname +
+                "middleName = " + middleName + ")"));
         return mapper.patientToPatientDto(patient);
     }
 }

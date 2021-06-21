@@ -3,6 +3,8 @@ import {HttpClient} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {Moment} from "moment";
+import {Appointment} from "../interfaces/appointment";
+import {DaySchedule} from "../interfaces/day-schedule";
 
 @Injectable({
   providedIn: 'root'
@@ -26,9 +28,13 @@ export class AppointmentService {
     } else return this.url;
   }
 
-  getScheduleForDay(doctorId: number, hospitalId: number, date: Moment): Observable<object> {
-    return this.http.get<object>(this.getUrl(doctorId, hospitalId, undefined, date))
+  getScheduleForDay(doctorId: number, hospitalId: number, date: Moment): Observable<DaySchedule> {
+    return this.http.get<DaySchedule>(this.getUrl(doctorId, hospitalId, undefined, date))
       .pipe(catchError(this.handleError({})));
+  }
+
+  saveAppointment(appointment: Appointment){
+    return this.http.post<Appointment>(this.getUrl(), appointment);
   }
 
   private handleError<T>(result?: T) {

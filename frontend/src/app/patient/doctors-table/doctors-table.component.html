@@ -31,7 +31,7 @@
     <td mat-cell *matCellDef="let doctor" [attr.colspan]="columnsToDisplay.length">
       <div class="schedule-div" [@detailExpand]="doctor == expandedCalendar ? 'expanded' : 'collapsed'">
         <div class="calendar">
-          <app-appointment [hospitalId]="hospitalId" [doctorId]="doctor.id"
+          <app-appointment [hospital]="hospital" [doctor]="doctor"
                            *ngIf="expandedCalendar===doctor"></app-appointment>
         </div>
       </div>

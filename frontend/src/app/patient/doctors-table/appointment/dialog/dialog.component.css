@@ -1,8 +1,17 @@
 .dialog{
   text-align: center;
+  overflow-y: hidden;
 }
 
 mat-form-field{
   width: 320px;
+}
+
+.buttons{
+  text-align: center;
+}
+
+button{
+  margin: 5px;
 }
 

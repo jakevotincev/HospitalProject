@@ -15,6 +15,7 @@ import ru.jakev.hospitalproject.services.ScheduleService;
 import javax.persistence.EntityNotFoundException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +74,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentDTOList;
     }
 
+    //todo: check if truncatedTo works
     @Override
     @Transactional
     public Map<LocalTime, Boolean> getScheduleByDoctorIdAndDateAndHospitalId(Integer doctorId, LocalDate date, Integer hospitalId) throws EntityNotFoundException {
@@ -80,15 +82,18 @@ public class AppointmentServiceImpl implements AppointmentService {
         if (schedule == null)
             schedule = scheduleService.getScheduleByDoctorIdAndDayOfWeekAndHospitalId(doctorId, date.getDayOfWeek(), hospitalId);
         Map<LocalTime, Boolean> result = new LinkedHashMap<>();
-        LocalDateTime dayStart = date.atTime(schedule.getDayStart());
+        LocalDateTime dayStart = date.atTime(schedule.getDayStart()).isAfter(LocalDateTime.now()) ? date.atTime(schedule.getDayStart()) :
+                LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES).plusHours(1);
         LocalDateTime dayEnd = date.atTime(schedule.getDayEnd());
         List<AppointmentDTO> appointments = appointmentRepository.findAllByDoctorIdAndHospitalIdAndDateBetween(doctorId, hospitalId, dayStart, dayEnd)
                 .map(appointmentMapper::appointmentToAppointmentDto).collect(Collectors.toList());
+        LOGGER.info("found " + appointments.size() + " appointments \n" + "doctorId " + doctorId + " hospitalId " + hospitalId + "\n"
+        + dayStart + " " + dayEnd);
         for (; dayStart.isBefore(dayEnd); dayStart = dayStart.plusHours(schedule.getDuration().toHours())) {
             boolean isTimeBusy = !isAppointmentListContainsDate(appointments, dayStart);
             result.put(dayStart.toLocalTime(), isTimeBusy);
         }
-        LOGGER.info("found schedule for Doctor.id = " + doctorId + " Date: " + date.format(DateTimeFormatter.ISO_LOCAL_DATE));
+        LOGGER.info("generated schedule for Doctor.id = " + doctorId + " Date: " + date.format(DateTimeFormatter.ISO_LOCAL_DATE));
         return result;
     }
 

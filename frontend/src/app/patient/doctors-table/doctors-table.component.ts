@@ -4,6 +4,7 @@ import {Doctor} from "../../interfaces/doctor";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {ScheduleService} from "../../services/schedule.service";
 import {Schedule} from "../../interfaces/schedule";
+import {Hospital} from "../../interfaces/hospital";
 
 @Component({
   selector: 'app-doctors-table',
@@ -19,7 +20,11 @@ import {Schedule} from "../../interfaces/schedule";
 })
 export class DoctorsTableComponent implements OnInit {
 
-  @Input() hospitalId: number = -1;
+  @Input() hospital: Hospital = {
+    id: -1,
+    name: '',
+    address: '',
+  };
   @Input() speciality: string = '';
 
   columnsToDisplay: string[] = ['name', 'scheduleButtons'];
@@ -33,17 +38,17 @@ export class DoctorsTableComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.hospitalId = changes['hospitalId'] ? changes['hospitalId'].currentValue : this.hospitalId;
+    this.hospital = changes['hospital'] ? changes['hospital'].currentValue : this.hospital;
     this.speciality = changes['speciality'] ? changes['speciality'].currentValue : this.speciality;
     this.getDoctors();
   }
 
   private getDoctors(): void {
-    this.doctorService.getDoctors(this.hospitalId, this.speciality).subscribe(doctors => this.doctors = doctors);
+    this.doctorService.getDoctors(this.hospital.id, this.speciality).subscribe(doctors => this.doctors = doctors);
   }
 
   getSchedules(doctorId: number): void {
-    this.scheduleService.getSchedules(this.hospitalId, doctorId).subscribe(schedules => this.schedules = this.scheduleService.convertDaysOfWeek(schedules));
+    this.scheduleService.getSchedules(this.hospital.id, doctorId).subscribe(schedules => this.schedules = this.scheduleService.convertDaysOfWeek(schedules));
   }
 
   ngOnInit(): void {

@@ -1,17 +1,21 @@
 <div class="appointment-block">
   <div class="calendar">
-    <mat-card >
-      <mat-calendar (selectedChange)="onSelectDay($event)" [selected]="selectedDate" [startAt]="dateStart" [minDate]="minDate"
+    <mat-card>
+      <mat-calendar (selectedChange)="onSelectDay($event)" [selected]="selectedDate" [startAt]="dateStart"
+                    [minDate]="minDate"
                     [maxDate]="maxDate" [dateFilter]="dateFilter"></mat-calendar>
     </mat-card>
   </div>
   <div class="timeList">
     <cdk-virtual-scroll-viewport itemSize="50" class="scroll-block" *ngIf="!isEmpty(schedule)">
-    <mat-selection-list [multiple]="false"  (selectionChange)="onSelectTime($event)">
-      <mat-list-option *cdkVirtualFor="let item of schedule|keyvalue" [value]="item" class="timeItem" (click)="openDialog()">
-        {{item.key}}, свободно
-      </mat-list-option>
-    </mat-selection-list>
+      <mat-selection-list [multiple]="false" (selectionChange)="onSelectTime($event)">
+        <div *cdkVirtualFor="let item of schedule|keyvalue">
+          <mat-list-option [value]="item" class="timeItem"
+                           (click)="openDialog()" *ngIf="item.value">
+            {{item.key}}, свободно
+          </mat-list-option>
+        </div>
+      </mat-selection-list>
     </cdk-virtual-scroll-viewport>
     <p *ngIf="isEmpty(schedule)">Время для записи не найдено</p>
   </div>

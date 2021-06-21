@@ -1,23 +1,61 @@
-<div mat-dialog-content class="dialog">
+<div mat-dialog-content class="dialog" *ngIf="!appointmentData">
   <h1 mat-dialog-title>Введите данные для записи</h1>
   <mat-form-field>
     <mat-label>Фамилия</mat-label>
-    <input matInput [(ngModel)]="data.middleName">
+    <input matInput [(ngModel)]="data.middleName" required maxlength="25" #mName='ngModel'>
+    <mat-error *ngIf="mName.errors?.required">
+      Обязательное поле
+    </mat-error>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Имя</mat-label>
-    <input matInput [(ngModel)]="data.name">
+    <input matInput [(ngModel)]="data.name" required maxlength="20" #name='ngModel'>
+    <mat-error *ngIf="name.errors?.required">
+      Обязательное поле
+    </mat-error>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Отчество</mat-label>
-    <input matInput [(ngModel)]="data.surname">
+    <input matInput [(ngModel)]="data.surname" required maxlength="20" #sName='ngModel'>
+    <mat-error *ngIf="sName.errors?.required">
+      Обязательное поле
+    </mat-error>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Возраст</mat-label>
-    <input matInput [(ngModel)]="data.age" [value]=''>
+    <input matInput [(ngModel)]="data.age" [value]='' required maxlength="20" #age='ngModel' type="number" min="0"
+           max="99">
+    <mat-error *ngIf="age.errors?.required">
+      Обязательное поле
+    </mat-error>
+    <mat-error *ngIf="age.errors?.min||age.errors?.max">
+      Введите корректный возраст
+    </mat-error>
   </mat-form-field>
+  <mat-form-field>
+    <mat-label>Комментарий</mat-label>
+    <input matInput [(ngModel)]="data.comment" [value]=''>
+  </mat-form-field>
+  <div class="buttons">
+    <button mat-raised-button (click)="onNoClick()" >Отмена</button>
+    <button mat-raised-button (click)="onClick() " color="primary"
+            [disabled]="name.errors?.required || mName.errors?.required|| sName.errors?.required || age.errors?.required
+          || age.errors?.min|| age.errors?.max">
+      Записаться
+    </button>
+  </div>
 </div>
-<div mat-dialog-actions class="buttons">
-  <button mat-button (click)="onNoClick()">Отмена</button>
-  <button mat-button [mat-dialog-close]="data">Записаться</button>
+<div *ngIf="appointmentData" class="dialog">
+  <div>
+    <h2>Вы успешно записаны
+      к {{appointmentData.doctor.middleName}} {{appointmentData.doctor.name}}
+      {{appointmentData.doctor.surname}} <br>
+      Дата: {{appointmentData.date}}<br>
+      Поликлиника : {{appointmentData.hospital.name}}, {{appointmentData.hospital.address}}
+    </h2>
+  </div>
+  <div class="buttons">
+    <button mat-raised-button [mat-dialog-close]="true" style="margin-top: 10px">Закрыть</button>
+  </div>
 </div>
+

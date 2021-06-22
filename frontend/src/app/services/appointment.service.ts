@@ -5,6 +5,7 @@ import {catchError} from "rxjs/operators";
 import {Moment} from "moment";
 import {Appointment} from "../interfaces/appointment";
 import {DaySchedule} from "../interfaces/day-schedule";
+import {Patient} from "../interfaces/patient";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class AppointmentService {
 
   private getUrl(doctorId?: number, hospitalId?: number, patientId?: number, date?: Moment) {
     if (!doctorId && !hospitalId && !patientId && !date) return 'http://localhost:8080/appointments';
-    else if (!doctorId && !hospitalId && !date && patientId) return 'http://localhost:8080/patient/' + patientId
+    else if (!doctorId && !hospitalId && !date && patientId) return 'http://localhost:8080/patients/' + patientId
       + '/appointments';
     else if (doctorId && hospitalId && !patientId && !date) return this.url + hospitalId + '/doctors/' + doctorId
       + '/appointments';
@@ -33,8 +34,12 @@ export class AppointmentService {
       .pipe(catchError(this.handleError({})));
   }
 
-  saveAppointment(appointment: Appointment){
+  saveAppointment(appointment: Appointment) {
     return this.http.post<Appointment>(this.getUrl(), appointment);
+  }
+
+  getAppointmentsByPatientId(patientId: number) {
+    return this.http.get<Appointment[]>(this.getUrl(undefined, undefined, patientId))
   }
 
   private handleError<T>(result?: T) {

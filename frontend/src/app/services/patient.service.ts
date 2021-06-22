@@ -25,7 +25,6 @@ export class PatientService {
         middleName: middleName
       }
     })
-      // .pipe(catchError(this.handleError({})))
   }
 
   // private handleError<T>(result?: T) {

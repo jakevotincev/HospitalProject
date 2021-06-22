@@ -1,0 +1,40 @@
+<div class="form">
+  <h2>Введите свои данные для поиска записей</h2>
+  <form (ngSubmit)="onSubmit($event)">
+    <div>
+      <mat-form-field>
+        <mat-label>Фамилия</mat-label>
+        <input matInput [(ngModel)]="patient.surname" required maxlength="25" #mName='ngModel' name="middleName">
+        <mat-error *ngIf="mName.errors?.required">
+          Обязательное поле
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Имя</mat-label>
+        <input matInput [(ngModel)]="patient.name" required maxlength="20" #name='ngModel' name="name">
+        <mat-error *ngIf="name.errors?.required">
+          Обязательное поле
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Отчество</mat-label>
+        <input matInput [(ngModel)]="patient.middleName" required maxlength="20" #sName='ngModel' name="surname">
+        <mat-error *ngIf="sName.errors?.required">
+          Обязательное поле
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <button mat-raised-button type="submit" color="primary"
+              [disabled]="name.errors?.required || mName.errors?.required|| sName.errors?.required">
+        Найти
+      </button>
+    </div>
+  </form>
+</div>
+<mat-error *ngIf="errorMsg">{{errorMsg}}</mat-error>
+<app-appointment-table *ngIf="appointments.length>0" [appointments]="appointments"></app-appointment-table>

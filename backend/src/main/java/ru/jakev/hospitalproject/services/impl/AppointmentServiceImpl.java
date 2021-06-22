@@ -83,7 +83,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             schedule = scheduleService.getScheduleByDoctorIdAndDayOfWeekAndHospitalId(doctorId, date.getDayOfWeek(), hospitalId);
         Map<LocalTime, Boolean> result = new LinkedHashMap<>();
         LocalDateTime dayStart = date.atTime(schedule.getDayStart()).isAfter(LocalDateTime.now()) ? date.atTime(schedule.getDayStart()) :
-                LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES).plusHours(1);
+                LocalDateTime.now().truncatedTo(ChronoUnit.HOURS).plusHours(1);
         LocalDateTime dayEnd = date.atTime(schedule.getDayEnd());
         List<AppointmentDTO> appointments = appointmentRepository.findAllByDoctorIdAndHospitalIdAndDateBetween(doctorId, hospitalId, dayStart, dayEnd)
                 .map(appointmentMapper::appointmentToAppointmentDto).collect(Collectors.toList());

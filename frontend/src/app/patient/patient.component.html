@@ -1,8 +1,15 @@
-<div class="hospital-form">
+<div class="buttons">
+  <button mat-raised-button (click)="changeView(0)">Записаться</button>
+  <button mat-raised-button (click)="changeView(1)">Просмотреть записи</button>
+</div>
+<div class="saveAppointment" *ngIf="view==0">
   <app-hospital-search-bar (hospitalEvent)="selectHospital($event)"></app-hospital-search-bar>
   <app-select-speciality *ngIf="hospital" [hospitalId]="hospital.id" (specialityEvent)="selectSpeciality($event)">
   </app-select-speciality>
   <app-doctors-table *ngIf="speciality&&hospital" [hospital]="hospital"
                      [speciality]="speciality">
   </app-doctors-table>
+</div>
+<div *ngIf="view==1" class="getAppointment">
+  <app-patient-form></app-patient-form>
 </div>

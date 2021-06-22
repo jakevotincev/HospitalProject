@@ -29,6 +29,8 @@ import {MatListModule} from "@angular/material/list";
 import {ScrollingModule} from "@angular/cdk/scrolling";
 import { DialogComponent } from './patient/doctors-table/appointment/dialog/dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import { PatientFormComponent } from './patient/patient-form/patient-form.component';
+import { AppointmentTableComponent } from './appointment-table/appointment-table.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import {MatDialogModule} from "@angular/material/dialog";
     DoctorsTableComponent,
     ScheduleComponent,
     AppointmentComponent,
-    DialogComponent
+    DialogComponent,
+    PatientFormComponent,
+    AppointmentTableComponent
   ],
   imports: [
     BrowserModule,

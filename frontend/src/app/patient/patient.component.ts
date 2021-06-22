@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {Hospital} from "../interfaces/hospital";
+import {View} from "./view";
 
 
 @Component({
@@ -9,6 +10,7 @@ import {Hospital} from "../interfaces/hospital";
 })
 export class PatientComponent {
 
+  view: View = View.SaveAppointment;
   hospital?: Hospital;
   speciality?: string;
 
@@ -19,5 +21,9 @@ export class PatientComponent {
 
   selectSpeciality(speciality: string): void{
     this.speciality = speciality
+  }
+
+  changeView(view:number){
+    this.view = view;
   }
 }

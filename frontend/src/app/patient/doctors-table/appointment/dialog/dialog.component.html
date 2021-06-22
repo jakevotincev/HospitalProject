@@ -2,7 +2,7 @@
   <h1 mat-dialog-title>Введите данные для записи</h1>
   <mat-form-field>
     <mat-label>Фамилия</mat-label>
-    <input matInput [(ngModel)]="data.middleName" required maxlength="25" #mName='ngModel'>
+    <input matInput [(ngModel)]="data.surname" required maxlength="25" #mName='ngModel'>
     <mat-error *ngIf="mName.errors?.required">
       Обязательное поле
     </mat-error>
@@ -16,7 +16,7 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>Отчество</mat-label>
-    <input matInput [(ngModel)]="data.surname" required maxlength="20" #sName='ngModel'>
+    <input matInput [(ngModel)]="data.middleName" required maxlength="20" #sName='ngModel'>
     <mat-error *ngIf="sName.errors?.required">
       Обязательное поле
     </mat-error>
@@ -48,8 +48,8 @@
 <div *ngIf="appointmentData" class="dialog">
   <div>
     <h2>Вы успешно записаны
-      к {{appointmentData.doctor.middleName}} {{appointmentData.doctor.name}}
-      {{appointmentData.doctor.surname}} <br>
+      к {{appointmentData.doctor.surname}} {{appointmentData.doctor.name}}
+      {{appointmentData.doctor.middleName}} <br>
       Дата: {{appointmentData.date}}<br>
       Поликлиника : {{appointmentData.hospital.name}}, {{appointmentData.hospital.address}}
     </h2>

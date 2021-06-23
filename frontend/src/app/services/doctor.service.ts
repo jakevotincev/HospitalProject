@@ -25,4 +25,14 @@ export class DoctorService {
   getDoctors(hospitalId: number, speciality: string): Observable<Doctor[]> {
     return this.http.get<Doctor[]>(this.getUrl(hospitalId, speciality));
   }
+
+  getByInitials(name:string, surname:string, middleName: string){
+    return this.http.get<Doctor>('http://localhost:8080/doctors', {
+      params:{
+        name: name,
+        surname: surname,
+        middleName: middleName
+      }
+    })
+  }
 }

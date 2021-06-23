@@ -1,4 +1,4 @@
-<div class="form">
+<div>
   <h2>Введите свои данные для поиска записей</h2>
   <form (ngSubmit)="onSubmit($event)">
     <div>
@@ -36,5 +36,5 @@
     </div>
   </form>
 </div>
-<mat-error *ngIf="errorMsg">{{errorMsg}}</mat-error>
-<app-appointment-table *ngIf="appointments.length>0" [appointments]="appointments"></app-appointment-table>
+<mat-error *ngIf="errorMsg" style="margin-top: 10px">{{errorMsg}}</mat-error>
+<app-appointment-table *ngIf="appointments.length>0" [appointments]="appointments" [displayedColumns]="displayedColumns"></app-appointment-table>

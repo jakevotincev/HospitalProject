@@ -5,7 +5,6 @@ import {catchError} from "rxjs/operators";
 import {Moment} from "moment";
 import {Appointment} from "../interfaces/appointment";
 import {DaySchedule} from "../interfaces/day-schedule";
-import {Patient} from "../interfaces/patient";
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +16,10 @@ export class AppointmentService {
   constructor(private http: HttpClient) {
   }
 
-  private getUrl(doctorId?: number, hospitalId?: number, patientId?: number, date?: Moment) {
+  private getUrl(doctorId?: number, hospitalId?: number, patientId?: number, date?: Moment, secondDate?: Moment) {
     if (!doctorId && !hospitalId && !patientId && !date) return 'http://localhost:8080/appointments';
+    else if(doctorId&&!hospitalId&&!patientId&&date&&secondDate) return 'http://localhost:8080/doctors/' + doctorId + '/appointments/'
+      + date.format('DD_MM_yyyy HH:mm:ss') + '/' + secondDate.format('DD_MM_yyyy HH:mm:ss');
     else if (!doctorId && !hospitalId && !date && patientId) return 'http://localhost:8080/patients/' + patientId
       + '/appointments';
     else if (doctorId && hospitalId && !patientId && !date) return this.url + hospitalId + '/doctors/' + doctorId
@@ -40,6 +41,10 @@ export class AppointmentService {
 
   getAppointmentsByPatientId(patientId: number) {
     return this.http.get<Appointment[]>(this.getUrl(undefined, undefined, patientId))
+  }
+
+  getAppointmentsByDoctorIdAndDuration(doctorId: number, first: Moment, second: Moment){
+    return this.http.get<Appointment[]>(this.getUrl(doctorId, undefined, undefined, first, second))
   }
 
   private handleError<T>(result?: T) {

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Appointment} from "../interfaces/appointment";
 
 @Component({
@@ -6,15 +6,10 @@ import {Appointment} from "../interfaces/appointment";
   templateUrl: './appointment-table.component.html',
   styleUrls: ['./appointment-table.component.css']
 })
-export class AppointmentTableComponent implements OnInit {
+export class AppointmentTableComponent {
 
-  displayedColumns: string[] = ['Date', 'Doctor', 'Place'];
+  @Input() displayedColumns: string[] = [];
 
-  @Input()appointments: Appointment[] = [];
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  @Input() appointments: Appointment[] = [];
 
 }

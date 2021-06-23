@@ -64,14 +64,13 @@ public class AppointmentController {
         return new ResponseEntity<>(schedule, HttpStatus.OK);
     }
 
-    @GetMapping("hospitals/{h_id}/doctors/{d_id}/appointments/{from}/{to}")
+    @GetMapping("doctors/{d_id}/appointments/{from}/{to}")
     public ResponseEntity<?> getAppointmentsBetween(@PathVariable("from")
                                                     @DateTimeFormat(pattern = "dd_MM_yyyy HH:mm:ss") LocalDateTime from,
                                                     @PathVariable("to") @DateTimeFormat(pattern = "dd_MM_yyyy HH:mm:ss")
-                                                            LocalDateTime to, @PathVariable("h_id") Integer h_id,
-                                                    @PathVariable("d_id") Integer d_id) {
-        List<AppointmentDTO> appointmentDTOList = appointmentService.getAppointmentsByDoctorIdAndHospitalIdAndDateBetween(
-                d_id, h_id, from, to);
+                                                            LocalDateTime to, @PathVariable("d_id") Integer d_id) {
+        List<AppointmentDTO> appointmentDTOList = appointmentService.getAppointmentsByDoctorIdAndDateBetween(
+                d_id, from, to);
         return new ResponseEntity<>(appointmentDTOList, HttpStatus.OK);
     }
 }

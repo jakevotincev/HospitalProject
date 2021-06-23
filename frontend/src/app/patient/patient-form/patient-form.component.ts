@@ -20,6 +20,7 @@ export class PatientFormComponent {
     surname: ''
   };
 
+  displayedColumns: string[] = ['Date', 'Doctor', 'Place']
   appointments: Appointment[] = [];
   errorMsg: string = '';
 

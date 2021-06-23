@@ -74,7 +74,19 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentDTOList;
     }
 
-    //todo: check if truncatedTo works
+    @Override
+    @Transactional
+    public List<AppointmentDTO> getAppointmentsByDoctorIdAndDateBetween(Integer doctorId, LocalDateTime from, LocalDateTime to) {
+        List<AppointmentDTO> appointmentDTOList;
+        try (Stream<Appointment> appointmentStream = appointmentRepository.findAllByDoctorIdAndDateBetween(doctorId, from, to)) {
+            appointmentDTOList = appointmentStream.map(appointmentMapper::appointmentToAppointmentDto).collect(Collectors.toList());
+        }
+        LOGGER.info("found " + appointmentDTOList.size() + " appointments, " + "Doctor.Id = " + doctorId
+                + " between " + from.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + " and " +
+                to.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        return appointmentDTOList;
+    }
+
     @Override
     @Transactional
     public Map<LocalTime, Boolean> getScheduleByDoctorIdAndDateAndHospitalId(Integer doctorId, LocalDate date, Integer hospitalId) throws EntityNotFoundException {
@@ -88,7 +100,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         List<AppointmentDTO> appointments = appointmentRepository.findAllByDoctorIdAndHospitalIdAndDateBetween(doctorId, hospitalId, dayStart, dayEnd)
                 .map(appointmentMapper::appointmentToAppointmentDto).collect(Collectors.toList());
         LOGGER.info("found " + appointments.size() + " appointments \n" + "doctorId " + doctorId + " hospitalId " + hospitalId + "\n"
-        + dayStart + " " + dayEnd);
+                + dayStart + " " + dayEnd);
         for (; dayStart.isBefore(dayEnd); dayStart = dayStart.plusHours(schedule.getDuration().toHours())) {
             boolean isTimeBusy = !isAppointmentListContainsDate(appointments, dayStart);
             result.put(dayStart.toLocalTime(), isTimeBusy);
@@ -98,7 +110,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     //todo: add duration check?
-    //todo: убрать баг если сохраняешь запись с неверными данными врача кроме id то метод вернет неверные данные врача?
     @Override
     public AppointmentDTO saveAppointment(AppointmentDTO appointmentDTO) throws EntityNotFoundException {
         Integer doctorId = appointmentDTO.getDoctor().getId();

@@ -11,4 +11,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     Stream<Appointment> findAllByDoctorIdAndHospitalId(Integer doctorId, Integer hospitalId);
     Stream<Appointment> findAllByPatientId(Integer patientId);
     Stream<Appointment> findAllByDoctorIdAndHospitalIdAndDateBetween(Integer doctorId, Integer hospitalId, LocalDateTime from, LocalDateTime to);
+    Stream<Appointment> findAllByDoctorIdAndDateBetween(Integer doctorId, LocalDateTime from, LocalDateTime to);
 }

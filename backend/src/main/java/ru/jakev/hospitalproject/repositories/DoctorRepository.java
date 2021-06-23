@@ -27,4 +27,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
             "         inner join doctor_hospitals dh on doctor.id = dh.doctors_id " +
             "where dh.hospitals_id = ?2 and doctor.speciality=?1", nativeQuery = true)
     List<Doctor> findAllBySpecialityAndHospitalId(String speciality, Integer id);
+
+    Optional<Doctor> findByNameAndSurnameAndMiddleName(String name, String surname, String middleName);
 }

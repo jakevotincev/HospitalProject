@@ -7,6 +7,14 @@
     <th mat-header-cell *matHeaderCellDef>Врач</th>
     <td mat-cell *matCellDef="let appointment">{{appointment.doctor.surname}} {{appointment.doctor.name}} {{appointment.doctor.middleName}}, {{appointment.doctor.speciality}}</td>
   </ng-container>
+  <ng-container matColumnDef="Patient">
+    <th mat-header-cell *matHeaderCellDef>Пациент</th>
+    <td mat-cell *matCellDef="let appointment">{{appointment.patient.surname}} {{appointment.patient.name}} {{appointment.patient.middleName}}</td>
+  </ng-container>
+  <ng-container matColumnDef="Comment">
+    <th mat-header-cell *matHeaderCellDef>Комментарий пациента</th>
+    <td mat-cell *matCellDef="let appointment">{{appointment.comment}}</td>
+  </ng-container>
   <ng-container matColumnDef="Place">
     <th mat-header-cell *matHeaderCellDef>Место</th>
     <td mat-cell *matCellDef="let appointment">{{appointment.hospital.name}}, {{appointment.hospital.address}}</td>

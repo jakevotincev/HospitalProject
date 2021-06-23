@@ -31,6 +31,7 @@ import { DialogComponent } from './patient/doctors-table/appointment/dialog/dial
 import {MatDialogModule} from "@angular/material/dialog";
 import { PatientFormComponent } from './patient/patient-form/patient-form.component';
 import { AppointmentTableComponent } from './appointment-table/appointment-table.component';
+import { DoctorFormComponent } from './doctor/doctor-form/doctor-form.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { AppointmentTableComponent } from './appointment-table/appointment-table
     AppointmentComponent,
     DialogComponent,
     PatientFormComponent,
-    AppointmentTableComponent
+    AppointmentTableComponent,
+    DoctorFormComponent
   ],
   imports: [
     BrowserModule,

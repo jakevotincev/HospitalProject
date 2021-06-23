@@ -1,0 +1,55 @@
+<div>
+  <h2>Введите свои данные для поиска записей</h2>
+  <form (ngSubmit)="onSubmit($event)">
+    <div>
+      <mat-form-field>
+        <mat-label>Фамилия</mat-label>
+        <input matInput [(ngModel)]="doctor.surname" required maxlength="25" #mName='ngModel' name="middleName">
+        <mat-error *ngIf="mName.errors?.required">
+          Обязательное поле
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Имя</mat-label>
+        <input matInput [(ngModel)]="doctor.name" required maxlength="20" #name='ngModel' name="name">
+        <mat-error *ngIf="name.errors?.required">
+          Обязательное поле
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Отчество</mat-label>
+        <input matInput [(ngModel)]="doctor.middleName" required maxlength="20" #sName='ngModel' name="surname">
+        <mat-error *ngIf="sName.errors?.required">
+          Обязательное поле
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <button mat-raised-button type="submit" color="primary"
+              [disabled]="name.errors?.required || mName.errors?.required|| sName.errors?.required">
+        Найти
+      </button>
+    </div>
+  </form>
+</div>
+<mat-error *ngIf="doctorErrorMsg" style="margin-top: 10px">{{doctorErrorMsg}}</mat-error>
+<div *ngIf="showDatepicker" class="datepicker">
+  <mat-form-field appearance="fill">
+    <mat-label>Выберите период</mat-label>
+    <mat-date-range-input [rangePicker]="picker" [formGroup]="range">
+      <input matStartDate placeholder="Начало" formControlName="start">
+      <input matEndDate placeholder="Конец" formControlName="end">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+  <br>
+  <button mat-raised-button color="primary" (click)="onClick()" [disabled]="!range.value.start|| !range.value.end">Найти</button>
+</div>
+<mat-error *ngIf="appointmentErrorMsg" style="margin-top: 10px">{{appointmentErrorMsg}}</mat-error>
+<app-appointment-table *ngIf="appointments.length>0" [appointments]="appointments"
+                       [displayedColumns]="displayedColumns"></app-appointment-table>

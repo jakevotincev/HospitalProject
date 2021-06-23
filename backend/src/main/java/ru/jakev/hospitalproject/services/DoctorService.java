@@ -18,4 +18,6 @@ public interface DoctorService {
     List<DoctorSpeciality> getSpecialitiesByHospitalId(Integer hospitalId);
 
     List<DoctorDTO> getAllBySpecialityAndHospitalId(String speciality, Integer hospitalId);
+
+    DoctorDTO getByInitials(String name, String surname, String middleName);
 }

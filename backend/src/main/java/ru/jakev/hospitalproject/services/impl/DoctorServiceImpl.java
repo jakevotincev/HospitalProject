@@ -72,4 +72,12 @@ public class DoctorServiceImpl implements DoctorService {
         LOGGER.info("found " + doctors.size() + " doctors, speciality=" + speciality + " hospital.id = " + hospitalId);
         return doctors.stream().map(peopleMapper::doctorToDoctorDto).collect(Collectors.toList());
     }
+
+    @Override
+    public DoctorDTO getByInitials(String name, String surname, String middleName) {
+        Doctor doctor = doctorRepository.findByNameAndSurnameAndMiddleName(name, surname, middleName).orElseThrow(
+                () -> new EntityNotFoundException("Not found entity Doctor(name = " + name + ", surname = " + surname +
+                        "middleName = " + middleName + ")"));
+        return peopleMapper.doctorToDoctorDto(doctor);
+    }
 }

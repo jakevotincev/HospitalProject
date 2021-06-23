@@ -5,6 +5,6 @@ export interface Doctor {
   surname: string,
   name: string,
   middleName: string,
-  speciality: string,
-  hospitals: Hospital[]
+  speciality?: string,
+  hospitals?: Hospital[]
 }

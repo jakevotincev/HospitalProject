@@ -33,8 +33,8 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientDTO getPatientByInitials(String name, String surname, String middleName) throws EntityNotFoundException{
-        Patient patient = patientRepository.findByNameAndSurnameAndMiddleName(name, surname, middleName).orElseThrow(()
-                -> new EntityNotFoundException("Not found entity Patient(name = " + name + ", surname = " + surname +
+        Patient patient = patientRepository.findByNameAndSurnameAndMiddleName(name, surname, middleName).orElseThrow(
+                () -> new EntityNotFoundException("Not found entity Patient(name = " + name + ", surname = " + surname +
                 "middleName = " + middleName + ")"));
         return mapper.patientToPatientDto(patient);
     }

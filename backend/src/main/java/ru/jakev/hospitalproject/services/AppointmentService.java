@@ -13,16 +13,14 @@ import java.util.Map;
 
 public interface AppointmentService {
 
-    @Transactional
     List<AppointmentDTO> getAppointmentsByDoctorIdAndHospitalId(Integer doctorId, Integer hospitalId);
 
-    @Transactional
     List<AppointmentDTO> getAppointmentsByPatientId(Integer patientId);
 
-    @Transactional
     List<AppointmentDTO> getAppointmentsByDoctorIdAndHospitalIdAndDateBetween(Integer doctorId, Integer hospitalId, LocalDateTime from, LocalDateTime to);
 
-    @Transactional
+    List<AppointmentDTO> getAppointmentsByDoctorIdAndDateBetween(Integer doctorId, LocalDateTime from, LocalDateTime to);
+
     Map<LocalTime, Boolean> getScheduleByDoctorIdAndDateAndHospitalId(Integer doctorId, LocalDate date, Integer hospitalId) throws EntityNotFoundException;
 
     AppointmentDTO saveAppointment(AppointmentDTO appointmentDTO) throws EntityNotFoundException;

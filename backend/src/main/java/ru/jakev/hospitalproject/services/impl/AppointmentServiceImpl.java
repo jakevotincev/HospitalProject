@@ -7,12 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.jakev.hospitalproject.dto.AppointmentDTO;
 import ru.jakev.hospitalproject.dto.ScheduleDTO;
 import ru.jakev.hospitalproject.entities.Appointment;
+import ru.jakev.hospitalproject.exceptions.EntityNotFoundException;
+import ru.jakev.hospitalproject.exceptions.InvalidAppointmentException;
 import ru.jakev.hospitalproject.mappers.AppointmentMapper;
 import ru.jakev.hospitalproject.repositories.AppointmentRepository;
 import ru.jakev.hospitalproject.services.AppointmentService;
 import ru.jakev.hospitalproject.services.ScheduleService;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
+@Transactional
 public class AppointmentServiceImpl implements AppointmentService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(AppointmentServiceImpl.class);
@@ -39,7 +41,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<AppointmentDTO> getAppointmentsByDoctorIdAndHospitalId(Integer doctorId, Integer hospitalId) {
         List<AppointmentDTO> appointmentDTOList;
         try (Stream<Appointment> appointmentStream = appointmentRepository.findAllByDoctorIdAndHospitalId(doctorId, hospitalId)) {
@@ -51,7 +53,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<AppointmentDTO> getAppointmentsByPatientId(Integer patientId) {
         List<AppointmentDTO> appointmentDTOList;
         try (Stream<Appointment> appointmentStream = appointmentRepository.findAllByPatientId(patientId)) {
@@ -62,7 +64,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<AppointmentDTO> getAppointmentsByDoctorIdAndHospitalIdAndDateBetween(Integer doctorId, Integer hospitalId, LocalDateTime from, LocalDateTime to) {
         List<AppointmentDTO> appointmentDTOList;
         try (Stream<Appointment> appointmentStream = appointmentRepository.findAllByDoctorIdAndHospitalIdAndDateBetween(doctorId, hospitalId, from, to)) {
@@ -75,7 +77,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<AppointmentDTO> getAppointmentsByDoctorIdAndDateBetween(Integer doctorId, LocalDateTime from, LocalDateTime to) {
         List<AppointmentDTO> appointmentDTOList;
         try (Stream<Appointment> appointmentStream = appointmentRepository.findAllByDoctorIdAndDateBetween(doctorId, from, to)) {
@@ -88,8 +90,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    @Transactional
-    public Map<LocalTime, Boolean> getScheduleByDoctorIdAndDateAndHospitalId(Integer doctorId, LocalDate date, Integer hospitalId) throws EntityNotFoundException {
+    @Transactional(readOnly = true)
+    public Map<LocalTime, Boolean> getScheduleByDoctorIdAndDateAndHospitalId(Integer doctorId, LocalDate date, Integer hospitalId) {
         ScheduleDTO schedule = scheduleService.getScheduleByDateAndHospitalIdAndDoctorId(date, hospitalId, doctorId);
         if (schedule == null)
             schedule = scheduleService.getScheduleByDoctorIdAndDayOfWeekAndHospitalId(doctorId, date.getDayOfWeek(), hospitalId);
@@ -99,8 +101,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         LocalDateTime dayEnd = date.atTime(schedule.getDayEnd());
         List<AppointmentDTO> appointments = appointmentRepository.findAllByDoctorIdAndHospitalIdAndDateBetween(doctorId, hospitalId, dayStart, dayEnd)
                 .map(appointmentMapper::appointmentToAppointmentDto).collect(Collectors.toList());
-        LOGGER.info("found " + appointments.size() + " appointments \n" + "doctorId " + doctorId + " hospitalId " + hospitalId + "\n"
-                + dayStart + " " + dayEnd);
+        LOGGER.info("found " + appointments.size() + " appointments " + "doctorId: " + doctorId + " hospitalId: " + hospitalId + "\n"
+                + dayStart + " - " + dayEnd);
         for (; dayStart.isBefore(dayEnd); dayStart = dayStart.plusHours(schedule.getDuration().toHours())) {
             boolean isTimeBusy = !isAppointmentListContainsDate(appointments, dayStart);
             result.put(dayStart.toLocalTime(), isTimeBusy);
@@ -109,13 +111,17 @@ public class AppointmentServiceImpl implements AppointmentService {
         return result;
     }
 
-    //todo: add duration check?
     @Override
-    public AppointmentDTO saveAppointment(AppointmentDTO appointmentDTO) throws EntityNotFoundException {
+    public AppointmentDTO saveAppointment(AppointmentDTO appointmentDTO) throws InvalidAppointmentException {
         Integer doctorId = appointmentDTO.getDoctor().getId();
         Integer hospitalId = appointmentDTO.getHospital().getId();
         DayOfWeek day = appointmentDTO.getDate().getDayOfWeek();
-        Duration duration = scheduleService.getScheduleByDoctorIdAndDayOfWeekAndHospitalId(doctorId, day, hospitalId).getDuration();
+        Duration duration;
+        try {
+            duration = scheduleService.getScheduleByDoctorIdAndDayOfWeekAndHospitalId(doctorId, day, hospitalId).getDuration();
+        } catch (EntityNotFoundException e){
+            throw new InvalidAppointmentException(e, appointmentDTO);
+        }
         appointmentDTO.setDuration(duration);
         Appointment appointment = appointmentRepository.save(appointmentMapper.appointmentDtoToAppointment(appointmentDTO));
         LOGGER.info(appointment + " saved");

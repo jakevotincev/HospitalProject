@@ -26,7 +26,7 @@ export class PatientFormComponent {
 
   onSubmit(event: any): void {
     event.preventDefault();
-    this.patientService.getPatientByInitials(this.patient.name, this.patient.surname, this.patient.middleName)
+    this.patientService.getPatientByInitials(this.patient.name.trim(), this.patient.surname.trim(), this.patient.middleName.trim())
       .subscribe(patient => {
         this.errorMsg = '';
         this.patient = patient;

@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.jakev.hospitalproject.dto.PermanentScheduleDTO;
+import ru.jakev.hospitalproject.exceptions.InvalidScheduleException;
 import ru.jakev.hospitalproject.services.ScheduleService;
 
 import java.util.List;
@@ -20,13 +21,9 @@ public class ScheduleController {
     }
 
     @PostMapping("schedules")
-    public ResponseEntity<?> save(@RequestBody PermanentScheduleDTO schedule) {
+    public ResponseEntity<?> save(@RequestBody PermanentScheduleDTO schedule) throws InvalidScheduleException {
         PermanentScheduleDTO savedSchedule;
-        try {
-            savedSchedule = scheduleService.savePermanentSchedule(schedule);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Invalid doctor id: " + schedule.getDoctorId(), HttpStatus.BAD_REQUEST);
-        }
+        savedSchedule = scheduleService.savePermanentSchedule(schedule);
         return new ResponseEntity<>(savedSchedule, HttpStatus.CREATED);
     }
 

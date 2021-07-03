@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.jakev.hospitalproject.dto.PatientDTO;
 import ru.jakev.hospitalproject.services.PatientService;
 
-import javax.persistence.EntityNotFoundException;
-
 @RestController
 @RequestMapping("patients")
 @CrossOrigin
@@ -19,7 +17,6 @@ public class PatientController {
         this.patientService = patientService;
     }
 
-    //todo: how to catch exception if field equals null
     @PostMapping
     public ResponseEntity<?> save(@RequestBody PatientDTO patient) {
         PatientDTO savedPatient = patientService.savePatient(patient);
@@ -30,13 +27,7 @@ public class PatientController {
     public ResponseEntity<?> getByInitials(@RequestParam(name = "name") String name,
                                            @RequestParam(name = "surname") String surname,
                                            @RequestParam(name = "middleName") String middleName) {
-        PatientDTO patientDTO;
-        try {
-            patientDTO = patientService.getPatientByInitials(name, surname, middleName);
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-
+        PatientDTO patientDTO = patientService.getPatientByInitials(name, surname, middleName);
         return new ResponseEntity<>(patientDTO, HttpStatus.OK);
     }
 }

@@ -3,6 +3,7 @@ package ru.jakev.hospitalproject.services.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jakev.hospitalproject.dto.DoctorDTO;
 import ru.jakev.hospitalproject.dto.ExtraScheduleDTO;
@@ -10,6 +11,8 @@ import ru.jakev.hospitalproject.dto.HospitalDTO;
 import ru.jakev.hospitalproject.dto.PermanentScheduleDTO;
 import ru.jakev.hospitalproject.entities.ExtraSchedule;
 import ru.jakev.hospitalproject.entities.PermanentSchedule;
+import ru.jakev.hospitalproject.exceptions.EntityNotFoundException;
+import ru.jakev.hospitalproject.exceptions.InvalidScheduleException;
 import ru.jakev.hospitalproject.mappers.PeopleMapper;
 import ru.jakev.hospitalproject.mappers.ScheduleMapper;
 import ru.jakev.hospitalproject.repositories.ExtraScheduleRepository;
@@ -18,7 +21,6 @@ import ru.jakev.hospitalproject.services.DoctorService;
 import ru.jakev.hospitalproject.services.HospitalService;
 import ru.jakev.hospitalproject.services.ScheduleService;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -28,9 +30,8 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-//todo: write custom entity not found exception???
-//todo: maybe write save method
 @Service
+@Transactional
 public class ScheduleServiceImpl implements ScheduleService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ScheduleServiceImpl.class);
@@ -52,7 +53,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<PermanentScheduleDTO> getSchedulesByDoctorIdAndHospitalId(Integer doctorId, Integer hospitalId) {
         List<PermanentScheduleDTO> permanentScheduleDTOList;
         try (Stream<PermanentSchedule> scheduleStream = permanentScheduleRepository.findAllByDoctorIdAAndHospitalId(doctorId, hospitalId)) {
@@ -64,48 +65,44 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    @Transactional
-    public PermanentScheduleDTO getScheduleByDoctorIdAndDayOfWeekAndHospitalId(Integer doctorId, DayOfWeek day, Integer hospitalId) throws EntityNotFoundException {
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
+    public PermanentScheduleDTO getScheduleByDoctorIdAndDayOfWeekAndHospitalId(Integer doctorId, DayOfWeek day, Integer hospitalId) {
         PermanentSchedule schedule = permanentScheduleRepository.findByDoctorIdAndDayOfWeekAndHospitalId(doctorId, day, hospitalId).orElseThrow(() ->
-                new EntityNotFoundException("Entity schedule {doctor_id: " + doctorId + " hospital_id: "
+                new EntityNotFoundException("Schedule {doctor_id: " + doctorId + ", hospital_id: "
                         + hospitalId + ", day: " + day.getDisplayName(TextStyle.FULL, Locale.ENGLISH) + "} not found"));
         LOGGER.info("found " + schedule);
         return scheduleMapper.permanentScheduleToPermanentScheduleDto(schedule);
     }
 
     @Override
-    @Transactional
-    public ExtraScheduleDTO getScheduleByDateAndHospitalIdAndDoctorId(LocalDate date, Integer hospitalId, Integer doctor_id) {
-        ExtraSchedule schedule = extraScheduleRepository.getByDateAndHospitalIdAndDoctorId(date, hospitalId, doctor_id).orElse(null);
-        if (schedule == null)
-            LOGGER.info("No extra schedules found");
+    @Transactional(readOnly = true)
+    public ExtraScheduleDTO getScheduleByDateAndHospitalIdAndDoctorId(LocalDate date, Integer hospitalId, Integer doctorId) {
+        ExtraSchedule schedule = extraScheduleRepository.getByDateAndHospitalIdAndDoctorId(date, hospitalId, doctorId).orElse(null);
+        if (schedule == null) LOGGER.info("Extra schedule {doctorId: " + doctorId + " hospital_id: "
+                + hospitalId + ", date: " + date + "} not found");
         else
             LOGGER.info("found " + schedule + " Date = " + date.format(DateTimeFormatter.ISO_LOCAL_DATE)
-                    + " Doctor.Id = " + doctor_id + " Hospital.Id = " + hospitalId);
+                    + " Doctor.Id = " + doctorId + " Hospital.Id = " + hospitalId);
         return scheduleMapper.extraScheduleToExtraScheduleDto(schedule);
     }
 
-    //todo: add specific exception
-    //todo: add exception if schedules and extra schedules for one day bigger than 1
     @Override
-    public PermanentScheduleDTO savePermanentSchedule(PermanentScheduleDTO permanentScheduleDTO) throws Exception {
+    public PermanentScheduleDTO savePermanentSchedule(PermanentScheduleDTO permanentScheduleDTO) throws InvalidScheduleException {
         if (permanentScheduleDTO.getDoctorId() == null || permanentScheduleDTO.getHospitalId() == null)
-            throw new Exception();
+            throw new InvalidScheduleException(permanentScheduleDTO);
         DoctorDTO doctorDTO = doctorService.getDoctorById(permanentScheduleDTO.getDoctorId());
         HospitalDTO hospitalDTO = hospitalService.getHospitalById(permanentScheduleDTO.getHospitalId());
-        if (!doctorDTO.getHospitals().contains(hospitalDTO)) throw new Exception();
+        if (!doctorDTO.getHospitals().contains(hospitalDTO)) throw new InvalidScheduleException(permanentScheduleDTO);
         PermanentSchedule schedule = scheduleMapper.permanentScheduleDtoToPermanentSchedule(permanentScheduleDTO);
         schedule.setDoctor(peopleMapper.doctorDtoToDoctor(doctorDTO));
         schedule = permanentScheduleRepository.save(schedule);
         LOGGER.info(schedule + " saved");
         return scheduleMapper.permanentScheduleToPermanentScheduleDto(schedule);
-
-
     }
 
     @Override
-    public ExtraScheduleDTO saveExtraSchedule(ExtraScheduleDTO extraScheduleDTO) throws Exception {
-        if (extraScheduleDTO.getDoctorId() == null) throw new Exception();
+    public ExtraScheduleDTO saveExtraSchedule(ExtraScheduleDTO extraScheduleDTO) throws InvalidScheduleException {
+        if (extraScheduleDTO.getDoctorId() == null) throw new InvalidScheduleException(extraScheduleDTO);
         DoctorDTO doctorDTO = doctorService.getDoctorById(extraScheduleDTO.getDoctorId());
         ExtraSchedule schedule = scheduleMapper.extraScheduleDtoToExtraSchedule(extraScheduleDTO);
         schedule.setDoctor(peopleMapper.doctorDtoToDoctor(doctorDTO));

@@ -5,13 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.jakev.hospitalproject.dto.HospitalDTO;
 import ru.jakev.hospitalproject.entities.Hospital;
+import ru.jakev.hospitalproject.exceptions.EntityNotFoundException;
 import ru.jakev.hospitalproject.mappers.HospitalMapper;
 import ru.jakev.hospitalproject.repositories.HospitalRepository;
 import ru.jakev.hospitalproject.services.HospitalService;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,9 +41,9 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
-    public HospitalDTO getHospitalById(Integer id) throws EntityNotFoundException {
+    public HospitalDTO getHospitalById(Integer id){
         Hospital hospital = hospitalRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("hospital with id = " + id + "not found"));
+                new EntityNotFoundException("Hospital with id = " + id + "not found"));
         return hospitalMapper.hospitalToHospitalDTO(hospital);
     }
 }

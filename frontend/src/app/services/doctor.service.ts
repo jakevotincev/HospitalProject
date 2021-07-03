@@ -29,9 +29,9 @@ export class DoctorService {
   getByInitials(name:string, surname:string, middleName: string){
     return this.http.get<Doctor>('http://localhost:8080/doctors', {
       params:{
-        name: name,
-        surname: surname,
-        middleName: middleName
+        name: name.trim(),
+        surname: surname.trim(),
+        middleName: middleName.trim()
       }
     })
   }

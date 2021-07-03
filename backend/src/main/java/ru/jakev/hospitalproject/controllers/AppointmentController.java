@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.jakev.hospitalproject.dto.AppointmentDTO;
+import ru.jakev.hospitalproject.exceptions.InvalidAppointmentException;
 import ru.jakev.hospitalproject.services.AppointmentService;
 
 import javax.persistence.EntityNotFoundException;
@@ -27,14 +28,8 @@ public class AppointmentController {
     }
 
     @PostMapping("appointments")
-    public ResponseEntity<?> save(@RequestBody AppointmentDTO appointment) {
-        AppointmentDTO appointmentDTO;
-        try {
-            appointmentDTO = appointmentService.saveAppointment(appointment);
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-
+    public ResponseEntity<?> save(@RequestBody AppointmentDTO appointment) throws InvalidAppointmentException {
+        AppointmentDTO appointmentDTO = appointmentService.saveAppointment(appointment);
         return new ResponseEntity<>(appointmentDTO, HttpStatus.CREATED);
     }
 
@@ -54,13 +49,7 @@ public class AppointmentController {
     @GetMapping("hospitals/{h_id}/doctors/{d_id}/appointments/{date}")
     public ResponseEntity<?> getScheduleForDay(@PathVariable("h_id") Integer h_id, @PathVariable("d_id") Integer d_id,
                                                @PathVariable("date") @DateTimeFormat(pattern = "dd_MM_yyyy") LocalDate date) {
-        Map<LocalTime, Boolean> schedule;
-        try {
-            schedule = appointmentService.getScheduleByDoctorIdAndDateAndHospitalId(d_id, date, h_id);
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-
+        Map<LocalTime, Boolean> schedule = appointmentService.getScheduleByDoctorIdAndDateAndHospitalId(d_id, date, h_id);
         return new ResponseEntity<>(schedule, HttpStatus.OK);
     }
 

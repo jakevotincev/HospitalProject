@@ -6,16 +6,15 @@ import org.springframework.stereotype.Service;
 import ru.jakev.hospitalproject.dto.DoctorDTO;
 import ru.jakev.hospitalproject.entities.Doctor;
 import ru.jakev.hospitalproject.entities.DoctorSpeciality;
+import ru.jakev.hospitalproject.exceptions.EntityNotFoundException;
 import ru.jakev.hospitalproject.mappers.PeopleMapper;
 import ru.jakev.hospitalproject.repositories.DoctorRepository;
 import ru.jakev.hospitalproject.services.DoctorService;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-//todo: if getAllDoctors list is empty do I need to throw exception
 @Service
 public class DoctorServiceImpl implements DoctorService {
 
@@ -46,7 +45,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public DoctorDTO getDoctorById(Integer id) {
         Doctor doctor = doctorRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("Not found entity Doctor(id = " + id + ")"));
+                new EntityNotFoundException("Not found Doctor(id = " + id + ")"));
         LOGGER.info("found " + doctor);
         return peopleMapper.doctorToDoctorDto(doctor);
     }
@@ -68,7 +67,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public List<DoctorDTO> getAllBySpecialityAndHospitalId(String speciality, Integer hospitalId) {
         List<Doctor> doctors = doctorRepository.findAllBySpecialityAndHospitalId(Objects.requireNonNull(DoctorSpeciality
-                .valueOfName(speciality)).toString(), hospitalId);
+                .valueOfName(speciality)), hospitalId);
         LOGGER.info("found " + doctors.size() + " doctors, speciality=" + speciality + " hospital.id = " + hospitalId);
         return doctors.stream().map(peopleMapper::doctorToDoctorDto).collect(Collectors.toList());
     }
@@ -76,7 +75,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public DoctorDTO getByInitials(String name, String surname, String middleName) {
         Doctor doctor = doctorRepository.findByNameAndSurnameAndMiddleName(name, surname, middleName).orElseThrow(
-                () -> new EntityNotFoundException("Not found entity Doctor(name = " + name + ", surname = " + surname +
+                () -> new EntityNotFoundException("Not found Doctor(name = " + name + ", surname = " + surname +
                         "middleName = " + middleName + ")"));
         return peopleMapper.doctorToDoctorDto(doctor);
     }

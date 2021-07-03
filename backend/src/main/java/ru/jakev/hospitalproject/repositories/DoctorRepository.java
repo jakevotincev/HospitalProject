@@ -11,22 +11,21 @@ import java.util.Set;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
 
-    @Query(value = "select " +
-            "from doctor" +
-            "         inner join doctor_hospitals dh on doctor.id = dh.doctors_id " +
-            "where dh.hospitals_id = ?1", nativeQuery = true)
+    @Query("from Doctor as doctor" +
+            "       inner join doctor.hospitals as hospital " +
+            "where hospital.id = :id")
     List<Doctor> findAllByHospitalId(Integer id);
 
-    @Query(value = "select distinct speciality\n" +
-            "from doctor\n" +
-            "         inner join doctor_hospitals dh on doctor.id = dh.doctors_id " +
-            "where dh.hospitals_id = ?1", nativeQuery = true)
+    @Query("select distinct doctor.speciality " +
+            "from Doctor as doctor" +
+            "         inner join doctor.hospitals as hospital " +
+            "where hospital.id = :id")
     List<DoctorSpeciality> findAllSpecialitiesByHospitalId(Integer id);
 
-    @Query(value = "select * from doctor " +
-            "         inner join doctor_hospitals dh on doctor.id = dh.doctors_id " +
-            "where dh.hospitals_id = ?2 and doctor.speciality=?1", nativeQuery = true)
-    List<Doctor> findAllBySpecialityAndHospitalId(String speciality, Integer id);
+    @Query("from Doctor as doctor" +
+            "         inner join doctor.hospitals as hospital " +
+            "where hospital.id = :id and doctor.speciality=:speciality")
+    List<Doctor> findAllBySpecialityAndHospitalId(DoctorSpeciality speciality, Integer id);
 
     Optional<Doctor> findByNameAndSurnameAndMiddleName(String name, String surname, String middleName);
 }

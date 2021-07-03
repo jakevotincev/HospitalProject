@@ -5,11 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.jakev.hospitalproject.dto.PatientDTO;
 import ru.jakev.hospitalproject.entities.Patient;
+import ru.jakev.hospitalproject.exceptions.EntityNotFoundException;
 import ru.jakev.hospitalproject.mappers.PeopleMapper;
 import ru.jakev.hospitalproject.repositories.PatientRepository;
 import ru.jakev.hospitalproject.services.PatientService;
 
-import javax.persistence.EntityNotFoundException;
+
 
 @Service
 public class PatientServiceImpl implements PatientService {
@@ -32,10 +33,10 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public PatientDTO getPatientByInitials(String name, String surname, String middleName) throws EntityNotFoundException{
+    public PatientDTO getPatientByInitials(String name, String surname, String middleName){
         Patient patient = patientRepository.findByNameAndSurnameAndMiddleName(name, surname, middleName).orElseThrow(
-                () -> new EntityNotFoundException("Not found entity Patient(name = " + name + ", surname = " + surname +
-                "middleName = " + middleName + ")"));
+                () -> new EntityNotFoundException("Not found Patient(name = " + name + ", surname = " + surname +
+                ", middleName = " + middleName + ")"));
         return mapper.patientToPatientDto(patient);
     }
 }

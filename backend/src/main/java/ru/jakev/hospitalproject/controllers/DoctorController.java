@@ -10,7 +10,6 @@ import ru.jakev.hospitalproject.services.DoctorService;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
-//todo: refactor all unused methods (at the end)
 @RestController
 @RequestMapping
 @CrossOrigin
@@ -28,12 +27,6 @@ public class DoctorController {
         return new ResponseEntity<>(savedDoctor, HttpStatus.CREATED);
     }
 
-//    @GetMapping("doctors")
-//    public ResponseEntity<?> getAll() {
-//        List<DoctorDTO> doctors = doctorService.getAllDoctors();
-//        return new ResponseEntity<>(doctors, HttpStatus.OK);
-//    }
-
     @GetMapping("hospitals/{id}/doctors/specialities")
     public ResponseEntity<?> getSpecialitiesByHospitalId(@PathVariable("id") Integer id) {
         List<DoctorSpeciality> specialities = doctorService.getSpecialitiesByHospitalId(id);
@@ -42,21 +35,16 @@ public class DoctorController {
 
     @GetMapping("hospitals/{h_id}/doctors/{speciality}")
     public ResponseEntity<?> getDoctorsByHospitalAndSpeciality(@PathVariable("h_id") Integer hospitalId,
-                                                           @PathVariable("speciality") String speciality) {
+                                                               @PathVariable("speciality") String speciality) {
         List<DoctorDTO> doctors = doctorService.getAllBySpecialityAndHospitalId(speciality, hospitalId);
         return new ResponseEntity<>(doctors, HttpStatus.OK);
     }
 
     @GetMapping("doctors")
     public ResponseEntity<?> getByInitials(@RequestParam(name = "name") String name,
-                         @RequestParam(name = "surname") String surname,
-                         @RequestParam(name = "middleName") String middleName){
-        DoctorDTO doctorDTO;
-        try {
-            doctorDTO = doctorService.getByInitials(name, surname, middleName);
-        } catch (EntityNotFoundException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+                                           @RequestParam(name = "surname") String surname,
+                                           @RequestParam(name = "middleName") String middleName) {
+        DoctorDTO doctorDTO = doctorService.getByInitials(name, surname, middleName);
         return new ResponseEntity<>(doctorDTO, HttpStatus.OK);
     }
 }

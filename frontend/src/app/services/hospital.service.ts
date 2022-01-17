@@ -8,7 +8,7 @@ import {Hospital} from "../interfaces/hospital";
 })
 export class HospitalService {
 
-  private url: string = 'http://localhost:8080/hospitals'
+  private url: string = 'https://azure-hospital-hospital-service.azuremicroservices.io/hospitals'
 
   constructor(private http: HttpClient) {
   }

@@ -11,7 +11,7 @@ export class PatientService {
   constructor(private http: HttpClient) {
   }
 
-  private url: string = 'http://localhost:8080/patients'
+  private url: string = 'https://azure-hospital-hospital-service.azuremicroservices.io/patients'
 
   savePatient(patient: Patient): Observable<Patient> {
     return this.http.post<Patient>(this.url, patient)

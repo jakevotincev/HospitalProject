@@ -32,6 +32,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { PatientFormComponent } from './patient/patient-form/patient-form.component';
 import { AppointmentTableComponent } from './appointment-table/appointment-table.component';
 import { DoctorFormComponent } from './doctor/doctor-form/doctor-form.component';
+import {OAuthModule} from "angular-oauth2-oidc";
 
 @NgModule({
   declarations: [
@@ -71,7 +72,13 @@ import { DoctorFormComponent } from './doctor/doctor-form/doctor-form.component'
     MatNativeDateModule,
     MatListModule,
     ScrollingModule,
-    MatDialogModule
+    MatDialogModule,
+    OAuthModule.forRoot({
+      resourceServer: {
+        allowedUrls: ['http://localhost:8080'],
+        sendAccessToken: true
+      }
+    })
   ],
   bootstrap: [AppComponent]
 })

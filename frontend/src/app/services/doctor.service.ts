@@ -8,7 +8,8 @@ import {Doctor} from "../interfaces/doctor";
 })
 export class DoctorService {
 
-  private url: string = 'https://azure-hospital-hospital-service.azuremicroservices.io/hospitals/';
+  // private url: string = 'https://azure-hospital-hospital-service.azuremicroservices.io/hospitals/';
+  private url: string = 'http://localhost:8080/hospitals/';
 
   constructor(private http: HttpClient) {
   }
@@ -27,7 +28,7 @@ export class DoctorService {
   }
 
   getByInitials(name:string, surname:string, middleName: string){
-    return this.http.get<Doctor>('https://azure-hospital-hospital-service.azuremicroservices.io/doctors', {
+    return this.http.get<Doctor>('http://localhost:8080/doctors', {
       params:{
         name: name.trim(),
         surname: surname.trim(),

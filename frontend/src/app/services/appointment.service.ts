@@ -11,16 +11,17 @@ import {DaySchedule} from "../interfaces/day-schedule";
 })
 export class AppointmentService {
 
-  private url: string = 'https://azure-hospital-hospital-service.azuremicroservices.io/hospitals/';
+  private url: string = 'http://localhost:8080/hospitals/';
+  // private url: string = 'https://azure-hospital-hospital-service.azuremicroservices.io/hospitals/';
 
   constructor(private http: HttpClient) {
   }
 
   private getUrl(doctorId?: number, hospitalId?: number, patientId?: number, date?: Moment, secondDate?: Moment) {
-    if (!doctorId && !hospitalId && !patientId && !date) return 'https://azure-hospital-hospital-service.azuremicroservices.io/appointments';
-    else if(doctorId&&!hospitalId&&!patientId&&date&&secondDate) return 'https://azure-hospital-hospital-service.azuremicroservices.io/doctors/' + doctorId + '/appointments/'
+    if (!doctorId && !hospitalId && !patientId && !date) return 'http://localhost:8080/appointments';
+    else if(doctorId&&!hospitalId&&!patientId&&date&&secondDate) return 'http://localhost:8080/doctors/' + doctorId + '/appointments/'
       + date.format('DD_MM_yyyy HH:mm:ss') + '/' + secondDate.format('DD_MM_yyyy HH:mm:ss');
-    else if (!doctorId && !hospitalId && !date && patientId) return 'https://azure-hospital-hospital-service.azuremicroservices.io/patients/' + patientId
+    else if (!doctorId && !hospitalId && !date && patientId) return 'http://localhost:8080/patients/' + patientId
       + '/appointments';
     else if (doctorId && hospitalId && !patientId && !date) return this.url + hospitalId + '/doctors/' + doctorId
       + '/appointments';

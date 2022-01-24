@@ -1,4 +1,11 @@
 <app-header [logged]=logged></app-header>
-<div class="getAppointment">
+<div class="buttons">
+  <button mat-raised-button (click)="changeView(0)">Записи врачей</button>
+  <button mat-raised-button (click)="changeView(1)">Записи пациентов</button>
+</div>
+<div class="getAppointment" *ngIf="view==0">
   <app-doctor-form></app-doctor-form>
+</div>
+<div *ngIf="view==1" class="getAppointment">
+  <app-patient-form></app-patient-form>
 </div>

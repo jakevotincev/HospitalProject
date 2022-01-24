@@ -47,6 +47,5 @@ export class HeaderComponent {
     //   console.log(userProfile);
     // })
     this.oAuthService.logOut();
-    this.logged = false;
   }
 }

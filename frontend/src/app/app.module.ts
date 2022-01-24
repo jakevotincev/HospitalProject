@@ -29,7 +29,7 @@ import {MatListModule} from "@angular/material/list";
 import {ScrollingModule} from "@angular/cdk/scrolling";
 import { DialogComponent } from './patient/doctors-table/appointment/dialog/dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
-import { PatientFormComponent } from './patient/patient-form/patient-form.component';
+import { PatientFormComponent } from './doctor/patient-form/patient-form.component';
 import { AppointmentTableComponent } from './appointment-table/appointment-table.component';
 import { DoctorFormComponent } from './doctor/doctor-form/doctor-form.component';
 import {OAuthModule} from "angular-oauth2-oidc";

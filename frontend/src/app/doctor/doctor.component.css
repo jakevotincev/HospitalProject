@@ -1,3 +1,11 @@
 .getAppointment{
   text-align: center;
 }
+
+.buttons{
+  text-align: center;
+}
+
+.buttons button{
+  margin: 10px;
+}

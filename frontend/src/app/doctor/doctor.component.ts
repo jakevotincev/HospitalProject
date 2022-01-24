@@ -2,12 +2,12 @@ import {Component} from '@angular/core';
 import {OAuthService} from "angular-oauth2-oidc";
 import {authConfig} from "../auth.config";
 import {Router} from "@angular/router";
+import {View} from "./view";
 
 //todo: redirect after logout
 //todo: load user profile
 //todo: move button to header +-
 //todo: add redis ro backend
-//todo: move patient form to doctor component
 @Component({
   selector: 'app-doctor',
   templateUrl: './doctor.component.html',
@@ -18,6 +18,7 @@ export class DoctorComponent {
 
   }
 
+  view: View = View.GetDoctorAppointments;
   logged:boolean = false;
 
   ngOnInit(): void {
@@ -27,5 +28,9 @@ export class DoctorComponent {
       if (this.oAuthService.getAccessToken()!==null) this.logged = true;
     });
     this.oAuthService.setupAutomaticSilentRefresh();
+  }
+
+  changeView(view:number){
+    this.view = view;
   }
 }

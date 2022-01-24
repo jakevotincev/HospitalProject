@@ -5,8 +5,9 @@ import {Router} from "@angular/router";
 
 //todo: redirect after logout
 //todo: load user profile
-//todo: move button to header
+//todo: move button to header +-
 //todo: add redis ro backend
+//todo: move patient form to doctor component
 @Component({
   selector: 'app-doctor',
   templateUrl: './doctor.component.html',
@@ -26,14 +27,5 @@ export class DoctorComponent {
       if (this.oAuthService.getAccessToken()!==null) this.logged = true;
     });
     this.oAuthService.setupAutomaticSilentRefresh();
-
-  }
-
-  logOut() {
-    // this.oAuthService.loadUserProfile().then(userProfile=>{
-    //   console.log(userProfile);
-    // })
-    this.oAuthService.logOut();
-    this.logged = false;
   }
 }

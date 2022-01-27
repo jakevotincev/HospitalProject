@@ -7,8 +7,8 @@ import {Schedule} from "../interfaces/schedule";
 })
 export class ScheduleService {
 
-  // private url: string = 'https://azure-hospital-hospital-service.azuremicroservices.io/hospitals/';
-  private url: string = 'http://localhost:8080/hospitals/';
+  private url: string = 'https://azure-hospital-hospital-service.azuremicroservices.io/hospitals/';
+  // private url: string = 'http://localhost:8080/hospitals/';
 
   constructor(private http: HttpClient) {
   }

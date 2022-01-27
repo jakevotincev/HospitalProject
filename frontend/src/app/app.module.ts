@@ -75,12 +75,12 @@ import {OAuthModule} from "angular-oauth2-oidc";
     MatDialogModule,
     OAuthModule.forRoot({
       resourceServer: {
-        allowedUrls: ['http://localhost:8080'],
+        allowedUrls: ['https://azure-hospital-hospital-service.azuremicroservices.io/'],
         sendAccessToken: true
       }
     })
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
 }

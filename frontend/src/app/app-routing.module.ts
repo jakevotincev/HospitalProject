@@ -7,7 +7,7 @@ import {DoctorComponent} from "./doctor/doctor.component";
 const routes: Routes = [
   {path: 'patients', component: PatientComponent},
   {path: 'doctors', component: DoctorComponent},
-  {path: '', redirectTo: '/patients', pathMatch: 'full'}
+  {path: '', redirectTo: '/patients', pathMatch: 'full'},
 ];
 
 @NgModule({

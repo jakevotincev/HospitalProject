@@ -12,8 +12,9 @@ import java.time.LocalTime;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class ExtraScheduleDTO extends ScheduleDTO{
+public class ExtraScheduleDTO extends ScheduleDTO {
 
+    private static final long serialVersionUID = -4501702843476798477L;
     @JsonFormat(pattern = "dd_MM_yyyy")
     private LocalDate date;
 

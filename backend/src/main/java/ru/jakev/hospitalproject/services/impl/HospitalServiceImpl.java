@@ -2,6 +2,7 @@ package ru.jakev.hospitalproject.services.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.jakev.hospitalproject.dto.HospitalDTO;
 import ru.jakev.hospitalproject.entities.Hospital;
@@ -34,6 +35,7 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
+    @Cacheable("hospital")
     public List<HospitalDTO> getAllHospitals() {
         List<Hospital> hospitals = hospitalRepository.findAll();
         LOGGER.info("found " + hospitals.size() + " hospitals");
@@ -41,6 +43,7 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
+    @Cacheable(value = "hospital", key = "#id")
     public HospitalDTO getHospitalById(Integer id){
         Hospital hospital = hospitalRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Hospital with id = " + id + "not found"));

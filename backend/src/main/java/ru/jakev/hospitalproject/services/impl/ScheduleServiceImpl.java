@@ -2,6 +2,7 @@ package ru.jakev.hospitalproject.services.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +55,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "schedule", key = "{#doctorId, #hospitalId}")
     public List<PermanentScheduleDTO> getSchedulesByDoctorIdAndHospitalId(Integer doctorId, Integer hospitalId) {
         List<PermanentScheduleDTO> permanentScheduleDTOList;
         try (Stream<PermanentSchedule> scheduleStream = permanentScheduleRepository.findAllByDoctorIdAAndHospitalId(doctorId, hospitalId)) {
@@ -66,6 +68,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
+    @Cacheable(value = "schedule", key = "{#doctorId, #hospitalId, #day}")
     public PermanentScheduleDTO getScheduleByDoctorIdAndDayOfWeekAndHospitalId(Integer doctorId, DayOfWeek day, Integer hospitalId) {
         PermanentSchedule schedule = permanentScheduleRepository.findByDoctorIdAndDayOfWeekAndHospitalId(doctorId, day, hospitalId).orElseThrow(() ->
                 new EntityNotFoundException("Schedule {doctor_id: " + doctorId + ", hospital_id: "
@@ -76,6 +79,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "schedule", key = "{#doctorId, #hospitalId, #date}")
     public ExtraScheduleDTO getScheduleByDateAndHospitalIdAndDoctorId(LocalDate date, Integer hospitalId, Integer doctorId) {
         ExtraSchedule schedule = extraScheduleRepository.getByDateAndHospitalIdAndDoctorId(date, hospitalId, doctorId).orElse(null);
         if (schedule == null) LOGGER.info("Extra schedule {doctorId: " + doctorId + " hospital_id: "

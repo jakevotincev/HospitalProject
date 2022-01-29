@@ -5,13 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.jakev.hospitalproject.entities.DoctorSpeciality;
 
+import java.io.Serializable;
 import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DoctorDTO {
+public class DoctorDTO implements Serializable {
 
+    private static final long serialVersionUID = 1004097199932291215L;
     private Integer id;
     private String surname;
     private String name;

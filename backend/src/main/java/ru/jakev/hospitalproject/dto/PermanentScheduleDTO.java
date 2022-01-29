@@ -14,8 +14,9 @@ import java.time.LocalTime;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @ToString(callSuper = true)
-public class PermanentScheduleDTO extends ScheduleDTO{
+public class PermanentScheduleDTO extends ScheduleDTO  {
 
+    private static final long serialVersionUID = -3718292003407643434L;
     private DayOfWeek dayOfWeek;
 
     public PermanentScheduleDTO(Integer id, Integer doctorId, LocalTime dayStart, LocalTime dayEnd, Duration duration, Integer hospitalId, DayOfWeek dayOfWeek) {

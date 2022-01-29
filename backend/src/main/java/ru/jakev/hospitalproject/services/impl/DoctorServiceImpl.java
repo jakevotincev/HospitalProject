@@ -2,6 +2,7 @@ package ru.jakev.hospitalproject.services.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.jakev.hospitalproject.dto.DoctorDTO;
 import ru.jakev.hospitalproject.entities.Doctor;
@@ -43,6 +44,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    @Cacheable(value = "doctors", key = "#id")
     public DoctorDTO getDoctorById(Integer id) {
         Doctor doctor = doctorRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Not found Doctor(id = " + id + ")"));
@@ -58,6 +60,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    @Cacheable(value = "speciality", key = "#hospitalId")
     public List<DoctorSpeciality> getSpecialitiesByHospitalId(Integer hospitalId) {
         List<DoctorSpeciality> specialities = doctorRepository.findAllSpecialitiesByHospitalId(hospitalId);
         LOGGER.info("found " + specialities.size() + " specialities, hospital.id=" + hospitalId);
@@ -65,6 +68,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    @Cacheable(value = "doctors", key = "{#speciality, #hospitalId}")
     public List<DoctorDTO> getAllBySpecialityAndHospitalId(String speciality, Integer hospitalId) {
         List<Doctor> doctors = doctorRepository.findAllBySpecialityAndHospitalId(Objects.requireNonNull(DoctorSpeciality
                 .valueOfName(speciality)), hospitalId);
@@ -73,6 +77,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    @Cacheable(value = "doctors", key = "{#name, #surname, #middleName}")
     public DoctorDTO getByInitials(String name, String surname, String middleName) {
         Doctor doctor = doctorRepository.findByNameAndSurnameAndMiddleName(name, surname, middleName).orElseThrow(
                 () -> new EntityNotFoundException("Not found Doctor(name = " + name + ", surname = " + surname +

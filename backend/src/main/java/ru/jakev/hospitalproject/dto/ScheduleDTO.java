@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalTime;
 
@@ -12,7 +13,8 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public abstract class ScheduleDTO {
+public abstract class ScheduleDTO implements Serializable {
+    private static final long serialVersionUID = -4118303166173855197L;
     private Integer id;
     private Integer doctorId;
     private LocalTime dayStart;

@@ -8,7 +8,6 @@ import ru.jakev.hospitalproject.entities.DoctorSpeciality;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
 

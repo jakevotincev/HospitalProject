@@ -43,9 +43,6 @@ export class HeaderComponent {
 
 
   logOut() {
-    // this.oAuthService.loadUserProfile().then(userProfile=>{
-    //   console.log(userProfile);
-    // })
     this.oAuthService.logOut();
   }
 }
